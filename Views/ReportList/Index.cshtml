@@ -1,0 +1,146 @@
+﻿@model WebTools.Models.ReportListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Report/Shared/_Layout.cshtml";
+}
+
+<h1>Thêm biểu mẫu</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <form method="post" asp-area="" asp-controller="ReportList" asp-action="AddReport">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="IDBieuMau" name="IDBieuMau"/>
+
+                <div class="row mb-3">
+                    <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
+                    <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu"/></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
+                    <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" /></div>
+                    <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
+                    <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" /></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><label for="FileLink">File:</label></div>
+                    <div class="col-5"><input type="file" class="form-control" name="FileLink" id="FileLink" /></div>
+                    <div class="col-2 text-right"><label for="PhienBanSD">Phiên bản</label></div>
+                    <div class="col-2"><input type="text" class="form-control" name="PhienBanSD" id="PhienBanSD" /></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
+                    <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" /></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
+                    <div class="col-9"><input type="text" class="form-control" name="KhoaPhongSD" id="KhoaPhongSD" /></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-3"><label for="TheLoai">Thể loại:</label></div>
+                    <div class="col-4">
+                        <select class="form-control" name="TheLoai" id="TheLoai">
+                            <option selected>Choose...</option>
+                            <option value="1">Biểu mẫu chuyên môn</option>
+                            <option value="2">Báo cáo thống kê</option>
+                            <option value="3">Biểu đồ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">                 
+                    <div class="col-10"><button type="submit" class="btn btn-success">Thêm biểu mẫu</button></div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            @{
+                if(TempData["SuccessMsg"]!= null)
+                {
+                    <h2 class="bg-success">@TempData["SuccessMsg"]</h2>
+                }
+                if (TempData["ErrorMsg"] != null)
+                {
+                    <h2 class="bg-success">@TempData["ErrorMsg"]</h2>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+<h1>Danh sách biểu mẫu</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên biểu mẫu</th>
+            <th>Mã biểu mẫ</th>
+            <th>Phiên bản gần nhất</th>
+            <th>Ngày phát hành</th>
+            <th>Trạng thái</th>
+            <th>Phần mềm</th>
+            <th>Trạng thái phần mềm</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if(Model.ReportLists!=null && Model.ReportLists.Count>0)
+            {
+                foreach(var item in Model.ReportLists)
+                {
+                    <tr>
+                        <td>@item.STT</td>
+                        <td>@item.TenBM</td>
+                        <td>@item.MaBM</td>
+                        <td>@item.PhienBan</td>
+                        <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
+                        <td>@item.TrangThaiSD</td>
+                        <td>@item.PhanMem</td>
+                        <td>@item.TrangThaiPM</td>
+                        <td>
+                            <a href="/@item.FileLink"></a>
+                            <div class="dropdown">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Chọn...
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" onclick="goReportVersion('@item.IDBieuMau\')" style="cursor:pointer;">Phiên bản</a>
+                                    <a class="dropdown-item" onclick="goReportSoft('@item.IDBieuMau')" style="cursor:pointer;">Phần mềm</a>
+                                    <a class="dropdown-item" onclick="goReportDetail('@item.IDBieuMau')" style="cursor:pointer;">Chi tiết</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+    @*<tfoot>
+        <tr>
+            <th>STT</th>
+            <th>Tên biểu mẫu</th>
+            <th>Mã biểu mẫ</th>
+            <th>Phiên bản gần nhất</th>
+            <th>Ngày phát hành</th>
+            <th>Trạng thái</th>
+            <th>Phần mềm</th>
+            <th>Trạng thái phần mềm</th>
+            <th></th>
+        </tr>
+    </tfoot>*@
+</table>
+
+<script type="text/javascript">
+    function goReportVersion(Id){
+
+    }
+
+    function goReportSoft(Id) {
+
+    }
+
+    function goReportDetail(Id) {
+
+    }
+</script>

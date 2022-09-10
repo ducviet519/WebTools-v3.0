@@ -1,0 +1,168 @@
+﻿@model IEnumerable<WebTools.Models.ReportList>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Report/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IDPhienBan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhienBan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenBM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaBM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayBanHanh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GhiChu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KhoaPhong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuyTrinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ViTriIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CachIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.URD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TheLoai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhanMem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThaiSD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThaiPM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.STT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhanMem1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhienBan1)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDPhienBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhienBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenBM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaBM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayBanHanh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GhiChu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KhoaPhong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuyTrinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ViTriIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CachIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.URD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TheLoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhanMem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThaiSD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThaiPM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.STT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhanMem1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhienBan1)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IDBieuMau">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IDBieuMau">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IDBieuMau">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
