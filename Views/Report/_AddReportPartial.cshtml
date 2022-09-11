@@ -1,0 +1,63 @@
+﻿@model WebTools.Models.ReportListViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addReportLabel" aria-hidden="true" id="addReport">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm biểu mẫu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>         
+            </div>
+            <div class="modal-body">                
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddReport">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" />
+
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
+                        <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu" /></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
+                        <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" /></div>
+                        <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
+                        <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" /></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="FileLink">File:</label></div>
+                        <div class="col-5"><input type="file" class="form-control" name="FileLink" id="FileLink" /></div>
+                        <div class="col-2 text-right"><label for="PhienBanSD">Phiên bản</label></div>
+                        <div class="col-2"><input type="text" class="form-control" name="PhienBanSD" id="PhienBanSD" /></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
+                        <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" /></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
+                        <div class="col-9"><input type="text" class="form-control" name="KhoaPhongSD" id="KhoaPhongSD" /></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="TheLoai">Thể loại:</label></div>
+                        <div class="col-4">
+                            <select class="form-control" name="TheLoai" id="TheLoai">
+                                <option selected>Choose...</option>
+                                <option value="1">Biểu mẫu chuyên môn</option>
+                                <option value="2">Báo cáo thống kê</option>
+                                <option value="3">Biểu đồ</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>

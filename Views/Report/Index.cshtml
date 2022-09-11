@@ -5,63 +5,23 @@
     Layout = "~/Views/Report/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h1>Thêm biểu mẫu</h1>
-    <div class="row">
-        <div class="col-md-8">
-            <form method="post" asp-area="" asp-controller="Report" asp-action="AddReport">
-                @Html.AntiForgeryToken()
-                <input type="hidden" id="IDBieuMau" name="IDBieuMau"/>
+<div id="ReportPopup"></div>
 
-                <div class="row mb-3">
-                    <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
-                    <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu"/></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
-                    <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" /></div>
-                    <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
-                    <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" /></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-3"><label for="FileLink">File:</label></div>
-                    <div class="col-5"><input type="file" class="form-control" name="FileLink" id="FileLink" /></div>
-                    <div class="col-2 text-right"><label for="PhienBanSD">Phiên bản</label></div>
-                    <div class="col-2"><input type="text" class="form-control" name="PhienBanSD" id="PhienBanSD" /></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
-                    <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" /></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
-                    <div class="col-9"><input type="text" class="form-control" name="KhoaPhongSD" id="KhoaPhongSD" /></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-3"><label for="TheLoai">Thể loại:</label></div>
-                    <div class="col-4">
-                        <select class="form-control" name="TheLoai" id="TheLoai">
-                            <option selected>Choose...</option>
-                            <option value="1">Biểu mẫu chuyên môn</option>
-                            <option value="2">Báo cáo thống kê</option>
-                            <option value="3">Biểu đồ</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row mb-3">                 
-                    <div class="col-10"><button type="submit" class="btn btn-success">Thêm biểu mẫu</button></div>
-                </div>
-            </form>
-        </div>
+<div class="container">
+    <div class="row">
         <div class="col-md-6">
             @{
-                if(TempData["SuccessMsg"]!= null)
+                if (TempData["SuccessMsg"] != null)
                 {
-                        <h2 class="bg-success">@TempData["SuccessMsg"]</h2>
+                    <div class="alert alert-success" role="alert">
+                        @TempData["SuccessMsg"]
+                    </div>
                 }
                 if (TempData["ErrorMsg"] != null)
                 {
-                        <h2 class="bg-success">@TempData["ErrorMsg"]</h2>
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ErrorMsg"]
+                    </div>
                 }
             }
         </div>
@@ -93,8 +53,8 @@
                         new SelectListItem{Text="Chưa có", Value="Chưa có"}
                     }, "Tất cả",new{@class ="form-control"})
                 </div>
-
                 <div class="col"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
+                <div class="col"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
             </div>
         }
     </div>

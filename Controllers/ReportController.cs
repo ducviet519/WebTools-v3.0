@@ -109,8 +109,14 @@ namespace WebTools.Controllers
             return model;
         }
 
+        [HttpGet]
+        public IActionResult AddReport()
+        {
+            ReportListViewModel reportList = new ReportListViewModel();
 
-
+            return PartialView("_AddReportPartial", reportList);
+        }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult AddReport(ReportList reportList)
         {
@@ -130,12 +136,14 @@ namespace WebTools.Controllers
             if(resault == "Inserted")
             {
                 TempData["SuccessMsg"] = "Thêm biểu mẫu mới thành công";
-                return Redirect(url);
+                return RedirectToAction("Index");
+                //return Redirect(url);
             }
             else
             {
                 TempData["ErrorMsg"]= resault;
-                return Redirect(url);
+                return RedirectToAction("Index");
+                //return Redirect(url);
             }
         }
     }
