@@ -9,11 +9,10 @@ namespace WebTools.Models
     [Table("ReportVersion")]
     public class ReportVersion
     {
-        public string IdPhienBan { get; set; }
+        public string IDPhienBan { get; set; }
 
         [Display(Name = "Ngày ban hành")]
-        public string NgayBanHanh { get; set; }
-        public DateTime NgayBanHanhDate { get; set; }
+        public DateTime NgayBanHanh { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
@@ -33,7 +32,7 @@ namespace WebTools.Models
         public DateTime UpdatedDate { get; set; }
         public string UpdatedUser { get; set; }
 
-        public string IdBieuMau { get; set; }
+        public string IDBieuMau { get; set; }
 
         [Display(Name = "Tên biểu mẫu")]        
         public string TenBM { get; set; }

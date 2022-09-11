@@ -1,0 +1,78 @@
+﻿@model WebTools.Models.ReportVersionModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addVersionLabel" aria-hidden="true" id="VersionPopup">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm phiên bản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>         
+            </div>
+            <div class="modal-body">                
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" />
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
+                        <div class="col-9">@Model.VersionList.TenBM</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
+                        <div class="col-3">@Model.VersionList.MaBM</div>
+                        <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
+                        <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" /></div>
+                    </div>
+                    <!--Bảng -->
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Phiên bản</th>
+                                <th>Ngày ban hành</th>
+                                <th>Trạng thái</th>
+                                <th>Ghi chú</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model.VersionLists != null && Model.VersionLists.Count > 0)
+                                {
+                                    foreach (var item in Model.VersionLists)
+                                    { 
+                                        <tr>
+                                            <td>@item.STT</td>
+                                            <td>@item.PhienBan</td>
+                                            <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.TrangThai</td>
+                                            <td>@item.Ghi chú</td>
+                                            <td><a href="#/@item.FileLink"></a>File</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="FileLink">File:</label></div>
+                        <div class="col-5"><input type="file" class="form-control" name="FileLink" id="FileLink" /></div>
+                        <div class="col-2 text-right"><label for="PhienBanSD">Phiên bản</label></div>
+                        <div class="col-2"><input type="text" class="form-control" name="PhienBanSD" id="PhienBanSD" /></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
+                        <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" /></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
