@@ -22,11 +22,33 @@ namespace WebTools.Controllers
 
 
 
-        public IActionResult Index(string sortField, string currentSortField, string currentSortOrder, string SearchString, string SearchTrangThaiSD, string SearchTrangThaiPM, DateTime SearchDate)
+        public IActionResult Index
+            (
+            string sortField,
+            string currentSortField,
+            string currentSortOrder,
+            string SearchString,
+            string SearchTrangThaiSD,
+            string SearchTrangThaiPM,
+            DateTime SearchDate,
+            string currentFilter,
+            int? pageNo
+            )
         {
 
             ReportListViewModel model = new ReportListViewModel();
             List<ReportList> data = _reportListServices.GetReportList().ToList();
+
+            if (SearchString != null)
+            {
+                pageNo = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewData["CurrentSort"] = sortField;
+            ViewBag.CurrentFilter = SearchString;
 
             //Tìm kếm
             if (!String.IsNullOrEmpty(SearchString))
@@ -46,7 +68,11 @@ namespace WebTools.Controllers
                 data = data.Where(s => s.NgayBanHanh.ToString("ddMMyyyy").Contains(SearchDate.ToString("ddMMyyyy"))).ToList();
             }
 
-            model.ReportLists = this.SortData(data, sortField, currentSortField, currentSortOrder);
+            //model.ReportLists = this.SortData(data, sortField, currentSortField, currentSortOrder);
+            //return View(model);
+            var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
+            int pageSize = 10;
+            model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
             return View(model);
         }
 
