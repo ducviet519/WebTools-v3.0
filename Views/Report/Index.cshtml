@@ -57,11 +57,11 @@
             @{
                 if(TempData["SuccessMsg"]!= null)
                 {
-                    <h2 class="bg-success">@TempData["SuccessMsg"]</h2>
+                        <h2 class="bg-success">@TempData["SuccessMsg"]</h2>
                 }
                 if (TempData["ErrorMsg"] != null)
                 {
-                    <h2 class="bg-success">@TempData["ErrorMsg"]</h2>
+                        <h2 class="bg-success">@TempData["ErrorMsg"]</h2>
                 }
             }
         </div>
@@ -124,29 +124,29 @@
                     {
                         foreach (var item in Model.PagingLists)
                         {
-                            <tr>
-                                <td>@item.STT</td>
-                                <td>@item.TenBM</td>
-                                <td>@item.MaBM</td>
-                                <td>@item.PhienBan</td>
-                                <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
-                                <td>@item.TrangThai</td>
-                                <td>@item.PhanMem</td>
-                                <td>@item.TrangThaiPM</td>
-                                <td>
-                                    <a href="/@item.FileLink"></a>
-                                    <div class="dropdown">
-                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Chọn...
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" onclick="goReportVersion('@item.IDBieuMau\')" style="cursor:pointer;">Phiên bản</a>
-                                            <a class="dropdown-item" onclick="goReportSoft('@item.IDBieuMau')" style="cursor:pointer;">Phần mềm</a>
-                                            <a class="dropdown-item" onclick="goReportDetail('@item.IDBieuMau')" style="cursor:pointer;">Chi tiết</a>
+                                <tr>
+                                    <td>@item.STT</td>
+                                    <td>@item.TenBM</td>
+                                    <td>@item.MaBM</td>
+                                    <td>@item.PhienBan</td>
+                                    <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.TrangThai</td>
+                                    <td>@item.PhanMem</td>
+                                    <td>@item.TrangThaiPM</td>
+                                    <td>
+                                        <a href="/@item.FileLink"></a>
+                                        <div class="dropdown">
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn...
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" onclick="goReportVersion('@item.IDBieuMau\')" style="cursor:pointer;">Phiên bản</a>
+                                                <a class="dropdown-item" onclick="goReportSoft('@item.IDBieuMau')" style="cursor:pointer;">Phần mềm</a>
+                                                <a class="dropdown-item" onclick="goReportDetail('@item.IDBieuMau')" style="cursor:pointer;">Chi tiết</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                         }
                     }
                 }
@@ -167,6 +167,14 @@
                class="btn btn-default @prevDisabled">
                 Trang trước
             </a>
+            @for (int p = 1; p <= Model.PagingLists.TotalPageNo; p++ )
+            {
+               <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNo="@p"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default">@p</a>
+            }
             <a asp-action="Index"
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-pageNo="@(Model.PagingLists.PageIndex + 1)"
