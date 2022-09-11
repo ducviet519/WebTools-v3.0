@@ -5,8 +5,6 @@ namespace WebTools.Services
 {
     public interface IReportListServices
     {
-        List<ReportList> GetReportItems();
-
         public List<ReportList> GetReportList();
 
         public string InsertReportList(ReportList reportList);

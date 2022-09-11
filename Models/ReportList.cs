@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebTools.Models
 {
+    public enum SortOder { Ascending=0, Descending=1}
     public class ReportList
     {
         [Key]
@@ -53,13 +54,13 @@ namespace WebTools.Models
         //GET
         public string TheLoai { get; set; }
         public string PhanMem { get; set; }
-        public string TrangThaiSD { get; set; }
+        public string TrangThai { get; set; }
         public string TrangThaiPM { get; set; }
 
         //POST
         public int postTheLoai { get; set; }
         public int postPhanMem { get; set; }
-        public int postTrangThaiSD { get; set; }
+        public int postTrangThai { get; set; }
         public int postTrangThaiPM { get; set; }
 
 

@@ -64,16 +64,11 @@ namespace WebTools.Services
             }
         }
 
-        public List<ReportList> GetReportItems()
-        {
-            List<ReportList> reportItems = new List<ReportList>();
-            return reportItems;
-        }
-
         //Thực thi StoredProcedure sp_Report_List lấy về danh sách Biểu mẫu
         public List<ReportList> GetReportList()
         {
             List<ReportList> reportLists = new List<ReportList>();
+
             try
             {
                 using (IDbConnection dbConnection = Connection)
