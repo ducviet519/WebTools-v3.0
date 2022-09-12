@@ -69,7 +69,7 @@ namespace WebTools.Services
                     IDBieuMau = reportDetail.IDBieuMau,
                     IDPhienBan = reportDetail.IDPhienBan,
                     KhoaPhong = reportDetail.KhoaPhong,
-                    TrangThai = reportDetail.TrangThai,
+                    TrangThai = reportDetail.TrangThai
                 }
             };
             try

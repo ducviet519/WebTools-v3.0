@@ -199,6 +199,8 @@ namespace WebTools.Controllers
             model.ReportSoft = _reportSoftServices.GetReportSoft(id).FirstOrDefault();
             model.ReportSofts = _reportSoftServices.GetReportSoft(id).ToList();
 
+
+
             return PartialView("_SoftPartial", model);
         }
         [HttpPost]

@@ -11,5 +11,6 @@ namespace WebTools.Models
         [Key]
         public int IdURD { get; set; }
         public string Des { get; set; }
+        public bool IsChecked { get; set; }
     }
 }
