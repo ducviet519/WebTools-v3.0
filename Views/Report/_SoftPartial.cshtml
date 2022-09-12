@@ -1,0 +1,106 @@
+﻿@model WebTools.Models.ReportSoftViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addSoftLabel" aria-hidden="true" id="SoftPopup">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Phần mềm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>         
+            </div>
+            <div class="modal-body">                
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportSoft.IDBieuMau" />
+                    <input type="hidden" id="IDPhienBan" name="IDPhienBan" value="@Model.ReportSoft.IDPhienBan" />
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Tên biểu mẫu:</label></div>
+                        <div class="col-10">@Model.ReportSoft.TenBM</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
+                        <div class="col-6">@Model.ReportSoft.MaBM</div>
+                        <div class="col-2 text-right"><label for="PhanMem">Phần mềm:</label></div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <select class="custom-select mr-sm-2" id="PhanMem" name="PhanMem">
+                                    <option selected>@Model.ReportSoft.PhanMem</option>
+                                    <option value="1">HIS</option>
+                                    <option value="2">IVF</option>
+                                    <option value="3">HRM</option>
+                                    <option value="4">PM Kế toán</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">URD:<br />Quy trình vận hành</label></div>
+                        <div class="col-10">
+                            <textarea class="form-control" id="URD" name="URD">@Model.ReportSoft.URD</textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Vị trí in:</label></div>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="ViTriIn" name="ViTriIn" value="@Model.ReportSoft.ViTriIn">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Cách in:</label></div>
+                        <div class="col-10">
+                            <textarea class="form-control" id="CachIn" Name="CachIn">@Model.ReportSoft.CachIn</textarea>
+                        </div>
+                    </div>
+                    <!--Bảng -->
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Phiên bản</th>
+                                <th>Ngày ban hành</th>
+                                <th>Trạng thái</th>
+                                <th>Ghi chú</th>
+                                <th>Xem</th>
+                                <th>Trạng thái phần mềm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model.ReportSofts != null && Model.ReportSofts.Count > 0)
+                                {
+                                    foreach (var item in Model.ReportSofts)
+                                    {
+                                        <tr>
+                                            <td>@item.STT</td>
+                                            <td>@item.PhienBan</td>
+                                            <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.TrangThai</td>
+                                            <td>@item.GhiChu</td>
+                                            <td><a href="#/@item.FileLink"></a>File</td>
+                                            <td>
+                                                <select class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM" required>
+                                                    <option selected>@Model.ReportSoft.TrangThaiPM</option>
+                                                    <option value="1">Đã hoàn thành</option>
+                                                    <option value="2">Chưa hoàn thành</option>
+                                                    <option value="3">Chưa có</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>

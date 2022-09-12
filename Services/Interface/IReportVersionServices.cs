@@ -5,7 +5,7 @@ namespace WebTools.Services
 {
     public interface IReportVersionServices
     {
-        public List<ReportVersion> GetReportVersion();
+        public List<ReportVersion> GetReportVersion(string IdBieuMau);
 
         public string InsertReportVersion(ReportVersion reportVersion);
         public string UpdateReportVersion(ReportVersion reportVersion);

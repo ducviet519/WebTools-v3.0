@@ -27,8 +27,6 @@ namespace WebTools.Models
         [StringLength(50)]
         public string MaBM { get; set; }
 
-        public DateTime NgayBanHanh { get; set; }
-
         [StringLength(1000)]
         public string FileLink { get; set; }
 
@@ -50,13 +48,14 @@ namespace WebTools.Models
         [StringLength(100)]
         public string URD { get; set; }
 
+        public DateTime NgayBanHanh { get; set; }
+
 
         //GET
         public string TheLoai { get; set; }
         public string PhanMem { get; set; }
         public string TrangThai { get; set; }
         public string TrangThaiPM { get; set; }
-
         //POST
         public int postTheLoai { get; set; }
         public int postPhanMem { get; set; }

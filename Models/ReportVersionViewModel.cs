@@ -2,7 +2,7 @@
 
 namespace WebTools.Models
 {
-    public class ReportVersionModel
+    public class ReportVersionViewModel
     {
         public ReportVersion VersionList { get; set; }
 

@@ -100,9 +100,9 @@
                                                 Chọn...
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" onclick="goReportVersion('@item.IDBieuMau\')" style="cursor:pointer;">Phiên bản</a>
-                                                <a class="dropdown-item" onclick="goReportSoft('@item.IDBieuMau')" style="cursor:pointer;">Phần mềm</a>
-                                                <a class="dropdown-item" onclick="goReportDetail('@item.IDBieuMau')" style="cursor:pointer;">Chi tiết</a>
+                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
+                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
+                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
                                             </div>
                                         </div>
                                     </td>
@@ -127,14 +127,14 @@
                class="btn btn-default @prevDisabled">
                 Trang trước
             </a>
-            @for (int p = 1; p <= Model.PagingLists.TotalPageNo; p++ )
+            @*@for (int p = 1; p <= Model.PagingLists.TotalPageNo; p++ )
             {
                <a asp-action="Index"
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-pageNo="@p"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
                class="btn btn-default">@p</a>
-            }
+            }*@
             <a asp-action="Index"
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-pageNo="@(Model.PagingLists.PageIndex + 1)"

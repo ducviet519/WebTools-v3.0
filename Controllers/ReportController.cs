@@ -13,11 +13,23 @@ namespace WebTools.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IReportListServices _reportListServices;
+        private readonly IReportVersionServices _reportVersionServices;
+        private readonly IReportSoftServices _reportSoftServices;
+        private readonly IReportDetailServices _reportDetailServices;
 
-        public ReportController(IConfiguration configuration, IReportListServices reportListServices)
+        public ReportController(
+            IConfiguration configuration,
+            IReportListServices reportListServices,
+            IReportVersionServices reportVersionServices,
+            IReportSoftServices reportSoftServices,
+            IReportDetailServices reportDetailServices
+            )
         {
             _configuration = configuration;
             _reportListServices = reportListServices;
+            _reportVersionServices = reportVersionServices;
+            _reportSoftServices = reportSoftServices;
+            _reportDetailServices = reportDetailServices;
         }
 
 
@@ -35,7 +47,6 @@ namespace WebTools.Controllers
             int? pageNo
             )
         {
-
             ReportListViewModel model = new ReportListViewModel();
             List<ReportList> data = _reportListServices.GetReportList().ToList();
 
@@ -53,7 +64,8 @@ namespace WebTools.Controllers
             //Tìm kếm
             if (!String.IsNullOrEmpty(SearchString))
             {
-                data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM.ToLower().Contains(SearchString.ToLower())).ToList();
+                //data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM.ToLower().Contains(SearchString.ToLower())).ToList();
+                data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower())).ToList();
             }
             if (!String.IsNullOrEmpty(SearchTrangThaiSD))
             {
@@ -142,6 +154,104 @@ namespace WebTools.Controllers
             else
             {
                 TempData["ErrorMsg"]= resault;
+                return RedirectToAction("Index");
+                //return Redirect(url);
+            }
+        }
+    
+        public IActionResult Version(string id)
+        {
+            ReportVersionViewModel model = new ReportVersionViewModel();
+            model.VersionList = _reportVersionServices.GetReportVersion(id).FirstOrDefault();
+            model.VersionLists = _reportVersionServices.GetReportVersion(id).ToList();
+
+            return PartialView("_VesionPartial", model);
+        }
+        
+        [HttpPost]
+        public IActionResult AddVersion(ReportVersion reportVersion)
+        {
+            reportVersion.CreatedUser = "1";
+            //string url = Request.Headers["Referer"].ToString();
+            string IDBieuMau = reportVersion.IDBieuMau;
+            string resault = string.Empty;
+            if (reportVersion.IDBieuMau != null)
+            {
+                resault = _reportVersionServices.InsertReportVersion(reportVersion);
+            }
+            if (resault == "Inserted")
+            {
+                TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                return RedirectToAction("Index");
+                //return Redirect(url);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = resault;
+                return RedirectToAction("Index");
+                //return Redirect(url);
+            }
+        }
+
+        public IActionResult Soft(string id)
+        {
+            ReportSoftViewModel model = new ReportSoftViewModel();
+            model.ReportSoft = _reportSoftServices.GetReportSoft(id).FirstOrDefault();
+            model.ReportSofts = _reportSoftServices.GetReportSoft(id).ToList();
+
+            return PartialView("_SoftPartial", model);
+        }
+        [HttpPost]
+        public IActionResult AddSoft(ReportSoft reportSoft)
+        {
+            //string url = Request.Headers["Referer"].ToString();
+            reportSoft.User = "1";
+            string resault = string.Empty;
+            if (reportSoft.IDBieuMau != null)
+            {
+                resault = _reportSoftServices.InsertReportSoft(reportSoft);
+            }
+            if (resault == "Inserted")
+            {
+                TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                return RedirectToAction("Index");
+                //return Redirect(url);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = resault;
+                return RedirectToAction("Index");
+                //return Redirect(url);
+            }
+        }
+
+        public IActionResult Detail(string id)
+        {
+            ReportDetailViewModel model = new ReportDetailViewModel();
+            model.ReportDetail = _reportDetailServices.GetReportDetail(id).FirstOrDefault();
+            model.ReportDetails = _reportDetailServices.GetReportDetail(id).ToList();
+
+            return PartialView("_DetailPartial", model);
+        }
+
+        public IActionResult AddDetail(ReportDetail reportDetail)
+        {
+            //string url = Request.Headers["Referer"].ToString();
+            reportDetail.User = "1";
+            string resault = string.Empty;
+            if (reportDetail.IDBieuMau != null)
+            {
+                resault = _reportDetailServices.InsertReportDetail(reportDetail);
+            }
+            if (resault == "Inserted")
+            {
+                TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                return RedirectToAction("Index");
+                //return Redirect(url);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = resault;
                 return RedirectToAction("Index");
                 //return Redirect(url);
             }

@@ -5,7 +5,7 @@ namespace WebTools.Services
 {
     public interface IReportDetailServices
     {
-        public List<ReportDetail> GetReportDetail();
+        public List<ReportDetail> GetReportDetail(string IdBieuMau);
 
         public string InsertReportDetail(ReportDetail reportDetail);
         public string UpdateReportDetail(ReportDetail reportDetail);

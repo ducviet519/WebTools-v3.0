@@ -3,7 +3,7 @@ using WebTools.Context;
 
 namespace WebTools.Models
 {
-    public class ReportViewModel
+    public class ReportListViewModel
     {
         public ReportList ReportList { get; set; }
 

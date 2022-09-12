@@ -1,4 +1,4 @@
-﻿@model WebTools.Models.ReportVersionModel
+﻿@model WebTools.Models.ReportVersionViewModel
 @{
     Layout = null;
 }
@@ -15,16 +15,16 @@
             <div class="modal-body">                
                 <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" />
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau"/>
                     <div class="row mb-3">
-                        <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
-                        <div class="col-9">@Model.VersionList.TenBM</div>
+                        <div class="col-2"><label for="TenBM">Tên biểu mẫu:</label></div>
+                        <div class="col-10">@Model.VersionList.TenBM</div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
-                        <div class="col-3">@Model.VersionList.MaBM</div>
-                        <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
-                        <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" /></div>
+                        <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
+                        <div class="col-5">@Model.VersionList.MaBM</div>
+                        <div class="col-2 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
+                        <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" value="@Model.VersionList.NgayBanHanhNew"/></div>
                     </div>
                     <!--Bảng -->
                     <table class="table table-bordered">
@@ -49,7 +49,7 @@
                                             <td>@item.PhienBan</td>
                                             <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
                                             <td>@item.TrangThai</td>
-                                            <td>@item.Ghi chú</td>
+                                            <td>@item.GhiChu</td>
                                             <td><a href="#/@item.FileLink"></a>File</td>
                                         </tr>
                                     }
@@ -58,13 +58,14 @@
                         </tbody>
                     </table>
                     <div class="row mb-3">
-                        <div class="col-3"><label for="FileLink">File:</label></div>
+                        <div class="col-2"><label for="FileLink">File:</label></div>
                         <div class="col-5"><input type="file" class="form-control" name="FileLink" id="FileLink" /></div>
                         <div class="col-2 text-right"><label for="PhienBanSD">Phiên bản</label></div>
-                        <div class="col-2"><input type="text" class="form-control" name="PhienBanSD" id="PhienBanSD" /></div>
+                        <div class="col-2"><input type="text" class="form-control" name="PhienBan" id="PhienBan" /></div>
+                        <div class="col-1 text-right"><label for="PhienBanSD">Số PB:<strong>@Model.VersionList.SoPB</strong></label></div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
+                        <div class="col-2"><label for="GhiChu">Ghi chú:</label></div>
                         <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" /></div>
                     </div>
                 </form>

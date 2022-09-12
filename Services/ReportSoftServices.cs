@@ -1,15 +1,17 @@
-﻿using System.Data.SqlClient;
+﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using WebTools.Models;
-using Dapper;
-using System;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
+using WebTools.Context;
+using WebTools.Models;
 
 namespace WebTools.Services
 {
-    public class ReportVersionServices : IReportVersionServices
+    public class ReportSoftServices : IReportSoftServices
     {
         //private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
@@ -18,7 +20,7 @@ namespace WebTools.Services
         //{
         //    _context = context;
         //}
-        public ReportVersionServices(IConfiguration configuration)
+        public ReportSoftServices(IConfiguration configuration)
         {
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("DbConn");
@@ -31,23 +33,22 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
-
-        public string DeleteReportVersion(string IdBieuMau)
+        public string DeleteReportSoft(string IdBieuMau)
         {
             throw new NotImplementedException();
         }
 
-        //Lấy về danh sách Phiên bản sp_Report_Version_View
-        public List<ReportVersion> GetReportVersion(string IdBieuMau)
+
+        public List<ReportSoft> GetReportSoft(string IdBieuMau)
         {
-            List<ReportVersion> reportLists = new List<ReportVersion>();
+            List<ReportSoft> reportLists = new List<ReportSoft>();
 
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    reportLists = dbConnection.Query<ReportVersion>("sp_Report_Version_View",new{ IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure).ToList();
+                    reportLists = dbConnection.Query<ReportSoft>("sp_Report_Soft_View", new { IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure).ToList();
                     dbConnection.Close();
                     return reportLists;
                 }
@@ -59,24 +60,34 @@ namespace WebTools.Services
             }
         }
 
-        //Thêm mới phiên bản sp_Report_Version_Add
-        public string InsertReportVersion(ReportVersion reportVersion)
+        public string InsertReportSoft(ReportSoft reportSoft)
         {
             string result = "";
+            var softTable = new List<ReportSoft>
+            {
+                new ReportSoft 
+                {
+                    IDBieuMau = reportSoft.IDBieuMau,
+                    IDPhienBan = reportSoft.IDPhienBan,
+                    PhanMem = reportSoft.PhanMem,
+                    URD = reportSoft.URD,
+                    ViTriIn = reportSoft.ViTriIn,
+                    CachIn = reportSoft.CachIn,
+                    TrangThaiPM = reportSoft.TrangThaiPM
+                }
+            };
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
+
                     dbConnection.Open();
-                    var data = dbConnection.Query<ReportVersion>("sp_Report_Version_Add",
+                    var data = dbConnection.Query<ReportSoft>("sp_Report_Soft_Add",
                         new
                         {
-                            IDBieuMau = reportVersion.IDBieuMau,
-                            NgayBH = reportVersion.NgayBanHanh,
-                            FileLink = reportVersion.FileLink,
-                            GhiChu = reportVersion.GhiChu,
-                            PhienBan = reportVersion.PhienBan,
-                            User = reportVersion.CreatedUser
+                            ReportSoft = softTable.AsTableValuedParameter("dbo.ReportSoft",
+                            new[] { "IDBieuMau", "IDPhienBan", "PhanMem", "URD", "ViTriIn", "CachIn", "TrangThaiPM" }),
+                            User = reportSoft.User
                         },
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
@@ -94,7 +105,7 @@ namespace WebTools.Services
             }
         }
 
-        public string UpdateReportVersion(ReportVersion reportVersion)
+        public string UpdateReportSoft(ReportSoft reportSoft)
         {
             throw new NotImplementedException();
         }

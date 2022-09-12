@@ -30,8 +30,8 @@ namespace WebTools
             services.AddControllersWithViews();
             services.AddScoped<IReportListServices, ReportListServices>();
             services.AddScoped<IReportVersionServices, ReportVersionServices>();
-            //services.AddScoped<IReportSoftServices, ReportSoftServices>();
-            //services.AddScoped<IReportDetailServices, ReportDetailServices>();
+            services.AddScoped<IReportSoftServices, ReportSoftServices>();
+            services.AddScoped<IReportDetailServices, ReportDetailServices>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DbConn")));
 
         }

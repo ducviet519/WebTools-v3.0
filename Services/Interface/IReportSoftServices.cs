@@ -5,7 +5,7 @@ namespace WebTools.Services
 {
     public interface IReportSoftServices
     {
-        public List<ReportSoft> GetReportSoft();
+        public List<ReportSoft> GetReportSoft(string IdBieuMau);
 
         public string InsertReportSoft(ReportSoft reportSoft);
         public string UpdateReportSoft(ReportSoft reportSoft);

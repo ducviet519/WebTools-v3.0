@@ -1,0 +1,98 @@
+﻿@model WebTools.Models.ReportDetailViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addDetailtLabel" aria-hidden="true" id="DetailPopup">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>         
+            </div>
+            <div class="modal-body">                
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddDetail">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportDetail.IDBieuMau" />
+                    <input type="hidden" id="IDPhienBan" name="IDPhienBan" value="@Model.ReportDetail.IDPhienBan" />
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Tên biểu mẫu:</label></div>
+                        <div class="col-10">@Model.ReportDetail.TenBM</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
+                        <div class="col-6">@Model.ReportDetail.MaBM</div>
+                        <div class="col-2 text-right"><label for="PhanMem">Phần mềm:</label></div>
+                        <div class="col-2"><label for="MaBM">@Model.ReportDetail.PhanMem</label></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Khoa/Phòng sử dụng:</label></div>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="KhoaPhong" name="KhoaPhong">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">URD:<br />Quy trình vận hành</label></div>
+                        <div class="col-10">@Model.ReportDetail.URD</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Vị trí in:</label></div>
+                        <div class="col-10">@Model.ReportDetail.ViTriIn</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"><label for="TenBM">Cách in:</label></div>
+                        <div class="col-10">@Model.ReportDetail.CachIn</div>
+                    </div>
+                    <!--Bảng -->
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Phiên bản</th>
+                                <th>Ngày ban hành</th>
+                                <th>Trạng thái</th>
+                                <th>Ghi chú</th>
+                                <th>Xem</th>
+                                <th>Trạng thái phần mềm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model.ReportDetails != null && Model.ReportDetails.Count > 0)
+                                {
+                                    foreach (var item in Model.ReportDetails)
+                                    {
+                                        <tr>
+                                            <td>@item.STT</td>
+                                            <td>@item.PhienBan</td>
+                                            <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <select class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM" required>
+                                                    <option selected>@Model.ReportDetail.TrangThai</option>
+                                                    <option value="1">Đang sử dụng</option>
+                                                    <option value="2">Chưa ban hành</option>
+                                                    <option value="3">Đã hủy</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="GhiChu" name="GhiChu">
+                                            </td>
+                                            <td><a href="#/@item.FileLink"></a>File</td>
+                                            <td>@item.TrangThaiPM</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
