@@ -10,5 +10,7 @@ namespace WebTools.Models
         public ReportSoft ReportSoft { get; set; }
 
         public List<ReportSoft> ReportSofts { get; set; }
+
+        public List<ReportURD> URDLists { get; set; }
     }
 }

@@ -16,13 +16,15 @@ namespace WebTools.Controllers
         private readonly IReportVersionServices _reportVersionServices;
         private readonly IReportSoftServices _reportSoftServices;
         private readonly IReportDetailServices _reportDetailServices;
+        private readonly IReportURDServices _reportURDServices;
 
         public ReportController(
             IConfiguration configuration,
             IReportListServices reportListServices,
             IReportVersionServices reportVersionServices,
             IReportSoftServices reportSoftServices,
-            IReportDetailServices reportDetailServices
+            IReportDetailServices reportDetailServices,
+            IReportURDServices reportURDServices
             )
         {
             _configuration = configuration;
@@ -30,6 +32,7 @@ namespace WebTools.Controllers
             _reportVersionServices = reportVersionServices;
             _reportSoftServices = reportSoftServices;
             _reportDetailServices = reportDetailServices;
+            _reportURDServices = reportURDServices;
         }
 
 
@@ -42,7 +45,7 @@ namespace WebTools.Controllers
             string SearchString,
             string SearchTrangThaiSD,
             string SearchTrangThaiPM,
-            DateTime SearchDate,
+            DateTime? SearchDate,
             string currentFilter,
             int? pageNo
             )
@@ -64,8 +67,8 @@ namespace WebTools.Controllers
             //Tìm kếm
             if (!String.IsNullOrEmpty(SearchString))
             {
-                //data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM.ToLower().Contains(SearchString.ToLower())).ToList();
-                data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower())).ToList();
+                //data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                data = data.Where(s => s.TenBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
             }
             if (!String.IsNullOrEmpty(SearchTrangThaiSD))
             {
@@ -75,13 +78,11 @@ namespace WebTools.Controllers
             {
                 data = data.Where(s => s.TrangThaiPM.ToLower().Contains(SearchTrangThaiPM.ToLower())).ToList();
             }
-            if (!String.IsNullOrEmpty(SearchDate.ToString()))
+            if (SearchDate != null)
             {
-                data = data.Where(s => s.NgayBanHanh.ToString("ddMMyyyy").Contains(SearchDate.ToString("ddMMyyyy"))).ToList();
+                data = data.Where(s => s.NgayBanHanh.ToString().Contains(SearchDate.ToString())).ToList();
             }
 
-            //model.ReportLists = this.SortData(data, sortField, currentSortField, currentSortOrder);
-            //return View(model);
             var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
             int pageSize = 10;
             model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
@@ -121,6 +122,7 @@ namespace WebTools.Controllers
             return model;
         }
 
+        //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
         [HttpGet]
         public IActionResult AddReport()
         {
@@ -158,7 +160,8 @@ namespace WebTools.Controllers
                 //return Redirect(url);
             }
         }
-    
+
+        //4. Tạo chức năng thêm phiên bản
         public IActionResult Version(string id)
         {
             ReportVersionViewModel model = new ReportVersionViewModel();
@@ -167,7 +170,8 @@ namespace WebTools.Controllers
 
             return PartialView("_VesionPartial", model);
         }
-        
+
+        //5. Tạo chức năng Lưu phiên bản
         [HttpPost]
         public IActionResult AddVersion(ReportVersion reportVersion)
         {
@@ -193,21 +197,39 @@ namespace WebTools.Controllers
             }
         }
 
+        //6. Tạo cửa sổ Phần mềm
         public IActionResult Soft(string id)
         {
             ReportSoftViewModel model = new ReportSoftViewModel();
             model.ReportSoft = _reportSoftServices.GetReportSoft(id).FirstOrDefault();
             model.ReportSofts = _reportSoftServices.GetReportSoft(id).ToList();
 
-
+            //URD
+            var data = _reportURDServices.GetAll_URD().Select(x => new ReportURD()
+            {
+                Value = x.ID.ToString(),
+                Text = x.Des
+            }).ToList();
+            model.URDLists = data;
 
             return PartialView("_SoftPartial", model);
         }
+
+        //7. Tạo chức năng lưu dữ liệu khi ấn nút Lưu ở phần 6
         [HttpPost]
         public IActionResult AddSoft(ReportSoft reportSoft)
         {
             //string url = Request.Headers["Referer"].ToString();
             reportSoft.User = "1";
+            reportSoft.URD = Request.Form["URD"];
+            var data = _reportSoftServices.GetReportSoft(reportSoft.IDBieuMau).ToList();
+
+            foreach(var item in data)
+            {
+                var valPhienBan = Request.Form["IDPhienBan["+ item.STT + "]"];
+                var valTrangThaiPM = Request.Form["TrangThaiPM[" + item.STT + "]"];
+            }
+
             string resault = string.Empty;
             if (reportSoft.IDBieuMau != null)
             {
@@ -227,6 +249,7 @@ namespace WebTools.Controllers
             }
         }
 
+        //8. Tạo giao diện Chi tiết
         public IActionResult Detail(string id)
         {
             ReportDetailViewModel model = new ReportDetailViewModel();
@@ -236,6 +259,7 @@ namespace WebTools.Controllers
             return PartialView("_DetailPartial", model);
         }
 
+        //9. Tạo chức năng lưu dữ liệu khi ấn nút Lưu ở phần 8
         public IActionResult AddDetail(ReportDetail reportDetail)
         {
             //string url = Request.Headers["Referer"].ToString();

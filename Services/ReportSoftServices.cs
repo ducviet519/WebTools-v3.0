@@ -38,7 +38,7 @@ namespace WebTools.Services
             throw new NotImplementedException();
         }
 
-
+        //Truyền dữ liệu thực thi sp_Report_Soft_View
         public List<ReportSoft> GetReportSoft(string IdBieuMau)
         {
             List<ReportSoft> reportLists = new List<ReportSoft>();
@@ -60,6 +60,7 @@ namespace WebTools.Services
             }
         }
 
+        //Truyền dữ liệu thực thi sp_Report_Soft_Add
         public string InsertReportSoft(ReportSoft reportSoft)
         {
             string result = "";

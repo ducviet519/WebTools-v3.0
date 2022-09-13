@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,15 @@ namespace WebTools.Models
         public string GhiChu { get; set; }
         public string FileLink { get; set; }
         public string TrangThaiPM { get; set; }
-
         public string User { get; set; }
+
+        [EnumDataType(typeof(TrangThai))]
+        public TrangThai TrangThaiDropList { get; set; }
+    }
+    public enum TrangThai
+    {
+        [Display(Name = "Đang sử dụng")] DangSuDung = 1,
+        [Display(Name = "Chưa ban hành")] ChuaBanHanh = 2,
+        [Display(Name = "Đã hủy")] DaHuy = 3
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebTools.Models;
 
-namespace WebTools.Services.Interface
+namespace WebTools.Services
 {
-    interface IReportURDServices
+    public interface IReportURDServices
     {
-        public List<ReportURD> GetReportList();
+        public List<ReportURD> GetAll_URD();
     }
 }
