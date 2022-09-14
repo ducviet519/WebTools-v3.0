@@ -222,13 +222,6 @@ namespace WebTools.Controllers
             //string url = Request.Headers["Referer"].ToString();
             reportSoft.User = "1";
             reportSoft.URD = Request.Form["URD"];
-            var data = _reportSoftServices.GetReportSoft(reportSoft.IDBieuMau).ToList();
-
-            foreach(var item in data)
-            {
-                var valPhienBan = Request.Form["IDPhienBan["+ item.STT + "]"];
-                var valTrangThaiPM = Request.Form["TrangThaiPM[" + item.STT + "]"];
-            }
 
             string resault = string.Empty;
             if (reportSoft.IDBieuMau != null)

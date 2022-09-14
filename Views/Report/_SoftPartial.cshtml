@@ -10,9 +10,9 @@
                 <h5 class="modal-title">Phần mềm</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>         
+                </button>
             </div>
-            <div class="modal-body">                
+            <div class="modal-body">
                 <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportSoft.IDBieuMau" />
@@ -27,7 +27,7 @@
                         <div class="col-2">
                             <select asp-for="ReportSoft.PhanMem" asp-items="@Html.GetEnumSelectList<PhanMem>()" class="form-control" id="PhanMem" name="PhanMem">
                                 <option selected="selected" value="@Model.ReportSoft.PhanMem">Chọn...</option>
-                            </select>                       
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -35,12 +35,12 @@
                         <div class="col">
                             @for (int i = 0; i < Model.URDLists.Count; i++)
                             {
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="@Model.URDLists[i].Value" name="URD" value="@Model.URDLists[i].Value"/>
-                                <label class="form-check-label" for="URD">@Model.URDLists[i].Text</label>
-                            </div>
-                            }                          
-                        </div> 
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="@Model.URDLists[i].Value" name="URD" value="@Model.URDLists[i].Value" />
+                                    <label class="form-check-label" for="URD">@Model.URDLists[i].Text</label>
+                                </div>
+                            }
+                        </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Vị trí in:</label></div>
@@ -72,7 +72,7 @@
                                 if (Model.ReportSofts != null && Model.ReportSofts.Count > 0)
                                 {
                                     foreach (var item in Model.ReportSofts)
-                                    {                                        
+                                    {
                                         <tr>
                                             <td>@item.STT</td>
                                             <td>@item.PhienBan</td>
@@ -81,10 +81,10 @@
                                             <td>@item.GhiChu</td>
                                             <td><a href="#/@item.FileLink"></a>File</td>
                                             <td>
-                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan[@item.STT]" value="@item.IDPhienBan" />
-                                                <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM[@item.STT]">
+                                                <input type="hidden" id="IDPhienBan[@item.IDPhienBan]" name="IDPhienBan[@item.IDPhienBan]" value="@item.IDPhienBan" />
+                                                <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM[@item.TrangThaiPM]" name="TrangThaiPM[@item.TrangThaiPM]">
                                                     <option selected="selected" value="@item.TrangThaiPM">Chọn...</option>
-                                                </select>
+                                                </select>                                                
                                             </td>
                                         </tr>
                                     }
@@ -96,7 +96,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+                <button type="button" class="btn btn-primary" data-save="modal" onclick="this.parentElement.submit();">Lưu</button>
             </div>
         </div>
     </div>
