@@ -100,7 +100,7 @@ namespace WebTools.Services
                         {
                             TenBM = reportList.TenBM,
                             MaBM = reportList.MaBM,
-                            NgayBH = reportList.NgayBanHanh.ToString("yyyyMMdd"),
+                            NgayBH = reportList.NgayBanHanh,
                             FileLink = reportList.FileLink,
                             GhiChu = reportList.GhiChu,
                             KhoaPhongSD = reportList.KhoaPhong,

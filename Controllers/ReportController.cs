@@ -219,7 +219,7 @@ namespace WebTools.Controllers
         [HttpPost]
         public IActionResult AddSoft(ReportSoft reportSoft)
         {
-            //string url = Request.Headers["Referer"].ToString();
+            string url = Request.Headers["Referer"].ToString();
             reportSoft.User = "1";
             reportSoft.URD = Request.Form["URD"];
 
@@ -227,19 +227,20 @@ namespace WebTools.Controllers
             if (reportSoft.IDBieuMau != null)
             {
                 resault = _reportSoftServices.InsertReportSoft(reportSoft);
-            }
-            if (resault == "Inserted")
-            {
-                TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
-                return RedirectToAction("Index");
-                //return Redirect(url);
+                if (resault == "Inserted")
+                {
+                    TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = resault;
+                }
             }
             else
             {
                 TempData["ErrorMsg"] = resault;
-                return RedirectToAction("Index");
-                //return Redirect(url);
             }
+            return RedirectToAction("Index");
         }
 
         //8. Tạo giao diện Chi tiết

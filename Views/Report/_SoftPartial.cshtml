@@ -8,12 +8,30 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Phần mềm</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        @{
+                            if (TempData["SuccessMsg"] != null)
+                            {
+                                        <div class="alert alert-success" role="alert">
+                                            @TempData["SuccessMsg"]
+                                        </div>
+                            }
+                            if (TempData["ErrorMsg"] != null)
+                            {
+                                        <div class="alert alert-danger" role="alert">
+                                            @TempData["ErrorMsg"]
+                                        </div>
+                            }
+                        }
+                    </div>
+                </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft">
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft" id="SoftForm">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportSoft.IDBieuMau" />
                     <div class="row mb-3">
@@ -81,8 +99,8 @@
                                             <td>@item.GhiChu</td>
                                             <td><a href="#/@item.FileLink"></a>File</td>
                                             <td>
-                                                <input type="hidden" id="IDPhienBan[@item.IDPhienBan]" name="IDPhienBan[@item.IDPhienBan]" value="@item.IDPhienBan" />
-                                                <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM[@item.TrangThaiPM]" name="TrangThaiPM[@item.TrangThaiPM]">
+                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan" value="@item.IDPhienBan" />
+                                                <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM">
                                                     <option selected="selected" value="@item.TrangThaiPM">Chọn...</option>
                                                 </select>                                                
                                             </td>
@@ -101,3 +119,6 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    
+</script>

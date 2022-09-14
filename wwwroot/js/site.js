@@ -32,6 +32,7 @@ $(function () {
         var sendData = form.serialize();
         $.post(actionUrl, sendData).done(function (data) {
             ReportPopupElement.find('.modal').modal('hide');
+            location.reload();
         })
     })
 })
@@ -53,6 +54,13 @@ $(function () {
         var sendData = form.serialize();
         $.post(actionUrl, sendData).done(function (data) {
             ReportPopupElement.find('.modal').modal('hide');
+            location.reload();
         })
     })
 })
+
+
+//Refrest sau submit
+//$(function () {
+//    location.reload();
+//});
