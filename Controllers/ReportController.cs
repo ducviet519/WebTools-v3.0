@@ -67,8 +67,7 @@ namespace WebTools.Controllers
             //Tìm kếm
             if (!String.IsNullOrEmpty(SearchString))
             {
-                //data = data.Where(s => s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
-                data = data.Where(s => s.TenBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
+               data = data.Where(s => s.TenBM!=null && s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM!=null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
             }
             if (!String.IsNullOrEmpty(SearchTrangThaiSD))
             {
@@ -150,14 +149,12 @@ namespace WebTools.Controllers
             if(resault == "Inserted")
             {
                 TempData["SuccessMsg"] = "Thêm biểu mẫu mới thành công";
-                return RedirectToAction("Index");
-                //return Redirect(url);
+                return Redirect(url);
             }
             else
             {
                 TempData["ErrorMsg"]= resault;
-                return RedirectToAction("Index");
-                //return Redirect(url);
+                return Redirect(url);
             }
         }
 
@@ -165,7 +162,7 @@ namespace WebTools.Controllers
         public IActionResult Version(string id)
         {
             ReportVersionViewModel model = new ReportVersionViewModel();
-            model.VersionList = _reportVersionServices.GetReportVersion(id).FirstOrDefault();
+            model.VersionList = _reportVersionServices.GetReportVersion(id).LastOrDefault();
             model.VersionLists = _reportVersionServices.GetReportVersion(id).ToList();
 
             return PartialView("_VesionPartial", model);

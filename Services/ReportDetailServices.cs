@@ -69,7 +69,8 @@ namespace WebTools.Services
                     IDBieuMau = reportDetail.IDBieuMau,
                     IDPhienBan = reportDetail.IDPhienBan,
                     KhoaPhong = reportDetail.KhoaPhong,
-                    TrangThai = reportDetail.TrangThai
+                    TrangThai = reportDetail.TrangThai,
+                    GhiChu = reportDetail.GhiChu
                 }
             };
             try
@@ -82,7 +83,7 @@ namespace WebTools.Services
                         new
                         {
                             ReportDetail = detailTable.AsTableValuedParameter("dbo.ReportDetail",
-                            new[] { "IDBieuMau", "IDPhienBan", "KhoaPhong", "TrangThai" }),
+                            new[] { "IDBieuMau", "IDPhienBan", "KhoaPhong", "TrangThai","GhiChu" }),
                             User = reportDetail.User
                         },
                         commandType: CommandType.StoredProcedure);

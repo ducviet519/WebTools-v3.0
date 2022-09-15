@@ -30,7 +30,7 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-10">
-                            <input type="text" class="form-control" id="KhoaPhong" name="KhoaPhong">
+                            <input type="text" class="form-control" id="KhoaPhong" name="KhoaPhong" value="@Model.ReportDetail.KhoaPhong">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -74,7 +74,7 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" id="GhiChu" name="GhiChu">
+                                                <input type="text" class="form-control" id="GhiChu" name="GhiChu" value="@item.GhiChu">
                                             </td>
                                             <td><a href="#/@item.FileLink"></a>File</td>
                                             <td>@item.TrangThaiPM</td>
