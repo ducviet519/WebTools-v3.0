@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using WebTools.Context;
 using WebTools.Services;
 
@@ -22,6 +24,7 @@ namespace WebTools
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
             services.AddScoped<IReportListServices, ReportListServices>();
             services.AddScoped<IReportVersionServices, ReportVersionServices>();
             services.AddScoped<IReportSoftServices, ReportSoftServices>();

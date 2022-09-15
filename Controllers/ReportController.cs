@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using WebTools.Context;
 using WebTools.Models;
+using WebTools.Models.Entity;
 using WebTools.Services;
 
 namespace WebTools.Controllers
@@ -121,6 +124,9 @@ namespace WebTools.Controllers
             return model;
         }
 
+        
+
+
         //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
         [HttpGet]
         public IActionResult AddReport()
@@ -131,10 +137,31 @@ namespace WebTools.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
+        //public IActionResult AddReport(ReportList reportList, IFormFile FileLink)
         public IActionResult AddReport(ReportList reportList)
         {
             ReportListViewModel model = new ReportListViewModel();
             reportList.CreatedUser = "1";
+
+            ////Upload File
+            //// Get the file name from the browser
+            //var fileName = System.IO.Path.GetFileName(FileLink.FileName);
+            //// Get file path to be uploaded
+            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/upload", fileName);
+            //// Check If file with same name exists and delete it
+            //if (System.IO.File.Exists(filePath))
+            //{
+            //    System.IO.File.Delete(filePath);
+            //}
+            //// Create a new local file and copy contents of uploaded file
+            //using (var localFile = System.IO.File.OpenWrite(filePath))
+            //using (var uploadedFile = FileLink.OpenReadStream())
+            //{
+            //    uploadedFile.CopyTo(localFile);
+            //}
+            //// Get files from the server
+            //    model.Files = new FileDetails { Name = fileName, Path = filePath };
+
             string url = Request.Headers["Referer"].ToString();
 
             string resault = string.Empty;
