@@ -245,7 +245,7 @@ namespace WebTools.Controllers
         public IActionResult AddSoft(ReportSoft reportSoft)
         {
             string url = Request.Headers["Referer"].ToString();
-            int? count = int.Parse(Request.Form["count"]);
+            int count = Int32.Parse(Request.Form["count"]);
             for (int i = 0; i < count; i++)
             {
                 reportSoft.IDBieuMau = Request.Form["IDBieuMau"];
