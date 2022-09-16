@@ -29,8 +29,11 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="fileUpload">File:</label></div>
-                        <div class="col-5">
-                            <input asp-for="UploadFile" class="fileUpload">
+                        <div class="col-4">
+                            <input type="file" class="form-control">
+                        </div>
+                        <div class="col-1">
+                            <input type="button" id="Upload" value="Upload" class="btn btn-primary" />
                         </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
                         <div class="col-2"><input type="text" class="form-control" name="PhienBan" id="PhienBan" /></div>
@@ -63,3 +66,30 @@
         </div>
     </div>
 </div>
+@*<script>
+    $(document).ready(function () {
+        $('#Upload').click(function () {
+            var fileUpload = $("#files").get(0);
+            var files = fileUpload.files;
+            // Create  a FormData object
+            var fileData = new FormData();
+            // if there are multiple files , loop through each files
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                url: '/Home/UploadFiles', //URL to upload files
+                type: "POST", //as we will be posting files and other method POST is used
+                processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
+                contentType: false,
+                data: fileData,
+                success: function (result) {
+                    alert(result);
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        });
+    });
+</script>*@

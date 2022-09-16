@@ -142,26 +142,25 @@ namespace WebTools.Controllers
 
 
         //Upload file
-        [BindProperty]
-        public IFormFile UploadFile { get; set; }
-        public async Task<IActionResult> OnPostAsync()
+        [HttpPost]
+        public ActionResult UploadFiles(IFormFile formData)
         {
-            if (UploadFile != null)
+            if (formData != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, UploadFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, formData.FileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                   await UploadFile.CopyToAsync(fileStream);
+                    formData.CopyTo(fileStream);
                 }
-                return new ObjectResult(new { status = "success" });
+                return Json("File Uploaded Successfully!");
             }
-            return new ObjectResult(new { status = "fail" });
+            return Json("No files to upload");
 
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult AddReport(ReportList reportList, IFormFile UploadFile)
+        public IActionResult AddReport(ReportList reportList)
         {
             reportList.CreatedUser = "1";
 
@@ -278,25 +277,22 @@ namespace WebTools.Controllers
         public IActionResult AddDetail(ReportDetail reportDetail)
         {
             reportDetail.User = "1";
-            string resault = "";
-            if (reportDetail.IDBieuMau != null)
+            int count = Int32.Parse(Request.Form["count"]);
+            for (int i = 0; i < count; i++)
             {
-                resault = _reportDetailServices.InsertReportDetail(reportDetail);
-                if (resault == "OK")
+                reportDetail.IDBieuMau = Request.Form["IDBieuMau"];
+                reportDetail.IDPhienBan = Request.Form["IDPhienBan-" + i];
+                reportDetail.KhoaPhong = Request.Form["KhoaPhong"];
+                reportDetail.GhiChu = Request.Form["GhiChu"];
+                reportDetail.TrangThai = Request.Form["TrangThai-" + i];
+                reportDetail.User = "1";
+                if (reportDetail.IDBieuMau != null)
                 {
-                    TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                    _reportDetailServices.InsertReportDetail(reportDetail);
                 }
-                else
-                {
-                    TempData["ErrorMsg"] = resault;
-                }
-                return RedirectToAction("Index");
+
             }
-            else
-            {
-                TempData["ErrorMsg"] = "Dữ liệu bị lỗi";
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
     }
 }

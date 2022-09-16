@@ -60,6 +60,7 @@
                         </thead>
                         <tbody>
                             @{
+                                int count = 0;
                                 if (Model.ReportDetails != null && Model.ReportDetails.Count > 0)
                                 {
                                     foreach (var item in Model.ReportDetails)
@@ -69,8 +70,9 @@
                                             <td>@item.PhienBan</td>
                                             <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
                                             <td>
-                                                <select asp-for="ReportDetail.TrangThai" asp-items="@Html.GetEnumSelectList<TrangThai>()" class="custom-select mr-sm-2" id="TrangThai" name="TrangThai">
-                                                    <option selected="selected" value="@Model.ReportDetail.TrangThai">Chọn...</option>
+                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan-@count" value="@item.IDPhienBan" /> 
+                                                <select asp-for="@item.TrangThai" asp-items="@Html.GetEnumSelectList<TrangThai>()" class="custom-select mr-sm-2" id="TrangThai" name="TrangThai-@count">
+                                                    <option selected="selected" value="@item.TrangThai">Chọn...</option>
                                                 </select>
                                             </td>
                                             <td>
@@ -79,11 +81,13 @@
                                             <td><a href="#/@item.FileLink"></a>File</td>
                                             <td>@item.TrangThaiPM</td>
                                         </tr>
+                                        count++;
                                     }
                                 }
                             }
                         </tbody>
                     </table>
+                    <input type="hidden" name="count" value="@count" />
                 </form>
             </div>
             <div class="modal-footer">
