@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Linq;
 using WebTools.Context;
 using WebTools.Models;
-using WebTools.Models.Entity;
 using WebTools.Services;
 
 namespace WebTools.Controllers
@@ -20,6 +20,7 @@ namespace WebTools.Controllers
         private readonly IReportSoftServices _reportSoftServices;
         private readonly IReportDetailServices _reportDetailServices;
         private readonly IReportURDServices _reportURDServices;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ReportController(
             IConfiguration configuration,
@@ -27,7 +28,8 @@ namespace WebTools.Controllers
             IReportVersionServices reportVersionServices,
             IReportSoftServices reportSoftServices,
             IReportDetailServices reportDetailServices,
-            IReportURDServices reportURDServices
+            IReportURDServices reportURDServices,
+            IWebHostEnvironment webHostEnvironment
             )
         {
             _configuration = configuration;
@@ -36,6 +38,7 @@ namespace WebTools.Controllers
             _reportSoftServices = reportSoftServices;
             _reportDetailServices = reportDetailServices;
             _reportURDServices = reportURDServices;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -135,57 +138,50 @@ namespace WebTools.Controllers
 
             return PartialView("_AddReportPartial", reportList);
         }
+
+        //Upload file
+        public IActionResult OnPostMyUploader(IFormFile MyUploader)
+        {
+            if (MyUploader != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                string filePath = Path.Combine(uploadsFolder, MyUploader.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    MyUploader.CopyTo(fileStream);
+                }
+                return new ObjectResult(new { status = "success" });
+            }
+            return new ObjectResult(new { status = "fail" });
+
+        }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        //public IActionResult AddReport(ReportList reportList, IFormFile FileLink)
         public IActionResult AddReport(ReportList reportList)
         {
-            ReportListViewModel model = new ReportListViewModel();
             reportList.CreatedUser = "1";
 
-            ////Upload File
-            //// Get the file name from the browser
-            //var fileName = System.IO.Path.GetFileName(FileLink.FileName);
-            //// Get file path to be uploaded
-            //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/upload", fileName);
-            //// Check If file with same name exists and delete it
-            //if (System.IO.File.Exists(filePath))
-            //{
-            //    System.IO.File.Delete(filePath);
-            //}
-            //// Create a new local file and copy contents of uploaded file
-            //using (var localFile = System.IO.File.OpenWrite(filePath))
-            //using (var uploadedFile = FileLink.OpenReadStream())
-            //{
-            //    uploadedFile.CopyTo(localFile);
-            //}
-            //// Get files from the server
-            //    model.Files = new FileDetails { Name = fileName, Path = filePath };
-
-            string url = Request.Headers["Referer"].ToString();
-
-            string resault = string.Empty;
-            if(reportList.IDBieuMau != null)
+            if (ModelState.IsValid)
             {
-                resault = _reportListServices.UpdateReportList(reportList);
+                var resault = _reportListServices.InsertReportList(reportList);
+                if (resault == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm biểu mẫu mới thành công";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = resault;
+                }
+                return RedirectToAction("Index");
             }
             else
             {
-                resault = _reportListServices.InsertReportList(reportList);
-            }
-            if(resault == "Inserted")
-            {
-                TempData["SuccessMsg"] = "Thêm biểu mẫu mới thành công";
-                return Redirect(url);
-            }
-            else
-            {
-                TempData["ErrorMsg"]= resault;
-                return Redirect(url);
+                TempData["ErrorMsg"] = "Dữ liệu bị lỗi";
+                return RedirectToAction("Index");
             }
         }
 
-        //4. Tạo chức năng thêm phiên bản
+        //4. Tạo chức năng hiển thị phiên bản
         public IActionResult Version(string id)
         {
             ReportVersionViewModel model = new ReportVersionViewModel();
@@ -200,24 +196,25 @@ namespace WebTools.Controllers
         public IActionResult AddVersion(ReportVersion reportVersion)
         {
             reportVersion.CreatedUser = "1";
-            //string url = Request.Headers["Referer"].ToString();
             string IDBieuMau = reportVersion.IDBieuMau;
             string resault = string.Empty;
             if (reportVersion.IDBieuMau != null)
             {
                 resault = _reportVersionServices.InsertReportVersion(reportVersion);
-            }
-            if (resault == "Inserted")
-            {
-                TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                if (resault == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = resault;
+                }
                 return RedirectToAction("Index");
-                //return Redirect(url);
             }
             else
             {
-                TempData["ErrorMsg"] = resault;
+                TempData["ErrorMsg"] = "Dữ liệu bị lỗi";
                 return RedirectToAction("Index");
-                //return Redirect(url);
             }
         }
 
@@ -244,25 +241,21 @@ namespace WebTools.Controllers
         public IActionResult AddSoft(ReportSoft reportSoft)
         {
             string url = Request.Headers["Referer"].ToString();
-            reportSoft.User = "1";
-            reportSoft.URD = Request.Form["URD"];
-
-            string resault = string.Empty;
-            if (reportSoft.IDBieuMau != null)
+            int count = int.Parse(Request.Form["count"]);
+            for (int i = 0; i < count; i++)
             {
-                resault = _reportSoftServices.InsertReportSoft(reportSoft);
-                if (resault == "Inserted")
+                reportSoft.IDBieuMau = Request.Form["IDBieuMau"];
+                reportSoft.IDPhienBan = Request.Form["IDPhienBan-" + i];
+                reportSoft.PhanMem = Request.Form["PhanMem"];
+                reportSoft.URD = Request.Form["URD"];
+                reportSoft.ViTriIn = Request.Form["ViTriIn"];
+                reportSoft.CachIn = Request.Form["CachIn"];
+                reportSoft.TrangThaiPM = Request.Form["TrangThaiPM-"+i];
+                reportSoft.User = "1";
+                if (reportSoft.IDBieuMau != null)
                 {
-                    TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                    _reportSoftServices.InsertReportSoft(reportSoft);
                 }
-                else
-                {
-                    TempData["ErrorMsg"] = resault;
-                }
-            }
-            else
-            {
-                TempData["ErrorMsg"] = resault;
             }
             return RedirectToAction("Index");
         }
@@ -280,24 +273,25 @@ namespace WebTools.Controllers
         //9. Tạo chức năng lưu dữ liệu khi ấn nút Lưu ở phần 8
         public IActionResult AddDetail(ReportDetail reportDetail)
         {
-            //string url = Request.Headers["Referer"].ToString();
             reportDetail.User = "1";
-            string resault = string.Empty;
+            string resault = "";
             if (reportDetail.IDBieuMau != null)
             {
                 resault = _reportDetailServices.InsertReportDetail(reportDetail);
-            }
-            if (resault == "Inserted")
-            {
-                TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                if (resault == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = resault;
+                }
                 return RedirectToAction("Index");
-                //return Redirect(url);
             }
             else
             {
-                TempData["ErrorMsg"] = resault;
+                TempData["ErrorMsg"] = "Dữ liệu bị lỗi";
                 return RedirectToAction("Index");
-                //return Redirect(url);
             }
         }
     }

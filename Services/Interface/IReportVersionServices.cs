@@ -8,7 +8,5 @@ namespace WebTools.Services
         public List<ReportVersion> GetReportVersion(string IdBieuMau);
 
         public string InsertReportVersion(ReportVersion reportVersion);
-        public string UpdateReportVersion(ReportVersion reportVersion);
-        public string DeleteReportVersion(string IdBieuMau);
     }
 }

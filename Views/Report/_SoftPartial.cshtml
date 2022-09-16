@@ -13,15 +13,15 @@
                         @{
                             if (TempData["SuccessMsg"] != null)
                             {
-                                        <div class="alert alert-success" role="alert">
-                                            @TempData["SuccessMsg"]
-                                        </div>
+                                <div class="alert alert-success" role="alert">
+                                    @TempData["SuccessMsg"]
+                                </div>
                             }
                             if (TempData["ErrorMsg"] != null)
                             {
-                                        <div class="alert alert-danger" role="alert">
-                                            @TempData["ErrorMsg"]
-                                        </div>
+                                <div class="alert alert-danger" role="alert">
+                                    @TempData["ErrorMsg"]
+                                </div>
                             }
                         }
                     </div>
@@ -31,7 +31,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft" id="SoftForm">
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft" id="SoftForm" modelAttribute="@Model.ReportSofts">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportSoft.IDBieuMau" />
                     <div class="row mb-3">
@@ -87,6 +87,7 @@
                         </thead>
                         <tbody>
                             @{
+                                int count = 0;
                                 if (Model.ReportSofts != null && Model.ReportSofts.Count > 0)
                                 {
                                     foreach (var item in Model.ReportSofts)
@@ -99,17 +100,19 @@
                                             <td>@item.GhiChu</td>
                                             <td><a href="#/@item.FileLink"></a>File</td>
                                             <td>
-                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan" value="@item.IDPhienBan" />
-                                                <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM">
+                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan-@count" value="@item.IDPhienBan" />
+                                                <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM-@count">
                                                     <option selected="selected" value="@item.TrangThaiPM">Chọn...</option>
-                                                </select>                                                
+                                                </select>
                                             </td>
                                         </tr>
+                                        count++;
                                     }
                                 }
                             }
                         </tbody>
                     </table>
+                    <input type="hidden" name="count" value="@count" />
                 </form>
             </div>
             <div class="modal-footer">

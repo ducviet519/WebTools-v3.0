@@ -6,22 +6,17 @@ using WebTools.Models;
 using Dapper;
 using System;
 using System.Linq;
+using WebTools.Context;
 
 namespace WebTools.Services
 {
     public class ReportVersionServices : IReportVersionServices
     {
-        //private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
-
-        //public ReportListServices(DatabaseContext context)
-        //{
-        //    _context = context;
-        //}
         public ReportVersionServices(IConfiguration configuration)
         {
             _configuration = configuration;
-            ConnectionString = _configuration.GetConnectionString("DbConn");
+            ConnectionString = _configuration.GetConnectionString("ToolsDB");
             provideName = "System.Data.SqlClient";
         }
         public string ConnectionString { get; }
@@ -29,12 +24,6 @@ namespace WebTools.Services
         public IDbConnection Connection
         {
             get { return new SqlConnection(ConnectionString); }
-        }
-
-
-        public string DeleteReportVersion(string IdBieuMau)
-        {
-            throw new NotImplementedException();
         }
 
         //Lấy về danh sách Phiên bản sp_Report_Version_View
@@ -46,11 +35,12 @@ namespace WebTools.Services
             {
                 using (IDbConnection dbConnection = Connection)
                 {
-                    dbConnection.Open();
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
                     reportLists = dbConnection.Query<ReportVersion>("sp_Report_Version_View",new{ IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure).ToList();
-                    dbConnection.Close();
-                    return reportLists;
+                    dbConnection.Close();                   
                 }
+                return reportLists;
             }
             catch (Exception ex)
             {
@@ -67,7 +57,8 @@ namespace WebTools.Services
             {
                 using (IDbConnection dbConnection = Connection)
                 {
-                    dbConnection.Open();
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
                     var data = dbConnection.Query<ReportVersion>("sp_Report_Version_Add",
                         new
                         {
@@ -81,22 +72,17 @@ namespace WebTools.Services
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
                     {
-                        result = "Inserted";
+                        result = "OK";
                     }
-                    dbConnection.Close();
-                    return result;
+                    dbConnection.Close();                   
                 }
+                return result;
             }
             catch (Exception ex)
             {
                 string errorMsg = ex.Message;
                 return result;
             }
-        }
-
-        public string UpdateReportVersion(ReportVersion reportVersion)
-        {
-            throw new NotImplementedException();
         }
     }
 }

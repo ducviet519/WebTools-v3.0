@@ -13,17 +13,11 @@ namespace WebTools.Services
 {
     public class ReportSoftServices : IReportSoftServices
     {
-        //private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
-
-        //public ReportListServices(DatabaseContext context)
-        //{
-        //    _context = context;
-        //}
         public ReportSoftServices(IConfiguration configuration)
         {
             _configuration = configuration;
-            ConnectionString = _configuration.GetConnectionString("DbConn");
+            ConnectionString = _configuration.GetConnectionString("ToolsDB");
             provideName = "System.Data.SqlClient";
         }
         public string ConnectionString { get; }
@@ -31,11 +25,6 @@ namespace WebTools.Services
         public IDbConnection Connection
         {
             get { return new SqlConnection(ConnectionString); }
-        }
-
-        public string DeleteReportSoft(string IdBieuMau)
-        {
-            throw new NotImplementedException();
         }
 
         //Truyền dữ liệu thực thi sp_Report_Soft_View
@@ -47,17 +36,18 @@ namespace WebTools.Services
             {
                 using (IDbConnection dbConnection = Connection)
                 {
-                    dbConnection.Open();
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
                     reportLists = dbConnection.Query<ReportSoft>("sp_Report_Soft_View", new { IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure).ToList();
-                    dbConnection.Close();
-                    return reportLists;
+                    dbConnection.Close();                  
                 }
+                return reportLists;
             }
             catch (Exception ex)
             {
                 string errorMsg = ex.Message;
                 return reportLists;
-            }
+            }           
         }
 
         //Truyền dữ liệu thực thi sp_Report_Soft_Add
@@ -81,8 +71,8 @@ namespace WebTools.Services
             {
                 using (IDbConnection dbConnection = Connection)
                 {
-
-                    dbConnection.Open();
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
                     var data = dbConnection.Query<ReportSoft>("sp_Report_Soft_Add",
                         new
                         {
@@ -93,22 +83,17 @@ namespace WebTools.Services
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
                     {
-                        result = "Inserted";
+                        result = "OK";
                     }
-                    dbConnection.Close();
-                    return result;
+                    dbConnection.Close();              
                 }
+                return result;
             }
             catch (Exception ex)
             {
                 string errorMsg = ex.Message;
                 return result;
             }
-        }
-
-        public string UpdateReportSoft(ReportSoft reportSoft)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -13,11 +13,10 @@ namespace WebTools.Services
     public class ReportURDServices:IReportURDServices
     {
         private readonly IConfiguration _configuration;
-
         public ReportURDServices(IConfiguration configuration)
         {
             _configuration = configuration;
-            ConnectionString = _configuration.GetConnectionString("DbConn");
+            ConnectionString = _configuration.GetConnectionString("ToolsDB");
             provideName = "System.Data.SqlClient";
         }
         public string ConnectionString { get; }
@@ -38,8 +37,8 @@ namespace WebTools.Services
                     dbConnection.Open();
                     reporURDs = dbConnection.Query<ReportURD>(sql).ToList();
                     dbConnection.Close();
-                    return reporURDs;
                 }
+                return reporURDs;
             }
             catch (Exception ex)
             {

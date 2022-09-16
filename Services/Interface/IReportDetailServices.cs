@@ -8,7 +8,5 @@ namespace WebTools.Services
         public List<ReportDetail> GetReportDetail(string IdBieuMau);
 
         public string InsertReportDetail(ReportDetail reportDetail);
-        public string UpdateReportDetail(ReportDetail reportDetail);
-        public string DeleteReportDetail(string IdBieuMau);
     }
 }

@@ -13,17 +13,11 @@ namespace WebTools.Services
 {
     public class ReportListServices : IReportListServices
     {
-        //private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
-
-        //public ReportListServices(DatabaseContext context)
-        //{
-        //    _context = context;
-        //}
         public ReportListServices(IConfiguration configuration)
         {
             _configuration = configuration;
-            ConnectionString = _configuration.GetConnectionString("DbConn");
+            ConnectionString = _configuration.GetConnectionString("ToolsDB");
             provideName = "System.Data.SqlClient";
         }
         public string ConnectionString { get; }
@@ -33,36 +27,6 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
-
-
-        public string DeleteReportList(string IdBieuMau)
-        {
-            string result = "";
-            try
-            {
-                using (IDbConnection dbConnection = Connection)
-                {
-                    dbConnection.Open();
-                    var data = dbConnection.Query<ReportList>("sp_Report_Delete",
-                        new
-                        {
-                            IDBieuMau = IdBieuMau
-                        },
-                        commandType: CommandType.StoredProcedure);
-                    if (data != null)
-                    {
-                        result = "Deleted";
-                    }
-                    dbConnection.Close();
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                string errorMsg = ex.Message;
-                return result;
-            }
-        }
 
         //Thực thi StoredProcedure sp_Report_List lấy về danh sách Biểu mẫu
         public List<ReportList> GetReportList()
@@ -75,9 +39,9 @@ namespace WebTools.Services
                 {
                     dbConnection.Open();
                     reportLists = dbConnection.Query<ReportList>("sp_Report_List", commandType: CommandType.StoredProcedure).ToList();
-                    dbConnection.Close();
-                    return reportLists;
+                    dbConnection.Close();                   
                 }
+                return reportLists;
             }
             catch (Exception ex)
             {
@@ -111,49 +75,11 @@ namespace WebTools.Services
                         commandType: CommandType.StoredProcedure);
                     if( data != null)
                     {
-                        result = "Inserted";
+                        result = "OK";
                     }
-                    dbConnection.Close();
-                    return result;
+                    dbConnection.Close();                   
                 }
-            }
-            catch (Exception ex)
-            {
-                string errorMsg = ex.Message;
                 return result;
-            }
-        }
-
-        public string UpdateReportList(ReportList reportList)
-        {
-            string result = "";
-            try
-            {
-                using (IDbConnection dbConnection = Connection)
-                {
-                    dbConnection.Open();
-                    var data = dbConnection.Query<ReportList>("sp_Report_Update",
-                        new
-                        {
-                            TenBM = reportList.TenBM,
-                            MaBM = reportList.MaBM,
-                            NgayBH = reportList.NgayBanHanh.ToString("yyyyMMdd"),
-                            FileLink = reportList.FileLink,
-                            GhiChu = reportList.GhiChu,
-                            KhoaPhongSD = reportList.KhoaPhong,
-                            PhienBan = reportList.PhienBan,
-                            TheLoai = reportList.postTheLoai,
-                            User = reportList.CreatedUser,
-                            IDBieuMau = reportList.IDBieuMau
-                        },
-                        commandType: CommandType.StoredProcedure);
-                    if (data != null)
-                    {
-                        result = "Updated";
-                    }
-                    dbConnection.Close();
-                    return result;
-                }
             }
             catch (Exception ex)
             {

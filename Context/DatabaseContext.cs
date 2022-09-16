@@ -15,5 +15,6 @@ namespace WebTools.Context
         public virtual DbSet<ReportSoft> Softs { get; set; }
         public virtual DbSet<ReportDetail> Details { get; set; }
         public virtual DbSet<ReportURD> URDs { get; set; }
+
     }
 }
