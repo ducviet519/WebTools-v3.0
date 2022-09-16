@@ -3,18 +3,6 @@
 
 // Write your JavaScript code.
 
-//showInPopup = (url, title) => {
-//    $.ajax({
-//        type: "GET",
-//        url: url,
-//        success: function (res) {
-//            $("#form-modal .modal-body").html(res);
-//            $("#form-modal .modal-title").html(title);
-//            $("#form-modal").modal('show');
-//        }
-//    })
-//}
-
 //PopUp cho <a>
 $(function () {
     var ReportPopupElement = $('#ReportPopup')
@@ -23,15 +11,53 @@ $(function () {
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);
             ReportPopupElement.find('.modal').modal('show');
-        })
-    })
+        });
+    });
+
     ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
+        event.preventDefault();
         var form = $(this).parents('.modal').find('form');
         var actionUrl = form.attr('action');
-        var sendData = form.serialize();
-        $.post(actionUrl, sendData).done(function (data) {
-            ReportPopupElement.find('.modal').modal('hide');
-            location.reload();
-        })
-    })
+        var methodType = form.attr('method');
+        $.ajax({
+            type: methodType,
+            url: actionUrl,
+            data: form.serialize(),
+            success: function (data) {
+                ReportPopupElement.find('.modal').modal('hide');
+                alert("Thành công!");
+                location.reload();
+            },
+            error: function (xhr, desc, err) {
+                alert("Lỗi!");
+                location.reload();
+            }
+        });
+    });
+
+    //Dùng cho upload file
+    ReportPopupElement.on('click', '[data-save="modalFile"]', function (event) {
+        event.preventDefault();
+        var form = $(this).parents('.modal').find('form').get(0);
+        var formData = new FormData();
+        formData.append('file', $('input[type=file]')[0].files[0]);
+        var actionUrl = form.attr('action');
+        var methodType = form.attr('method');
+        $.ajax({
+            type: methodType,
+            url: actionUrl,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                ReportPopupElement.find('.modal').modal('hide');
+                alert("Thành công!");
+                location.reload();
+            },
+            error: function (xhr, desc, err) {
+                alert("Lỗi!");
+                location.reload();
+            }
+        });
+    });
 });

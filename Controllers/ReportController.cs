@@ -160,7 +160,7 @@ namespace WebTools.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult AddReport(ReportList reportList)
+        public IActionResult AddReport(ReportList reportList, IFormFile File)
         {
             reportList.CreatedUser = "1";
 

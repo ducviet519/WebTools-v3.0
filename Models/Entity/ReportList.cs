@@ -30,6 +30,7 @@ namespace WebTools.Models
 
         [StringLength(1000)]
         public string FileLink { get; set; }
+        public IFormFile FileUpload { get; set; }
 
         [StringLength(1000)]
         public string GhiChu { get; set; }
