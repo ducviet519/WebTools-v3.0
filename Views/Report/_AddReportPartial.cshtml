@@ -30,7 +30,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="fileUpload">File:</label></div>
                         <div class="col-5">
-                            <input type="file" class="fileUpload" id="fileUpload">
+                            <input asp-for="UploadFile" class="fileUpload">
                         </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
                         <div class="col-2"><input type="text" class="form-control" name="PhienBan" id="PhienBan" /></div>
@@ -63,38 +63,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $("#fileUpload").on('change', function () {
-        var files = $('#fileUpload').prop("files");
-        var url = "/OnPostMyUploader?handler=MyUploader";
-        formData = new FormData();
-        formData.append("MyUploader", files[0]);
-
-        jQuery.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            //beforeSend: function (xhr) {
-            //    xhr.setRequestHeader("XSRF-TOKEN",
-            //        $('input:hidden[name="__RequestVerificationToken"]').val());
-            //},
-            success: function (repo) {
-                if (repo.status == "success") {
-                    alert("File : " + repo.filename + " is uploaded successfully");
-                }
-            },
-            error: function () {
-                alert("Lỗi không thể tải file");
-            }
-        });
-    });
-
-    // If you want to upload file on button click, then use below button click event
-    $("#btnUpload").on('click', function () {
-        // add jQuery ajax code to upload
-    });
-</script>

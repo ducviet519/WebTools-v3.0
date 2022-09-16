@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using WebTools.Context;
 
 namespace WebTools.Models
@@ -10,5 +11,7 @@ namespace WebTools.Models
         public List<ReportList> ReportLists { get; set; }
 
         public PagingList<ReportList> PagingLists { get; set; }
+
+        public IFormFile UploadFile { get; set; }
     }
 }

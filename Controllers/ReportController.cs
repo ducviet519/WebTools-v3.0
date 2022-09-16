@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using WebTools.Context;
 using WebTools.Models;
 using WebTools.Services;
@@ -139,16 +140,19 @@ namespace WebTools.Controllers
             return PartialView("_AddReportPartial", reportList);
         }
 
+
         //Upload file
-        public IActionResult OnPostMyUploader(IFormFile MyUploader)
+        [BindProperty]
+        public IFormFile UploadFile { get; set; }
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (MyUploader != null)
+            if (UploadFile != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, MyUploader.FileName);
+                string filePath = Path.Combine(uploadsFolder, UploadFile.FileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    MyUploader.CopyTo(fileStream);
+                   await UploadFile.CopyToAsync(fileStream);
                 }
                 return new ObjectResult(new { status = "success" });
             }
@@ -157,7 +161,7 @@ namespace WebTools.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult AddReport(ReportList reportList)
+        public IActionResult AddReport(ReportList reportList, IFormFile UploadFile)
         {
             reportList.CreatedUser = "1";
 
@@ -241,7 +245,7 @@ namespace WebTools.Controllers
         public IActionResult AddSoft(ReportSoft reportSoft)
         {
             string url = Request.Headers["Referer"].ToString();
-            int count = int.Parse(Request.Form["count"]);
+            int? count = int.Parse(Request.Form["count"]);
             for (int i = 0; i < count; i++)
             {
                 reportSoft.IDBieuMau = Request.Form["IDBieuMau"];

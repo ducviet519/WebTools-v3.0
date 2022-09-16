@@ -25,6 +25,7 @@ namespace WebTools
         {
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             services.AddControllersWithViews();
+            services.AddRazorPages();
             services.AddScoped<IReportListServices, ReportListServices>();
             services.AddScoped<IReportVersionServices, ReportVersionServices>();
             services.AddScoped<IReportSoftServices, ReportSoftServices>();
