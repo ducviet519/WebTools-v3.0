@@ -30,7 +30,6 @@ namespace WebTools.Models
 
         [StringLength(1000)]
         public string FileLink { get; set; }
-        public IFormFile FileUpload { get; set; }
 
         [StringLength(1000)]
         public string GhiChu { get; set; }
@@ -77,5 +76,6 @@ namespace WebTools.Models
         //1: hiển thị nút 0: ẩn nút trên bảng Phiên bản
         public int PhanMem1 { get; set; }
         public int PhienBan1 { get; set; }
+
     }
 }

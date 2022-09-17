@@ -36,7 +36,20 @@
                 <div class="col text-right"><label>Tên/Mã biểu mẫu:</label></div>
                 <div class="col">@Html.TextBox("SearchString",null, new { type="text", @class="form-control" })</div>
                 <div class="col text-right"><label>Ngày ban hành:</label></div>
-                <div class="col">@Html.TextBox("SearchDate",null, new { type="date", @class="form-control" })</div>
+                <div class="col">
+                    @*@Html.TextBox("SearchDate", null, new { type = "text", @class = "form-control", @id = "SearchDate" })
+                    @section Scripts {
+                        <script type="text/javascript">
+                            $('#SearchDate').datepicker({
+                                format: 'dd/mm/yyyy',
+                                uiLibrary: 'bootstrap4',
+                                showOnFocus: true,
+                                showRightIcon: false
+                            })
+                        </script>
+                    }*@
+                    @Html.TextBox("SearchDate",null, new { type="date", @class="form-control" })
+                </div>
                 <div class="col text-right"><label>Trạng thái:</label></div>
                 <div class="col">
                     @Html.DropDownList("SearchTrangThaiSD", new List<SelectListItem>
@@ -147,16 +160,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function goReportVersion(Id){
 
-    }
 
-    function goReportSoft(Id) {
-
-    }
-
-    function goReportDetail(Id) {
-
-    }
-</script>

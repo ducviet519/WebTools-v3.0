@@ -12,6 +12,5 @@ namespace WebTools.Models
 
         public PagingList<ReportList> PagingLists { get; set; }
 
-        public IFormFile UploadFile { get; set; }
     }
 }

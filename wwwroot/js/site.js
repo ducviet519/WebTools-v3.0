@@ -5,7 +5,7 @@
 
 //PopUp cho <a>
 $(function () {
-    var ReportPopupElement = $('#ReportPopup')
+    var ReportPopupElement = $('#ReportPopup');
     $('a[data-toggle="ajax-modal"]').click(function (event) {
         var url = $(this).data('url');
         $.get(url).done(function (data) {
@@ -24,40 +24,14 @@ $(function () {
             url: actionUrl,
             data: form.serialize(),
             success: function (data) {
-                ReportPopupElement.find('.modal').modal('hide');
                 alert("Thành công!");
-                location.reload();
             },
             error: function (xhr, desc, err) {
                 alert("Lỗi!");
-                location.reload();
             }
-        });
-    });
-
-    //Dùng cho upload file
-    ReportPopupElement.on('click', '[data-save="modalFile"]', function (event) {
-        event.preventDefault();
-        var form = $(this).parents('.modal').find('form').get(0);
-        var formData = new FormData();
-        formData.append('file', $('input[type=file]')[0].files[0]);
-        var actionUrl = form.attr('action');
-        var methodType = form.attr('method');
-        $.ajax({
-            type: methodType,
-            url: actionUrl,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                ReportPopupElement.find('.modal').modal('hide');
-                alert("Thành công!");
-                location.reload();
-            },
-            error: function (xhr, desc, err) {
-                alert("Lỗi!");
-                location.reload();
-            }
-        });
-    });
+        }).done(function (data) {
+            ReportPopupElement.find('.modal').modal('hide');
+            location.reload();
+        })
+    });   
 });

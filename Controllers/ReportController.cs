@@ -143,45 +143,44 @@ namespace WebTools.Controllers
 
         //Upload file
         [HttpPost]
-        public ActionResult UploadFiles(IFormFile formData)
+        public JsonResult UploadFiles(IFormFile fileUpload)
         {
-            if (formData != null)
+            if (fileUpload != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, formData.FileName);
+                string filePath = Path.Combine(uploadsFolder, fileUpload.FileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    formData.CopyTo(fileStream);
+                    fileUpload.CopyTo(fileStream);
                 }
                 return Json("File Uploaded Successfully!");
             }
             return Json("No files to upload");
 
         }
-        [ValidateAntiForgeryToken]
+
         [HttpPost]
-        public IActionResult AddReport(ReportList reportList, IFormFile File)
+        //public IActionResult AddReport([Bind(include: "IDBieuMau,TenBM,MaBM,NgayBanHanh,PhienBan,GhiChu,KhoaPhong,postTheLoai")]ReportList reportList,IFormFile fileUpload)
+        public IActionResult AddReport(ReportList reportList, IFormFile fileUpload)
         {
             reportList.CreatedUser = "1";
 
             if (ModelState.IsValid)
             {
-                var resault = _reportListServices.InsertReportList(reportList);
-                if (resault == "OK")
+                if (fileUpload != null)
                 {
-                    TempData["SuccessMsg"] = "Thêm biểu mẫu mới thành công";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = resault;
-                }
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                    string filePath = Path.Combine(uploadsFolder, fileUpload.FileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        fileUpload.CopyTo(fileStream);
+                    }
+                    reportList.FileLink = filePath;
+                _reportListServices.InsertReportList(reportList);
                 return RedirectToAction("Index");
+                }
             }
-            else
-            {
-                TempData["ErrorMsg"] = "Dữ liệu bị lỗi";
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
 
         //4. Tạo chức năng hiển thị phiên bản

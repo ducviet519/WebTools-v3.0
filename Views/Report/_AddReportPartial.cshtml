@@ -10,10 +10,10 @@
                 <h5 class="modal-title">Thêm biểu mẫu</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>         
+                </button>
             </div>
-            <div class="modal-body">                
-                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddReport">
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddReport" id="myForm">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" />
 
@@ -26,17 +26,16 @@
                         <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" /></div>
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3"><input type="date" class="form-control" name="NgayBanHanh" id="NgayBanHanh" /></div>
+
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="fileUpload">File:</label></div>
                         <div class="col-4">
-                            <input type="file" class="form-control" id="file" name="file">
+                            <input type="file" class="form-control fileUpload" id="fileUpload" name="fileUpload"/>
                         </div>
-                        <div class="col-1">
-                            <input type="button" id="Upload" value="Upload" class="btn btn-primary" />
-                        </div>
+                        <div class="col-1"><button class="btn btn-block">Upload</button></div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
-                        <div class="col-2"><input type="text" class="form-control" name="PhienBan" id="PhienBan" /></div>
+                        <div class="col-2"><input type="text" class="form-control" id="PhienBan" name="PhienBan" /></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
@@ -66,30 +65,40 @@
         </div>
     </div>
 </div>
-@*<script>
-    $(document).ready(function () {
-        $('#Upload').click(function () {
-            var fileUpload = $("#files").get(0);
-            var files = fileUpload.files;
-            // Create  a FormData object
-            var fileData = new FormData();
-            // if there are multiple files , loop through each files
-            for (var i = 0; i < files.length; i++) {
-                fileData.append(files[i].name, files[i]);
-            }
+<script type="text/javascript">
+    $(function () {
+        $(this).on('click', '[data-save="modalFile"]', function (event) {
+            event.preventDefault();
+            var actionUrl = $("#myForm").attr('action');
+            var methodType = $("#myForm").attr('method');
+
+            var formData = new FormData();
+            formData.append("IDBieuMau", $("#IDBieuMau").val());
+            formData.append("TenBM", $("#TenBM").val());
+            formData.append("MaBM", $("#MaBM").val());
+            formData.append("NgayBanHanh", $("#NgayBanHanh").val());
+            formData.append("fileUpload", $("#fileUpload")[0].files[0]);
+            formData.append("PhienBan", $("#PhienBan").val());
+            formData.append("GhiChu", $("#GhiChu").val());
+            formData.append("KhoaPhong", $("#KhoaPhong").val());
+            formData.append("postTheLoai", $("#postTheLoai").val());
+
             $.ajax({
-                url: '/Home/UploadFiles', //URL to upload files
-                type: "POST", //as we will be posting files and other method POST is used
-                processData: false, //remember to set processData and ContentType to false, otherwise you may get an error
+                type: methodType,
+                url: actionUrl,
+                data: formData,
+                processData: false,
                 contentType: false,
-                data: fileData,
-                success: function (result) {
-                    alert(result);
+                success: function (data) {
+                    alert("Thành công!");
                 },
-                error: function (err) {
-                    alert(err.statusText);
+                error: function (xhr, desc, err) {
+                    alert("Lỗi!");
                 }
-            });
+            }).done(function (data) {
+                $(this).find('.modal').modal('hide');
+                location.reload();
+            })
         });
-    });
-</script>*@
+    })
+</script>
