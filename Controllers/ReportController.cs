@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using WebTools.Context;
 using WebTools.Models;
 using WebTools.Services;
@@ -161,25 +163,25 @@ namespace WebTools.Controllers
 
         [HttpPost]
         //public IActionResult AddReport([Bind(include: "IDBieuMau,TenBM,MaBM,NgayBanHanh,PhienBan,GhiChu,KhoaPhong,postTheLoai")]ReportList reportList,IFormFile fileUpload)
-        public IActionResult AddReport(ReportList reportList, IFormFile fileUpload)
+        public IActionResult AddReport(ReportList reportList)
         {
             reportList.CreatedUser = "1";
 
-            if (ModelState.IsValid)
-            {
-                if (fileUpload != null)
+            //if (ModelState.IsValid)
+            //{
+                if (reportList.fileUpload != null)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                    string filePath = Path.Combine(uploadsFolder, fileUpload.FileName);
+                    string filePath = Path.Combine(uploadsFolder, reportList.fileUpload.FileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        fileUpload.CopyTo(fileStream);
+                        reportList.fileUpload.CopyTo(fileStream);
                     }
                     reportList.FileLink = filePath;
                 _reportListServices.InsertReportList(reportList);
                 return RedirectToAction("Index");
                 }
-            }
+            //}
             return RedirectToAction("Index");
         }
 
@@ -194,6 +196,7 @@ namespace WebTools.Controllers
         }
 
         //5. Tạo chức năng Lưu phiên bản
+        [AutoValidateAntiforgeryToken]
         [HttpPost]
         public IActionResult AddVersion(ReportVersion reportVersion)
         {

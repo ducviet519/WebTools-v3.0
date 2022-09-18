@@ -19,6 +19,8 @@ $(function () {
         var form = $(this).parents('.modal').find('form');
         var actionUrl = form.attr('action');
         var methodType = form.attr('method');
+
+        console.log(form.serialize());
         $.ajax({
             type: methodType,
             url: actionUrl,
@@ -33,5 +35,7 @@ $(function () {
             ReportPopupElement.find('.modal').modal('hide');
             location.reload();
         })
-    });   
+    });
+
+
 });

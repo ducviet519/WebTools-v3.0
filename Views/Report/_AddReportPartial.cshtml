@@ -31,7 +31,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="fileUpload">File:</label></div>
                         <div class="col-4">
-                            <input type="file" class="form-control fileUpload" id="fileUpload" name="fileUpload"/>
+                            <input asp-for="ReportList.fileUpload" class="form-control fileUpload" id="fileUpload" name="fileUpload"/>
                         </div>
                         <div class="col-1"><button class="btn btn-block">Upload</button></div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
@@ -90,9 +90,11 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
+                    console.log(data);
                     alert("Thành công!");
                 },
-                error: function (xhr, desc, err) {
+                error: function (data) {
+                    console.log(data);
                     alert("Lỗi!");
                 }
             }).done(function (data) {

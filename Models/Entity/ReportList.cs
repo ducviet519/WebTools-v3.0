@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,9 +28,6 @@ namespace WebTools.Models
         [Required]
         [StringLength(50)]
         public string MaBM { get; set; }
-
-        [StringLength(1000)]
-        public string FileLink { get; set; }
 
         [StringLength(1000)]
         public string GhiChu { get; set; }
@@ -77,5 +75,15 @@ namespace WebTools.Models
         public int PhanMem1 { get; set; }
         public int PhienBan1 { get; set; }
 
+
+        [StringLength(1000)]
+        public string FileLink { get; set; }
+
+        [Required(ErrorMessage = "Chọn một file")]
+        [DataType(DataType.Upload)]
+        [FileExtensions(Extensions = "png,jpg,jpeg,gif,doc,docx,pdf,txt")]
+        [Display(Name = "File:")]
+        [BindProperty]
+        public IFormFile fileUpload { get; set; }
     }
 }
