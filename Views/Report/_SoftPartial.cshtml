@@ -98,7 +98,11 @@
                                             <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
                                             <td>@item.TrangThai</td>
                                             <td>@item.GhiChu</td>
-                                            <td><a href="#/@item.FileLink"></a>File</td>
+                                            @if (item.FileLink != null)
+                                                {
+                                                    <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                                }
+                                            else {<td></td> }
                                             <td>
                                                 <input type="hidden" id="IDPhienBan" name="IDPhienBan-@count" value="@item.IDPhienBan" />
                                                 <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM-@count">

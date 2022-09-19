@@ -1,3 +1,4 @@
+using GleamTech.AspNet.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,10 @@ namespace WebTools
             services.AddScoped<IReportDetailServices, ReportDetailServices>();
             services.AddScoped<IReportURDServices, ReportURDServices>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));
+            //Add GleamTech to the ASP.NET Core services container.
+            //----------------------
+            services.AddGleamTech();
+            //----------------------
 
         }
 
@@ -46,6 +51,10 @@ namespace WebTools
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //Register GleamTech to the ASP.NET Core HTTP request pipeline.
+            //----------------------
+            app.UseGleamTech();
+            //----------------------
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -59,6 +68,8 @@ namespace WebTools
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }

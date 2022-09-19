@@ -82,13 +82,13 @@
             formData.append("GhiChu", $("#GhiChu").val());
             formData.append("KhoaPhong", $("#KhoaPhong").val());
             formData.append("postTheLoai", $("#postTheLoai").val());
-
             $.ajax({
                 type: methodType,
                 url: actionUrl,
                 data: formData,
                 processData: false,
                 contentType: false,
+
                 success: function (data) {
                     console.log(data);
                     alert("Thành công!");

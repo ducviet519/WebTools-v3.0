@@ -142,25 +142,6 @@ namespace WebTools.Controllers
             return PartialView("_AddReportPartial", reportList);
         }
 
-
-        //Upload file
-        [HttpPost]
-        public JsonResult UploadFiles(IFormFile fileUpload)
-        {
-            if (fileUpload != null)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, fileUpload.FileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    fileUpload.CopyTo(fileStream);
-                }
-                return Json("File Uploaded Successfully!");
-            }
-            return Json("No files to upload");
-
-        }
-
         [HttpPost]
         //public IActionResult AddReport([Bind(include: "IDBieuMau,TenBM,MaBM,NgayBanHanh,PhienBan,GhiChu,KhoaPhong,postTheLoai")]ReportList reportList,IFormFile fileUpload)
         public IActionResult AddReport(ReportList reportList)
@@ -196,7 +177,6 @@ namespace WebTools.Controllers
         }
 
         //5. Tạo chức năng Lưu phiên bản
-        [AutoValidateAntiforgeryToken]
         [HttpPost]
         public IActionResult AddVersion(ReportVersion reportVersion)
         {
@@ -205,22 +185,20 @@ namespace WebTools.Controllers
             string resault = string.Empty;
             if (reportVersion.IDBieuMau != null)
             {
-                resault = _reportVersionServices.InsertReportVersion(reportVersion);
-                if (resault == "OK")
+                if (reportVersion.fileUpload != null)
                 {
-                    TempData["SuccessMsg"] = "Thêm Phiên bản mới thành công";
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                    string filePath = Path.Combine(uploadsFolder, reportVersion.fileUpload.FileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        reportVersion.fileUpload.CopyTo(fileStream);
+                    }
+                    reportVersion.FileLink = filePath;                                     
                 }
-                else
-                {
-                    TempData["ErrorMsg"] = resault;
-                }
+                _reportVersionServices.InsertReportVersion(reportVersion);
                 return RedirectToAction("Index");
             }
-            else
-            {
-                TempData["ErrorMsg"] = "Dữ liệu bị lỗi";
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
         }
 
         //6. Tạo cửa sổ Phần mềm
@@ -295,6 +273,15 @@ namespace WebTools.Controllers
 
             }
             return RedirectToAction("Index");
+        }
+
+        //
+        public IActionResult DocumentView(string link)
+        {
+            DocumentViewModel model = new DocumentViewModel();
+            model.FileLink = link;
+
+            return PartialView("_DocumentView", model);
         }
     }
 }

@@ -1,0 +1,31 @@
+{
+  "CacheSourceKey": "i1y3h0",
+  "CachePdfKey": "i1y3h0/i1y3h0-1nrvsqv.pdf",
+  "CacheXpzKey": "i1y3h0/i1y3h0-1w4fg21.xpz",
+  "CacheInfoKey": "i1y3h0/i1y3h0-1w4fg21.json",
+  "CacheCopyKey": null,
+  "Document": "Type=FileSystem;File=PhuLucQA.docx;Location=\"Type=Physical;Path=C:\\Users\\vietld\\Desktop\\P\\WebTools-v2.0\\wwwroot\\Upload\"",
+  "DocumentFileName": "PhuLucQA.docx",
+  "DownloadFileName": null,
+  "InputOptions": {
+    "$type": "GleamTech.DocumentUltimate.WordProcessingInputOptions, GleamTech.DocumentUltimate",
+    "FieldFileName": "PhuLucQA.docx",
+    "UpdateFields": true,
+    "Encoding": null,
+    "Format": "Docx",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "i1y3h0",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": null
+}

@@ -81,7 +81,7 @@ namespace WebTools.Models
 
         [Required(ErrorMessage = "Chọn một file")]
         [DataType(DataType.Upload)]
-        [FileExtensions(Extensions = "png,jpg,jpeg,gif,doc,docx,pdf,txt")]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif,doc,docx,pdf,txt")]
         [Display(Name = "File:")]
         [BindProperty]
         public IFormFile fileUpload { get; set; }

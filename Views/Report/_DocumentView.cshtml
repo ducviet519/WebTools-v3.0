@@ -1,0 +1,24 @@
+﻿@using GleamTech.AspNet.Core
+@using GleamTech.DocumentUltimate
+@using GleamTech.DocumentUltimate.AspNet
+@using GleamTech.DocumentUltimate.AspNet.UI
+@model WebTools.Models.DocumentViewModel
+
+<!DOCTYPE html>
+@{
+    var documentViewer = new DocumentViewer
+    {
+        Width = 800,
+        Height = 600,
+        Document = Model.FileLink
+    };
+}
+<html>
+<head>
+    <title>Document Viewer</title>
+    @this.RenderHead(documentViewer)
+</head>
+<body>
+    @this.RenderBody(documentViewer)
+</body>
+</html>

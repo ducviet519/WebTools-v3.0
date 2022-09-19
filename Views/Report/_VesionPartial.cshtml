@@ -13,7 +13,7 @@
                 </button>         
             </div>
             <div class="modal-body">                
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion">
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau"/>
                     <div class="row mb-3">
@@ -58,8 +58,8 @@
                         </tbody>
                     </table>
                     <div class="row mb-3">
-                        <div class="col-2"><label for="FileLink">File:</label></div>
-                        <div class="col-5"><input type="file" class="form-control" id="FileLink" /></div>
+                        <div class="col-2"><label for="fileUpload">File:</label></div>
+                        <div class="col-5"><input asp-for="VersionList.fileUpload" class="form-control" id="fileUpload" name="fileUpload" /></div>
                         <div class="col text-right"><label for="PhienBanSD">Phiên bản</label></div>
                         <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan"/></div>
                         <div class="col mb-3 text-right"><label for="PhienBanSD">Số PB:<strong>@Model.VersionList.SoPB</strong></label></div>
@@ -72,8 +72,43 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+                <button type="button" class="btn btn-primary" data-save="modalFile">Lưu</button>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $(this).on('click', '[data-save="modalFile"]', function (event) {
+            event.preventDefault();
+            var actionUrl = $("#myForm").attr('action');
+            var methodType = $("#myForm").attr('method');
+
+            var formData = new FormData();
+            formData.append("IDBieuMau", $("#IDBieuMau").val());
+            formData.append("TenBM", $("#TenBM").val());
+            formData.append("MaBM", $("#MaBM").val());
+            formData.append("NgayBanHanh", $("#NgayBanHanh").val());
+            formData.append("fileUpload", $("#fileUpload")[0].files[0]);
+            formData.append("PhienBan", $("#PhienBan").val());
+            formData.append("GhiChu", $("#GhiChu").val());
+            $.ajax({
+                type: methodType,
+                url: actionUrl,
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function (data) {
+                    alert("Thành công!");
+                },
+                error: function (data) {
+                    alert("Lỗi!");
+                }
+            }).done(function (data) {
+                $(this).find('.modal').modal('hide');
+                location.reload();
+            })
+        });
+    })
+</script>

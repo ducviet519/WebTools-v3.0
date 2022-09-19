@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -48,6 +50,13 @@ namespace WebTools.Models
         public string TrangThai { get; set; }
         public int SoPB { get; set; }
         public string User { get; set; }
+
+        [Required(ErrorMessage = "Chọn một file")]
+        [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif,doc,docx,pdf,txt")]
+        [Display(Name = "File:")]
+        [BindProperty]
+        public IFormFile fileUpload { get; set; }
 
     }
 }
