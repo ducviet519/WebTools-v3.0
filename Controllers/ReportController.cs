@@ -280,7 +280,7 @@ namespace WebTools.Controllers
         public IActionResult DocumentView(string link)
         {
             DocumentViewModel model = new DocumentViewModel();
-            model.FileLink = link;
+            model.FileLink = ""+ link;
 
             return PartialView("_DocumentView", model);
         }

@@ -10,6 +10,10 @@ namespace WebTools.Models
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+
+        public string LoginType { get; set; }
+
+        public string UpdatedBy { get; set; }
         public UserAccount userAccount { get; set; }
         public string ReturnUrl { get; set; }
     }
