@@ -47,9 +47,8 @@ namespace WebTools.Controllers
         }
 
         [HttpGet("login")]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login()
         {
-            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
         [HttpPost("login")]

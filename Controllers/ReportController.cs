@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using WebTools.Context;
 using WebTools.Models;
+using WebTools.Models.Entity;
 using WebTools.Services;
+using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
@@ -23,6 +26,7 @@ namespace WebTools.Controllers
         private readonly IReportSoftServices _reportSoftServices;
         private readonly IReportDetailServices _reportDetailServices;
         private readonly IReportURDServices _reportURDServices;
+        private readonly IDepts _depts ;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ReportController(
@@ -32,6 +36,7 @@ namespace WebTools.Controllers
             IReportSoftServices reportSoftServices,
             IReportDetailServices reportDetailServices,
             IReportURDServices reportURDServices,
+            IDepts depts,
             IWebHostEnvironment webHostEnvironment
             )
         {
@@ -40,7 +45,8 @@ namespace WebTools.Controllers
             _reportVersionServices = reportVersionServices;
             _reportSoftServices = reportSoftServices;
             _reportDetailServices = reportDetailServices;
-            _reportURDServices = reportURDServices;
+            _reportURDServices = reportURDServices;           
+            _depts = depts;
             _webHostEnvironment = webHostEnvironment;
         }
 
@@ -54,7 +60,8 @@ namespace WebTools.Controllers
             string SearchString,
             string SearchTrangThaiSD,
             string SearchTrangThaiPM,
-            DateTime? SearchDate,
+            string SearchDate,
+            //DateTime? SearchDate,
             string currentFilter,
             int? pageNo
             )
@@ -86,10 +93,10 @@ namespace WebTools.Controllers
             {
                 data = data.Where(s => s.TrangThaiPM.ToLower().Contains(SearchTrangThaiPM.ToLower())).ToList();
             }
-            if (SearchDate != null)
+            if (!String.IsNullOrEmpty(SearchDate))
             {
-                data = data.Where(s => s.NgayBanHanh.ToString().Contains(SearchDate.ToString())).ToList();
-            }
+                data = data.Where(s => s.NgayBanHanh.ToString("dd/MM/yyyy").Contains(SearchDate.ToString())).ToList();
+            }           
 
             var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
             int pageSize = 10;
@@ -130,21 +137,18 @@ namespace WebTools.Controllers
             return model;
         }
 
-        
-
 
         //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
         [HttpGet]
         public IActionResult AddReport()
         {
-            ReportListViewModel reportList = new ReportListViewModel();
-
-            return PartialView("_AddReportPartial", reportList);
+            ReportListViewModel model = new ReportListViewModel();
+            model.Depts = new SelectList(_depts.GetAll_Depts(), "Code", "KhoaP");
+            return PartialView("_AddReportPartial", model);
         }
 
         [HttpPost]
-        //public IActionResult AddReport([Bind(include: "IDBieuMau,TenBM,MaBM,NgayBanHanh,PhienBan,GhiChu,KhoaPhong,postTheLoai")]ReportList reportList,IFormFile fileUpload)
-        public IActionResult AddReport(ReportList reportList)
+         public IActionResult AddReport(ReportList reportList)
         {
             reportList.CreatedUser = "1";
 
@@ -249,7 +253,7 @@ namespace WebTools.Controllers
             ReportDetailViewModel model = new ReportDetailViewModel();
             model.ReportDetail = _reportDetailServices.GetReportDetail(id).FirstOrDefault();
             model.ReportDetails = _reportDetailServices.GetReportDetail(id).ToList();
-
+            model.Depts = new SelectList(_depts.GetAll_Depts(),"Code","KhoaP");
             return PartialView("_DetailPartial", model);
         }
 

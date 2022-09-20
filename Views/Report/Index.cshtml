@@ -37,18 +37,19 @@
                 <div class="col">@Html.TextBox("SearchString",null, new { type="text", @class="form-control" })</div>
                 <div class="col text-right"><label>Ngày ban hành:</label></div>
                 <div class="col">
-                    @*@Html.TextBox("SearchDate", null, new { type = "text", @class = "form-control", @id = "SearchDate" })
+                    @Html.TextBox("SearchDate", null, new { type = "text", @class = "form-control", @id = "SearchDate", @placeholder = "dd/mm/yyyy" })
                     @section Scripts {
                         <script type="text/javascript">
                             $('#SearchDate').datepicker({
                                 format: 'dd/mm/yyyy',
                                 uiLibrary: 'bootstrap4',
+                                keyboardNavigation: true,
                                 showOnFocus: true,
                                 showRightIcon: false
                             })
                         </script>
-                    }*@
-                    @Html.TextBox("SearchDate",null, new { type="date", @class="form-control" })
+                    }
+                    @*@Html.TextBox("SearchDate",null, new { type="date", @class="form-control" })*@
                 </div>
                 <div class="col text-right"><label>Trạng thái:</label></div>
                 <div class="col">

@@ -1,11 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    var returnUrl = ViewData["ReturnUrl"] as string;
-    var error = TempData["Error"] as string;
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class=" -webkit-">
 <head>
     <meta charset="UTF-8">
@@ -22,8 +15,8 @@
     </div>
     <br>
     <div class="login">
-        <form action="/login" id="loginForm" method="post">
-            <input type="hidden" name="ReturnUrl" value="@returnUrl"/>
+        <form action="/Home/login" id="loginForm" method="post">
+            <input type="hidden" name="ReturnUrl" value=""/>
             <input id="Domain" name="Domain" type="hidden" value="bvta.vn" />
             <input type="text" id="UserName" name="UserName" placeholder="Tài khoản" required />
             <input type="password" id="Password" name="Password" required />

@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTools.Context;
 using WebTools.Services;
+using WebTools.Services.Interface;
 
 namespace WebTools
 {
@@ -60,6 +61,7 @@ namespace WebTools
             services.AddScoped<IReportSoftServices, ReportSoftServices>();
             services.AddScoped<IReportDetailServices, ReportDetailServices>();
             services.AddScoped<IReportURDServices, ReportURDServices>();
+            services.AddScoped<IDepts, DeptsServices>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));
             //Add GleamTech to the ASP.NET Core services container.
             //----------------------
