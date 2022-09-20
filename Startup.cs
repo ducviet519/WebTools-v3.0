@@ -30,10 +30,11 @@ namespace WebTools
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
-                    options.LoginPath = "/login";
-                    options.AccessDeniedPath = "/denied";
+                    options.LoginPath = "/User/Login";
+                    options.AccessDeniedPath = "/User/Denied";
                     options.Events = new CookieAuthenticationEvents()
                     {
                         OnSigningIn = async context =>

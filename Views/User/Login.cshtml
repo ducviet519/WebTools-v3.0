@@ -1,0 +1,33 @@
+﻿@{ 
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    var error = TempData["Error"] as string;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Đăng nhập hệ thống</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <script type="text/javascript" src="/js/prefixfree.min.js"></script>
+</head>
+<body style="">
+    <div class="body"></div>
+    <div class="grad"></div>
+    <div class="header">
+        <img src="/logo_300x300.png" width="250">
+    </div>
+    <br>
+    <div class="login">
+        <form action="/User/Login" id="loginForm" method="post">
+            <input type="hidden" name="ReturnUrl" value="@returnUrl" />
+            <input id="Domain" name="Domain" type="hidden" value="bvta.vn" />
+            <input type="text" id="UserName" name="UserName" placeholder="Tài khoản" required />
+            <input type="password" id="Password" name="Password" required />
+            <label id="mess" class="clearfix" style="display: block; line-height: 20px; margin-top: 5px;">@error</label>
+            <input type="submit" value="Đăng nhập" />
+        </form>
+    </div>
+</body>
+</html>

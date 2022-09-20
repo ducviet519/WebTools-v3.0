@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,7 +43,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="/Home/Logout">Logout @User.Identity.Name </a>
+                            <partial name="_LoginStatusPartial" />
                         </li>
                     </ul>
                 </div>
@@ -48,14 +51,14 @@
             </nav>
         </div>
     }
-        <div class="container-fluid body-content">
-            @RenderBody()
-        </div>
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
 
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        @await RenderSectionAsync("Scripts", required: false)
-    </body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
 </html>

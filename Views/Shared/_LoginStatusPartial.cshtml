@@ -1,0 +1,12 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a href="/User/Logout">Wellcome @User.Identity.Name </a>
+}
+else
+{
+    <a href="/User/Login">Đăng nhập</a>
+}

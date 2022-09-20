@@ -1,23 +1,20 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using WebTools.Context;
 using WebTools.Models;
-using WebTools.Models.Entity;
 using WebTools.Services;
 using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly IConfiguration _configuration;
