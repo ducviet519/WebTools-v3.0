@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using GleamTech.DocumentUltimate.AspNet.UI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -279,10 +280,18 @@ namespace WebTools.Controllers
         //
         public IActionResult DocumentView(string link)
         {
-            DocumentViewModel model = new DocumentViewModel();
-            model.FileLink = $@"{link}";
+            //DocumentViewModel model = new DocumentViewModel();
+            //model.FileLink = $@"{link}";
+            var documentLink = $@"{link}";
+            var documentViewer = new DocumentViewer
+            {
+                Width = 1000,
+                Height = 600,
+                Resizable = false,
+                Document = documentLink
+            };
 
-            return PartialView("_DocumentView", model);
+            return PartialView("_DocumentView", documentViewer);
         }
     }
 }
