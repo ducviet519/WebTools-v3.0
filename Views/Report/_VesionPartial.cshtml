@@ -84,7 +84,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
             </div>
         </div>
     </div>
@@ -92,6 +92,14 @@
 <script type="text/javascript">
     $(function () {
         $(this).on('click', '[data-save="modalFile"]', function (event) {
+            if ($("#myForm").valid()) { //check if form is valid using model annotation
+                $('#myForm').submit();
+            }
+            else {
+                return false;
+            }
+        });
+        $("#myForm").on("submit", function (event) {
             event.preventDefault();
             var actionUrl = $("#myForm").attr('action');
             var methodType = $("#myForm").attr('method');
@@ -143,10 +151,5 @@
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2()
-
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
     })
 </script>

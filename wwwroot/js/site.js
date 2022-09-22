@@ -3,43 +3,11 @@
 
 // Write your JavaScript code.
 
-//PopUp cho <a>
 $(function () {
-    var ReportPopupElement = $('#ReportPopup');
-    $('a[data-toggle="ajax-modal"]').click(function (event) {
-        var url = $(this).data('url');
-        $.get(url).done(function (data) {
-            ReportPopupElement.html(data);
-            ReportPopupElement.find('.modal').modal('show');
-        });
-    });
+    //Initialize Select2 Elements
+    $('.select2').select2()
 
-    ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
-        event.preventDefault();
-        var form = $(this).parents('.modal').find('form');
-        var actionUrl = form.attr('action');
-        var methodType = form.attr('method');
-
-        console.log(form.serialize());
-        $.ajax({
-            type: methodType,
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                alert("Thành công!");
-            },
-            error: function (xhr, desc, err) {
-                alert("Lỗi!");
-            }
-        }).done(function (data) {
-            ReportPopupElement.find('.modal').modal('hide');
-            location.reload();
-        })
-    });
-
-
-});
-
+})
 //Table
 $(function () {
     $('#tableReport').DataTable({
@@ -69,12 +37,48 @@ $(function () {
     bsCustomFileInput.init();
 });
 
+//PopUp cho <a>
 $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
+    var ReportPopupElement = $('#ReportPopup');
+    $('a[data-toggle="ajax-modal"]').click(function (event) {
+        var url = $(this).data('url');
+        $.get(url).done(function (data) {
+            ReportPopupElement.html(data);
+            ReportPopupElement.find('.modal').modal('show');
+        });
+    });
 
-    //Initialize Select2 Elements
-    $('.select2bs4').select2({
-        theme: 'bootstrap4'
-    })
-})
+    ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
+
+        if ($("#myForm").valid()) { //check if form is valid using model annotation
+            $('#myForm').submit();
+        }
+        else {
+            return false;
+        }
+    });
+    $("#myForm").on("submit", function (event) {
+        event.preventDefault();
+        var form = $(this).parents('.modal').find('form');
+        var actionUrl = form.attr('action');
+        var methodType = form.attr('method');
+
+        console.log(form.serialize());
+        $.ajax({
+            type: methodType,
+            url: actionUrl,
+            data: form.serialize(),
+            success: function (data) {
+                alert("Thành công!");
+            },
+            error: function (xhr, desc, err) {
+                alert("Lỗi!");
+            }
+        }).done(function (data) {
+            ReportPopupElement.find('.modal').modal('hide');
+            location.reload();
+        })
+    });
+
+
+});

@@ -19,15 +19,15 @@
 
                     <div class="row mb-3">
                         <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
-                        <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu" required/></div>
+                        <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu" required /></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
-                        <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" required/></div>
+                        <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" required /></div>
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
                             <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask  required/>
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required />
                                 <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -40,7 +40,7 @@
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input fileUpload" id="fileUpload" name="fileUpload" />
                                 <label class="custom-file-label" for="customFile">Choose file</label>
-                            </div>                           
+                            </div>
                         </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
                         <div class="col-2"><input type="text" class="form-control" id="PhienBan" name="PhienBan" /></div>
@@ -52,8 +52,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-9">
-                            <select class="form-control select2" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong">
-                            </select>
+                            <select class="form-control select2" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong"></select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -71,7 +70,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
             </div>
         </div>
     </div>
@@ -79,6 +78,15 @@
 <script type="text/javascript">
     $(function () {
         $(this).on('click', '[data-save="modalFile"]', function (event) {
+
+            if ($("#myForm").valid()) { //check if form is valid using model annotation
+                $('#myForm').submit();
+            }
+            else {
+                return false;
+            }
+        });
+        $("#myForm").on("submit", function (event) {
             event.preventDefault();
             var actionUrl = $("#myForm").attr('action');
             var methodType = $("#myForm").attr('method');
@@ -133,12 +141,6 @@
     });
 
     $(function () {
-        //Initialize Select2 Elements
         $('.select2').select2()
-
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
     })
 </script>

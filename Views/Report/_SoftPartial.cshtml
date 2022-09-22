@@ -31,7 +31,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft" id="SoftForm" modelAttribute="@Model.ReportSofts">
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddSoft" id="myForm" modelAttribute="@Model.ReportSofts">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportSoft.IDBieuMau" />
                     <div class="row mb-3">
@@ -121,7 +121,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-save="modal">Lưu</button>
+                <button type="submit" class="btn btn-primary" data-save="modal">Lưu</button>
             </div>
         </div>
     </div>
