@@ -62,7 +62,19 @@ $(function () {
     $('#reservationdate').datetimepicker({
         format: 'DD/MM/YYYY'
     });
-
-    //Dropdown List
-    $('.select2').select2()
 });
+
+//File upload show name file
+$(function () {
+    bsCustomFileInput.init();
+});
+
+$(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    })
+})
