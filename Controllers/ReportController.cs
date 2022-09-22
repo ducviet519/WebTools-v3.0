@@ -52,36 +52,19 @@ namespace WebTools.Controllers
 
         public IActionResult Index
             (
-            string sortField,
-            string currentSortField,
-            string currentSortOrder,
             string SearchString,
             string SearchTrangThaiSD,
             string SearchTrangThaiPM,
-            string SearchDate,
-            //DateTime? SearchDate,
-            string currentFilter,
-            int? pageNo
+            string SearchDate
             )
         {
             ReportListViewModel model = new ReportListViewModel();
             List<ReportList> data = _reportListServices.GetReportList().ToList();
 
-            if (SearchString != null)
-            {
-                pageNo = 1;
-            }
-            else
-            {
-                SearchString = currentFilter;
-            }
-            ViewData["CurrentSort"] = sortField;
-            ViewBag.CurrentFilter = SearchString;
-
             //Tìm kếm
             if (!String.IsNullOrEmpty(SearchString))
             {
-               data = data.Where(s => s.TenBM!=null && s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM!=null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
+               data = data.Where(s => s.TenBM!=null && s.TenBM.ToUpper().Contains(SearchString.ToUpper()) || s.MaBM!=null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
             }
             if (!String.IsNullOrEmpty(SearchTrangThaiSD))
             {
@@ -93,48 +76,12 @@ namespace WebTools.Controllers
             }
             if (!String.IsNullOrEmpty(SearchDate))
             {
-                data = data.Where(s => s.NgayBanHanh.ToString("dd/MM/yyyy").Contains(SearchDate.ToString())).ToList();
-            }           
+                data = data.Where(s => s.NgayBanHanh != null && s.NgayBanHanh.Contains(SearchDate.ToString())).ToList();
+            }
 
-            var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
-            int pageSize = 10;
-            model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
+            model.ReportLists = data;
             return View(model);
         }
-
-        //Sắp xếp
-        private List<ReportList> SortData(List<ReportList> model, string sortField, string currentSortField, string currentSortOrder)
-        {
-            if (string.IsNullOrEmpty(sortField))
-            {
-                ViewBag.SortField = "STT";
-                ViewBag.SortOrder = "Asc";
-            }
-            else
-            {
-                if (currentSortField.ToLower() == sortField.ToLower())
-                {
-                    ViewBag.SortOrder = currentSortOrder == "Asc" ? "Desc" : "Asc";
-                }
-                else
-                {
-                    ViewBag.SortOrder = "Asc";
-                }
-                ViewBag.SortField = sortField;
-            }
-
-            var propertyInfo = typeof(ReportList).GetProperty(ViewBag.SortField);
-            if (ViewBag.SortOrder == "Asc")
-            {
-                model = model.OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
-            }
-            else
-            {
-                model = model.OrderByDescending(s => propertyInfo.GetValue(s, null)).ToList();
-            }
-            return model;
-        }
-
 
         //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
         [HttpGet]
@@ -149,23 +96,23 @@ namespace WebTools.Controllers
          public IActionResult AddReport(ReportList reportList)
         {
             reportList.CreatedUser = "1";
-
-            //if (ModelState.IsValid)
-            //{
-                if (reportList.fileUpload != null)
+            if (reportList.fileUpload != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                string filePath = Path.Combine(uploadsFolder, reportList.fileUpload.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                    string filePath = Path.Combine(uploadsFolder, reportList.fileUpload.FileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        reportList.fileUpload.CopyTo(fileStream);
-                    }
-                    reportList.FileLink = filePath;
+                    reportList.fileUpload.CopyTo(fileStream);
+                }
+                reportList.FileLink = filePath;
                 _reportListServices.InsertReportList(reportList);
                 return RedirectToAction("Index");
-                }
-            //}
-            return RedirectToAction("Index");
+            }
+            else
+            {
+                _reportListServices.InsertReportList(reportList);
+                return RedirectToAction("Index");
+            }               
         }
 
         //4. Tạo chức năng hiển thị phiên bản
@@ -195,10 +142,15 @@ namespace WebTools.Controllers
                     {
                         reportVersion.fileUpload.CopyTo(fileStream);
                     }
-                    reportVersion.FileLink = filePath;                                     
+                    reportVersion.FileLink = filePath;
+                    _reportVersionServices.InsertReportVersion(reportVersion);
+                    return RedirectToAction("Index");
                 }
-                _reportVersionServices.InsertReportVersion(reportVersion);
-                return RedirectToAction("Index");
+                else
+                {
+                    _reportVersionServices.InsertReportVersion(reportVersion);
+                    return RedirectToAction("Index");
+                }
             }
             return RedirectToAction("Index");
         }

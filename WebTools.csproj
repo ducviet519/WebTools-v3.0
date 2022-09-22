@@ -4,6 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Catel.Core" Version="5.12.22" />
     <PackageReference Include="Dapper" Version="2.0.123" />
@@ -28,6 +34,69 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Upload\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\datatables-bs4\js\dataTables.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables-bs4\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.colVis.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.colVis.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.flash.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.flash.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.html5.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.html5.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.print.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\buttons.print.min.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\dataTables.buttons.js" />
+    <None Include="wwwroot\lib\datatables-buttons\js\dataTables.buttons.min.js" />
+    <None Include="wwwroot\lib\datatables-responsive\js\dataTables.responsive.js" />
+    <None Include="wwwroot\lib\datatables-responsive\js\dataTables.responsive.min.js" />
+    <None Include="wwwroot\lib\datatables-responsive\js\responsive.bootstrap4.js" />
+    <None Include="wwwroot\lib\datatables-responsive\js\responsive.bootstrap4.min.js" />
+    <None Include="wwwroot\lib\datatables\jquery.dataTables.js" />
+    <None Include="wwwroot\lib\datatables\jquery.dataTables.min.js" />
+    <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\jquery\jquery.js" />
+    <None Include="wwwroot\lib\jquery\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\jquery.min.map" />
+    <None Include="wwwroot\lib\jquery\jquery.slim.js" />
+    <None Include="wwwroot\lib\jquery\jquery.slim.min.js" />
+    <None Include="wwwroot\lib\jquery\jquery.slim.min.map" />
+    <None Include="wwwroot\lib\jszip\jszip.js" />
+    <None Include="wwwroot\lib\jszip\jszip.min.js" />
+    <None Include="wwwroot\lib\pdfmake\pdfmake.js" />
+    <None Include="wwwroot\lib\pdfmake\pdfmake.js.map" />
+    <None Include="wwwroot\lib\pdfmake\pdfmake.min.js" />
+    <None Include="wwwroot\lib\pdfmake\pdfmake.min.js.map" />
+    <None Include="wwwroot\lib\pdfmake\vfs_fonts.js" />
   </ItemGroup>
 
 </Project>

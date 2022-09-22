@@ -68,7 +68,11 @@ namespace WebTools.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
-            if (!ModelState.IsValid) return View(login);
+            if (!ModelState.IsValid) 
+            {
+                TempData["Error"] = "Lỗi! Tài khoản hoặc mật khẩu không được bỏ trống";
+                return View(login);
+            }
 
             string domain = string.Empty;
             var isAuthorized = false;
@@ -118,6 +122,7 @@ namespace WebTools.Controllers
             }
             catch(Exception ex)
             {
+                TempData["Error"] = "Lỗi! Tài khoản hoặc Mật khẩu không chính xác";
                 return View();
             }
         }

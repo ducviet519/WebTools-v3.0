@@ -54,17 +54,22 @@ namespace WebTools.Services
         public string InsertReportList(ReportList reportList)
         {
             string result = "";
+            DateTime? NgayBanHanh = null;
+            if (!String.IsNullOrEmpty(reportList.NgayBanHanh))
+            {
+                NgayBanHanh = DateTime.ParseExact(reportList.NgayBanHanh, "dd/MM/yyyy", null);
+            }
             try
             {
                 using (IDbConnection dbConnection = Connection)
-                {
+                {                  
                     dbConnection.Open();
                     var data = dbConnection.Query<ReportList>("sp_Report_New",
-                        new 
+                        new
                         {
                             TenBM = reportList.TenBM,
                             MaBM = reportList.MaBM,
-                            NgayBH = reportList.NgayBanHanh,
+                            NgayBH = NgayBanHanh,
                             FileLink = reportList.FileLink,
                             GhiChu = reportList.GhiChu,
                             KhoaPhongSD = reportList.KhoaPhong,
@@ -73,11 +78,11 @@ namespace WebTools.Services
                             User = reportList.CreatedUser
                         },
                         commandType: CommandType.StoredProcedure);
-                    if( data != null)
+                    if (data != null)
                     {
                         result = "OK";
                     }
-                    dbConnection.Close();                   
+                    dbConnection.Close();
                 }
                 return result;
             }

@@ -53,6 +53,11 @@ namespace WebTools.Services
         public string InsertReportVersion(ReportVersion reportVersion)
         {
             string result = "";
+            DateTime? NgayBanHanh = null;
+            if (!String.IsNullOrEmpty(reportVersion.NgayBanHanh))
+            {
+                NgayBanHanh = DateTime.ParseExact(reportVersion.NgayBanHanh, "dd/MM/yyyy", null);
+            }
             try
             {
                 using (IDbConnection dbConnection = Connection)
@@ -63,7 +68,7 @@ namespace WebTools.Services
                         new
                         {
                             IDBieuMau = reportVersion.IDBieuMau,
-                            NgayBH = reportVersion.NgayBanHanh,
+                            NgayBH = NgayBanHanh,
                             FileLink = reportVersion.FileLink,
                             GhiChu = reportVersion.GhiChu,
                             PhienBan = reportVersion.PhienBan,

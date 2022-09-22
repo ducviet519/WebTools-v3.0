@@ -62,10 +62,41 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+#background-page {
+    background: url(../WPP.jpg) no-repeat center center fixed;
+    background-size: cover;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+.nav-item:hover {
+    background-color: rgba(16,45,166,.8);
+    align-items: center;
+}
+.navbar {
+    background-color: #3882b6;
+    padding: 0 0;
+}
+.main-header .nav-link{
+    height: none;
+    padding: 8px;
+}
+.nav-link {
+    margin: 6px;
+}
+.navbar-brand {
+    background-color: rgba(16,45,166,.8);
+    border:0;
+    padding:8px 16px;
+    margin:0;
+}
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }

@@ -4,9 +4,9 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <a href="/User/Logout">Wellcome @User.Identity.Name </a>
+    <a class="nav-link" href="/User/Logout">@User.Identity.Name (logout)</a>
 }
 else
 {
-    <a href="/User/Login">Đăng nhập</a>
+    <a class="nav-link" href="/User/Login">Đăng nhập</a>
 }

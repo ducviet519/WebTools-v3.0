@@ -36,11 +36,11 @@
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportSoft.IDBieuMau" />
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Tên biểu mẫu:</label></div>
-                        <div class="col-10">@Model.ReportSoft.TenBM</div>
+                        <div class="col-10"><span style="color:dodgerblue; font-weight:bold;">@Model.ReportSoft.TenBM</span></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
-                        <div class="col-6">@Model.ReportSoft.MaBM</div>
+                        <div class="col-6"><span style="color:dodgerblue; font-weight:bold;">@Model.ReportSoft.MaBM</span></div>
                         <div class="col-2 text-right"><label for="PhanMem">Phần mềm:</label></div>
                         <div class="col-2">
                             <select asp-for="ReportSoft.PhanMem" asp-items="@Html.GetEnumSelectList<PhanMem>()" class="form-control" id="PhanMem" name="PhanMem">
@@ -69,7 +69,7 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Cách in:</label></div>
                         <div class="col-10">
-                            <textarea class="form-control" id="CachIn" Name="CachIn">@Model.ReportSoft.CachIn</textarea>
+                            <textarea class="form-control" id="CachIn" Name="CachIn" rows="4">@Model.ReportSoft.CachIn</textarea>
                         </div>
                     </div>
                     <!--Bảng -->

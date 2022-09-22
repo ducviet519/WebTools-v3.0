@@ -47,7 +47,7 @@ namespace WebTools.Models
         [StringLength(100)]
         public string URD { get; set; }
 
-        public DateTime NgayBanHanh { get; set; }
+        public string NgayBanHanh { get; set; }
 
 
         //GET

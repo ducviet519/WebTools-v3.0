@@ -14,7 +14,7 @@ namespace WebTools.Models
         public string IDPhienBan { get; set; }
 
         [Display(Name = "Ngày ban hành")]
-        public DateTime NgayBanHanh { get; set; }
+        public string NgayBanHanh { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
