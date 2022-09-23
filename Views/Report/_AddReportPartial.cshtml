@@ -52,7 +52,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-9">
-                            <select class="form-control select2" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong"></select>
+                            <select class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong"></select>
                         </div>
                     </div>
                     <div class="row mb-3">
