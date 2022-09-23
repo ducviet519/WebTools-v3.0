@@ -73,7 +73,7 @@ body {
     width: 100%;
 }
 .nav-item:hover {
-    background-color: rgba(16,45,166,.8);
+    background-color: #3882b6;
     align-items: center;
 }
 .navbar {
@@ -88,10 +88,22 @@ body {
     margin: 6px;
 }
 .navbar-brand {
-    background-color: rgba(16,45,166,.8);
-    border:0;
-    padding:8px 16px;
-    margin:0;
+    background-color: #3882b6;
+    border: 0;
+    padding: 8px 16px;
+    margin: 0;
+}
+.dropdown-menu {
+    background-color: #3882b6;
+    padding: 0;
+    margin: 0;
+    border-radius:0;
+}
+.dropdown-menu:hover {
+    background-color: #3882b6;
+}
+.dropdown-item{
+    padding: 10px 16px;
 }
 .footer {
     position: absolute;

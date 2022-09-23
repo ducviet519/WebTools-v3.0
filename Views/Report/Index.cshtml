@@ -15,8 +15,8 @@
     </div><!-- /.container-fluid -->
 </section>
 <section class="content">
+    <div id="ReportPopup"></div>
     <div class="container-fluid">
-        <div id="ReportPopup"></div>
         <div class="row">
             <div class="col-md-6">
                 @{
@@ -91,7 +91,8 @@
                                     <th>Trạng thái</th>
                                     <th>Phần mềm</th>
                                     <th>Trạng thái phần mềm</th>
-                                    <th colspan="2"></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -111,13 +112,13 @@
                                                 <td>@item.PhanMem</td>
                                                 <td>@item.TrangThaiPM</td>
                                                 @if (item.FileLink != null)
-                                                    {
-                                                        <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td></td>
-                                                    }
+                                                {
+                                                    <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
                                                 <td>
                                                     <div class="dropdown">
                                                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

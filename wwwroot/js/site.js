@@ -16,10 +16,6 @@ $(function () {
     });
 });
 
-//File upload show name file
-$(function () {
-    bsCustomFileInput.init();
-});
 
 //PopUp cho <a>
 $(function () {
@@ -63,7 +59,9 @@ $(function () {
             location.reload();
         })
     });
+});
 
+$(function () {
     //Initialize Select2 Elements
     $('.select2').select2()
 
@@ -74,5 +72,9 @@ $(function () {
     //Date picker
     $('#reservationdate').datetimepicker({
         format: 'DD/MM/YYYY'
-    });
+    })
+
+    //File upload show name file
+    bsCustomFileInput.init()
 });
+

@@ -57,7 +57,11 @@
                                             <td>@item.NgayBanHanh</td>
                                             <td>@item.TrangThai</td>
                                             <td>@item.GhiChu</td>
-                                            <td><a href="#/@item.FileLink"></a>File</td>
+                                            @if (item.FileLink != null)
+                                                {
+                                                    <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                                }
+                                            else {<td></td> }
                                         </tr>
                                     }
                                 }

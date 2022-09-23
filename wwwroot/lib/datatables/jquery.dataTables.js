@@ -11410,13 +11410,13 @@
 				 *      $('#example').dataTable( {
 				 *        "language": {
 				 *          "paginate": {
-				 *            "first": "Trang đầu"
+				 *            "first": "First page"
 				 *          }
 				 *        }
 				 *      } );
 				 *    } );
 				 */
-				"sFirst": "Đầu",
+				"sFirst": "First",
 	
 	
 				/**
@@ -11433,13 +11433,13 @@
 				 *      $('#example').dataTable( {
 				 *        "language": {
 				 *          "paginate": {
-				 *            "last": "Trang cuối"
+				 *            "last": "Last page"
 				 *          }
 				 *        }
 				 *      } );
 				 *    } );
 				 */
-				"sLast": "Cuối",
+				"sLast": "Last",
 	
 	
 				/**
@@ -11456,13 +11456,13 @@
 				 *      $('#example').dataTable( {
 				 *        "language": {
 				 *          "paginate": {
-				 *            "next": "Trang sau"
+				 *            "next": "Next page"
 				 *          }
 				 *        }
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Sau",
+				"sNext": "Next",
 	
 	
 				/**
@@ -11479,13 +11479,13 @@
 				 *      $('#example').dataTable( {
 				 *        "language": {
 				 *          "paginate": {
-				 *            "previous": "Trang trước"
+				 *            "previous": "Previous page"
 				 *          }
 				 *        }
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Trước"
+				"sPrevious": "Previous"
 			},
 	
 			/**
@@ -11503,12 +11503,12 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "emptyTable": "Không có dữ liệu để hiển thị"
+			 *          "emptyTable": "No data available in table"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "Không có dữ liệu để hiển thị",
+			"sEmptyTable": "No data available in table",
 	
 	
 			/**
@@ -11535,12 +11535,12 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "info": "Đang xem trang _PAGE_ trong tổng số _PAGES_ trang"
+			 *          "info": "Showing page _PAGE_ of _PAGES_"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
 	
 	
 			/**
@@ -11556,12 +11556,12 @@
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "infoEmpty": "Không có mục nào để hiển thị"
+			 *          "infoEmpty": "No entries to show"
 			 *        }
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
 	
 	
 			/**
