@@ -29,15 +29,6 @@ $(function () {
     });
 
     ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
-
-        if ($("#myForm").valid()) { //check if form is valid using model annotation
-            $('#myForm').submit();
-        }
-        else {
-            return false;
-        }
-    });
-    $("#myForm").on("submit", function (event) {
         event.preventDefault();
         var form = $(this).parents('.modal').find('form');
         var actionUrl = form.attr('action');

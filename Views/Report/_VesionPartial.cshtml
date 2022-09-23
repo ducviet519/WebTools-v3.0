@@ -95,15 +95,7 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        $(this).on('click', '[data-save="modalFile"]', function (event) {
-            if ($("#myForm").valid()) { //check if form is valid using model annotation
-                $('#myForm').submit();
-            }
-            else {
-                return false;
-            }
-        });
-        $("#myForm").on("submit", function (event) {
+        $(this).on('click', '[data-save="modalFile"]', function (event) {           
             event.preventDefault();
             var actionUrl = $("#myForm").attr('action');
             var methodType = $("#myForm").attr('method');
