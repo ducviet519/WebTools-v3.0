@@ -97,6 +97,7 @@ namespace WebTools.Controllers
             }
 
             var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
+            model.ReportLists = data;
             int pageSize = 10;
             model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
             return View(model);

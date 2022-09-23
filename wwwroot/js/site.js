@@ -3,25 +3,32 @@
 
 // Write your JavaScript code.
 //Table
-//$(function () {
-//    $('#tableReport').DataTable({
-//        "paging": true,
-//        "lengthChange": false,
-//        "searching": false,
-//        "ordering": true,
-//        "info": true,
-//        "autoWidth": false,
-//        "responsive": true,
-//    });
-//});
+$(function () {
+    $('#tableReport').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+    });
+});
 
 //PopUp cho <a>
-$(function () {
+$(document).ready(function () {
 
     var ReportPopupElement = $('#ReportPopup');
 
+    $('button[data-toggle="ajax-modal"]').click(function (event) {
+        var url = $(this).data('url');
+        $.get(url).done(function (data) {
+            ReportPopupElement.html(data);
+            ReportPopupElement.find('.modal').modal('show');
+        });
+    });
 
-    $('a[data-toggle="ajax-modal"]').click(function (event) {
+    $('body').on('click','a[data-toggle="ajax-modal"]',function (event) {
         var url = $(this).data('url');
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);

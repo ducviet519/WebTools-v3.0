@@ -71,7 +71,7 @@
                                     }, "Tất cả", new { @class = "form-control" })
                                 </div>
                                 <div class="col-md-1"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
-                                <div class="col-md-1"><a class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</a></div>
+                                <div class="col-md-1"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
                             </div>
                         }
                     </div>
@@ -84,23 +84,23 @@
                                     <table class="table table-bordered dataTable dtr-inline" role="grid" id="tableReport">
                                         <thead>
                                             <tr>
-                                                <th>@Html.ActionLink("STT", "Index", new { sortField = "STT", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter }) </th>
-                                                <th>@Html.ActionLink("Tên biểu mẫu", "Index", new { sortField = "TenBM", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Mã biểu mẫu", "Index", new { sortField = "MaBM", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Thể loại", "Index", new { sortField = "TheLoai", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Phiên bản", "Index", new { sortField = "PhienBan", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Ngày phát hành", "Index", new { sortField = "NgayBanHanh", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Trạng thái", "Index", new { sortField = "TrangThai", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Phần mềm", "Index", new { sortField = "PhanMem", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                                                <th>@Html.ActionLink("Trạng thái phần mềm", "Index", new { sortField = "TrangThaiPM", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })</th>
+                                                <th>STT</th>
+                                                <th>Tên biểu mẫu</th>
+                                                <th>Mã biểu mẫu</th>
+                                                <th>Thể loại</th>
+                                                <th>Phiên bản</th>
+                                                <th>Ngày phát hành</th>
+                                                <th>Trạng thái</th>
+                                                <th>Phần mềm</th>
+                                                <th>Trạng thái phần mềm</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @{
-                                                if (Model.PagingLists != null && Model.PagingLists.Count > 0)
+                                                if (Model.ReportLists != null && Model.ReportLists.Count > 0)
                                                 {
-                                                    foreach (var item in Model.PagingLists)
+                                                    foreach (var item in Model.ReportLists)
                                                     {
                                                         <tr>
                                                             <td>@item.STT</td>
@@ -112,7 +112,7 @@
                                                             <td>@item.TrangThai</td>
                                                             <td>@item.PhanMem</td>
                                                             <td>@item.TrangThaiPM</td>
-                                                            <td>
+                                                            <td>                                                              
                                                                 <div class="btn-group">
                                                                     @if (item.FileLink != null)
                                                                     {
@@ -126,11 +126,10 @@
                                                                         Chi tiết
                                                                     </button>
                                                                     <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item ajax-modal" data-toggle="ajax-modal" data-target="#reportVersion" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
-                                                                        <a class="dropdown-item ajax-modal" data-toggle="ajax-modal" data-target="#reportSoft" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
-                                                                        <a class="dropdown-item ajax-modal" data-toggle="ajax-modal" data-target="#reportDetail" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
+                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
+                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
+                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
                                                                     </div>
-                                                                    <div id="ReportPopup"></div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -139,38 +138,7 @@
                                             }
                                         </tbody>
                                     </table>
-                                    <!-- Phân trang và đánh số trang-->
-                                    @{
-                                        var prevDisabled = !Model.PagingLists.HasPreviousPage ? "disabled" : "";
-                                        var nextDisabled = !Model.PagingLists.HasNextPage ? "disabled" : "";
-                                        var totalPageNo = Model.PagingLists.TotalPageNo;
-                                        var currentPageNo = Model.PagingLists.PageIndex;
-                                    }
-                                    <div class="row">
-                                        <a asp-action="Index"
-                                           asp-route-sortOrder="@ViewData["CurrentSort"]"
-                                           asp-route-pageNo="@(Model.PagingLists.PageIndex - 1)"
-                                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                           class="btn btn-default @prevDisabled">
-                                            Trang trước
-                                        </a>
-                                        @*@for (int p = 1; p <= Model.PagingLists.TotalPageNo; p++ )
-                                        {
-                                           <a asp-action="Index"
-                                           asp-route-sortOrder="@ViewData["CurrentSort"]"
-                                           asp-route-pageNo="@p"
-                                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                           class="btn btn-default">@p</a>
-                                        }*@
-                                        <a asp-action="Index"
-                                           asp-route-sortOrder="@ViewData["CurrentSort"]"
-                                           asp-route-pageNo="@(Model.PagingLists.PageIndex + 1)"
-                                           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-                                           class="btn btn-default @nextDisabled">
-                                            Trang sau
-                                        </a>
-                                        <div class="col text-right"><span>Trang: @currentPageNo trên @totalPageNo</span></div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -179,7 +147,9 @@
             </div>
         </div>
     </div>
+    <div id="ReportPopup"></div>
 </section>
+
 
 
 
