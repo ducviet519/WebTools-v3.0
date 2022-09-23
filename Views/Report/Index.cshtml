@@ -15,9 +15,8 @@
     </div><!-- /.container-fluid -->
 </section>
 <section class="content">
-    <div id="ReportPopup"></div>
-
     <div class="container-fluid">
+        <div id="ReportPopup"></div>
         <div class="row">
             <div class="col-md-6">
                 @{
@@ -40,100 +39,109 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                    <!--Tìm kiếm -->
-                    @using (Html.BeginForm())
-                    {
-                        <div class="row">
-                            <div class="col-md">
-                                <label>Tên/Mã biểu mẫu:</label>
-                                <input type="text" class="form-control" name="SearchString" id="SearchString" autocomplete="off" />
-                            </div>
-                            <div class="col-md-2">
-                                <label>Ngày ban hành:</label>
-                                <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                    <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" />
-                                    <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        <!--Tìm kiếm -->
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md">
+                                    <label>Tên/Mã biểu mẫu:</label>
+                                    <input type="text" class="form-control" name="SearchString" id="SearchString" autocomplete="off" />
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Ngày ban hành:</label>
+                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                        <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" />
+                                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <label>Trạng thái:</label>
+                                    @Html.DropDownList("SearchTrangThaiSD", new List<SelectListItem>
+                                    {   new SelectListItem{Text="Đang sử dụng", Value="Đang sử dụng"},
+                                        new SelectListItem{Text="Chưa ban hành", Value="Chưa ban hành"},
+                                        new SelectListItem{Text="Đã hủy", Value="Đã hủy"}
+                                    }, "Tất cả", new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Trạng thái phần mềm:</label>
+                                    @Html.DropDownList("SearchTrangThaiPM", new List<SelectListItem>
+                                    {   new SelectListItem{Text="Đã hoàn thành", Value="Đã hoàn thành"},
+                                        new SelectListItem{Text="Chưa hoàn thành", Value="Chưa hoà"},
+                                        new SelectListItem{Text="Chưa có", Value="Chưa có"}
+                                    }, "Tất cả", new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-1"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
+                                <div class="col-md-1"><a class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</a></div>
                             </div>
-                            <div class="col-md-2">
-                                <label>Trạng thái:</label>
-                                @Html.DropDownList("SearchTrangThaiSD", new List<SelectListItem>
-                                {   new SelectListItem{Text="Đang sử dụng", Value="Đang sử dụng"},
-                                    new SelectListItem{Text="Chưa ban hành", Value="Chưa ban hành"},
-                                    new SelectListItem{Text="Đã hủy", Value="Đã hủy"}
-                                }, "Tất cả", new { @class = "form-control" })
-                            </div>
-                            <div class="col-md-2">
-                                <label>Trạng thái phần mềm:</label>
-                                @Html.DropDownList("SearchTrangThaiPM", new List<SelectListItem>
-                                {   new SelectListItem{Text="Đã hoàn thành", Value="Đã hoàn thành"},
-                                    new SelectListItem{Text="Chưa hoàn thành", Value="Chưa hoà"},
-                                    new SelectListItem{Text="Chưa có", Value="Chưa có"}
-                                }, "Tất cả", new { @class = "form-control" })
-                            </div>
-                            <div class="col-md-1"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
-                            <div class="col-md-1"><a class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</a></div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
                     <div class="card-body">
-                    <!--Bảng biểu mẫu -->
-                    <table class="table table-bordered table-hover" id="tableReport">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên biểu mẫu</th>
-                                <th>Mã biểu mẫu</th>
-                                <th>Phiên bản</th>
-                                <th>Ngày phát hành</th>
-                                <th>Trạng thái</th>
-                                <th>Phần mềm</th>
-                                <th>Trạng thái phần mềm</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                if (Model.ReportLists != null && Model.ReportLists.Count > 0)
-                                {
-                                    foreach (var item in Model.ReportLists)
+                        <!--Bảng biểu mẫu -->
+                        <table class="table table-bordered table-hover" id="tableReport">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên biểu mẫu</th>
+                                    <th>Mã biểu mẫu</th>
+                                    <th>Thể loại</th>
+                                    <th>Phiên bản</th>
+                                    <th>Ngày phát hành</th>
+                                    <th>Trạng thái</th>
+                                    <th>Phần mềm</th>
+                                    <th>Trạng thái phần mềm</th>
+                                    <th colspan="2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Model.ReportLists != null && Model.ReportLists.Count > 0)
                                     {
-                                        <tr>
-                                            <td>@item.STT</td>
-                                            <td>@item.TenBM</td>
-                                            <td>@item.MaBM</td>
-                                            <td>@item.PhienBan</td>
-                                            <td>@item.NgayBanHanh</td>
-                                            <td>@item.TrangThai</td>
-                                            <td>@item.PhanMem</td>
-                                            <td>@item.TrangThaiPM</td>
-                                            <td>
-                                                <a href="/@item.FileLink"></a>
-                                                <div class="dropdown">
-                                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Chọn...
-                                                    </a>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
-                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
-                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
-                                                        @*style="@(item.PhienBan1 == 1? "visibility: visible" : "visibility: hidden")"*@
+                                        foreach (var item in Model.ReportLists)
+                                        {
+                                            <tr>
+                                                <td>@item.STT</td>
+                                                <td>@item.TenBM</td>
+                                                <td>@item.MaBM</td>
+                                                <td>@item.TheLoai</td>
+                                                <td>@item.PhienBan</td>
+                                                <td>@item.NgayBanHanh</td>
+                                                <td>@item.TrangThai</td>
+                                                <td>@item.PhanMem</td>
+                                                <td>@item.TrangThaiPM</td>
+                                                @if (item.FileLink != null)
+                                                    {
+                                                        <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Chọn...
+                                                        </a>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
+                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
+                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
+                                                            @*style="@(item.PhienBan1 == 1? "visibility: visible" : "visibility: hidden")"*@
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 }
-                            }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </section>
 
 

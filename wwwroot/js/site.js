@@ -3,11 +3,6 @@
 
 // Write your JavaScript code.
 
-$(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
-})
 //Table
 $(function () {
     $('#tableReport').DataTable({
@@ -18,17 +13,6 @@ $(function () {
         "info": true,
         "autoWidth": false,
         "responsive": true,
-    });
-});
-
-$(function () {
-    //Datemask dd/mm/yyyy
-    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-    $('[data-mask]').inputmask()
-
-    //Date picker
-    $('#reservationdate').datetimepicker({
-        format: 'DD/MM/YYYY'
     });
 });
 
@@ -80,5 +64,15 @@ $(function () {
         })
     });
 
+    //Initialize Select2 Elements
+    $('.select2').select2()
 
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    $('[data-mask]').inputmask()
+
+    //Date picker
+    $('#reservationdate').datetimepicker({
+        format: 'DD/MM/YYYY'
+    });
 });
