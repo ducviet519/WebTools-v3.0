@@ -141,7 +141,7 @@ namespace WebTools.Controllers
         public IActionResult AddReport()
         {
             ReportListViewModel model = new ReportListViewModel();
-            model.Depts = new SelectList(_depts.GetAll_Depts(), "Code", "KhoaP");
+            model.Depts = new SelectList(_depts.GetAll_Depts(), "STT", "KhoaP");
             return PartialView("_AddReportPartial", model);
         }
 
@@ -256,7 +256,7 @@ namespace WebTools.Controllers
             ReportDetailViewModel model = new ReportDetailViewModel();
             model.ReportDetail = _reportDetailServices.GetReportDetail(id).FirstOrDefault();
             model.ReportDetails = _reportDetailServices.GetReportDetail(id).ToList();
-            model.Depts = new SelectList(_depts.GetAll_Depts(),"Code","KhoaP");
+            model.Depts = new SelectList(_depts.GetAll_Depts(),"STT","KhoaP");
             return PartialView("_DetailPartial", model);
         }
 
