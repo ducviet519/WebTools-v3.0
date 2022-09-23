@@ -69,10 +69,6 @@
     <None Include="wwwroot\lib\datatables-buttons\js\buttons.print.min.js" />
     <None Include="wwwroot\lib\datatables-buttons\js\dataTables.buttons.js" />
     <None Include="wwwroot\lib\datatables-buttons\js\dataTables.buttons.min.js" />
-    <None Include="wwwroot\lib\datatables-responsive\js\dataTables.responsive.js" />
-    <None Include="wwwroot\lib\datatables-responsive\js\dataTables.responsive.min.js" />
-    <None Include="wwwroot\lib\datatables-responsive\js\responsive.bootstrap4.js" />
-    <None Include="wwwroot\lib\datatables-responsive\js\responsive.bootstrap4.min.js" />
     <None Include="wwwroot\lib\datatables\jquery.dataTables.js" />
     <None Include="wwwroot\lib\datatables\jquery.dataTables.min.js" />
     <None Include="wwwroot\lib\fontawesome-free\webfonts\fa-brands-400.svg" />
