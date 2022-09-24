@@ -26,9 +26,9 @@
                         <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" required /></div>
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
-                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required />
-                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group date" id="reportdate" data-target-input="nearest">
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required />
+                                <div class="input-group-append" data-target="#reportdate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                         <div class="col-4">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input fileUpload" id="fileUpload" name="fileUpload" />
-                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                <label class="custom-file-label" for="customFile">Chọn file</label>
                             </div>
                         </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
@@ -116,14 +116,15 @@
     });
 
     $(function () {
+        //Date picker
+        $('#reportdate').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
         //Datemask dd/mm/yyyy
         $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
         $('[data-mask]').inputmask()
 
-        //Date picker
-        $('#reservationdate').datetimepicker({
-            format: 'DD/MM/YYYY'
-        });
         //File upload show name file
         bsCustomFileInput.init();
 

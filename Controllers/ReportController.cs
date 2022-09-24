@@ -296,7 +296,7 @@ namespace WebTools.Controllers
             var documentLink = $@"{link}";
             var documentViewer = new DocumentViewer
             {
-                Width = 1000,
+                Width = 1200,
                 Height = 600,
                 Resizable = false,
                 Document = documentLink

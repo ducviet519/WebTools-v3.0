@@ -25,9 +25,9 @@
                         <div class="col"><span style="color:dodgerblue; font-weight:bold;">@Model.VersionList.MaBM</span></div>
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
-                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required value="@Model.VersionList.NgayBanHanhNew"/>
-                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group date" id="versiondate" data-target-input="nearest">
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#versiondate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required value="@Model.VersionList.NgayBanHanhNew"/>
+                                <div class="input-group-append" data-target="#versiondate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                         <div class="col-5">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input fileUpload" id="fileUpload" name="fileUpload" />
-                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                <label class="custom-file-label" for="customFile">Chọn file</label>
                             </div>
                         </div>
                         <div class="col text-right"><label for="PhienBanSD">Phiên bản:</label></div>
@@ -97,7 +97,7 @@
 <script>
     $(function () {
         //Date picker
-        $('#reservationdate').datetimepicker({
+        $('#versiondate').datetimepicker({
             format: 'DD/MM/YYYY'
         })
 
