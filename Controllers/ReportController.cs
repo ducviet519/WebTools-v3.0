@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using WebTools.Context;
 using WebTools.Models;
 using WebTools.Services;
@@ -81,7 +83,7 @@ namespace WebTools.Controllers
             //Tìm kếm
             if (!String.IsNullOrEmpty(SearchString))
             {
-                data = data.Where(s => s.TenBM != null && s.TenBM.ToLower().Contains(SearchString.ToLower()) || s.MaBM != null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
+                data = data.Where(s => s.TenBM != null && convertToUnSign(s.TenBM.ToLower()).Contains(convertToUnSign(SearchString.ToLower())) || s.MaBM != null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
             }
             if (!String.IsNullOrEmpty(SearchTrangThaiSD))
             {
@@ -101,6 +103,14 @@ namespace WebTools.Controllers
             int pageSize = 10;
             model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
             return View(model);
+        }
+
+        //Khử dấu cho string
+        public static string convertToUnSign(string s)
+        {
+            Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(NormalizationForm.FormD);
+            return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
         }
 
         //Sắp xếp
@@ -185,27 +195,23 @@ namespace WebTools.Controllers
             reportVersion.CreatedUser = "1";
             string IDBieuMau = reportVersion.IDBieuMau;
             string resault = string.Empty;
-            if (reportVersion.IDBieuMau != null)
+            if (reportVersion.fileUpload != null)
             {
-                if (reportVersion.fileUpload != null)
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                string filePath = Path.Combine(uploadsFolder, reportVersion.fileUpload.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                    string filePath = Path.Combine(uploadsFolder, reportVersion.fileUpload.FileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        reportVersion.fileUpload.CopyTo(fileStream);
-                    }
-                    reportVersion.FileLink = filePath;
-                    _reportVersionServices.InsertReportVersion(reportVersion);
-                    return RedirectToAction("Index");
+                    reportVersion.fileUpload.CopyTo(fileStream);
                 }
-                else
-                {
-                    _reportVersionServices.InsertReportVersion(reportVersion);
-                    return RedirectToAction("Index");
-                }
+                reportVersion.FileLink = filePath;
+                _reportVersionServices.InsertReportVersion(reportVersion);
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                _reportVersionServices.InsertReportVersion(reportVersion);
+                return RedirectToAction("Index");
+            }
         }
 
         //6. Tạo cửa sổ Phần mềm

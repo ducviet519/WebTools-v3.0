@@ -2,16 +2,76 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-//Table
-$(function () {
-    $('#tableReport').DataTable({
+$(document).ready(function () {
+    // Setup - add a text input to each footer cell
+    $('#tableReport thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#tableReport thead');
+
+    var table = $('#tableReport').DataTable({
         "paging": true,
         "lengthChange": false,
-        "searching": false,
+        "searching": true,
         "ordering": true,
         "info": true,
         "autoWidth": false,
         "responsive": true,
+        "orderCellsTop": true,
+        "fixedHeader": false,
+        "initComplete": function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    if (colIdx != 8) {
+                        var cell = $('.filters th').eq(
+                            $(api.column(colIdx).header()).index()
+                        );
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+                    }
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+        "columnDefs": [
+            { "searchable": false, "targets": 8 }
+        ],
     });
 });
 

@@ -30,7 +30,7 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-10">
-                            <select asp-for="@Model.ReportDetail.KhoaPhong" asp-items="@Model.Depts" class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-selector="@Model.ReportDetail.KhoaPhong">
+                            <select asp-for="@Model.ReportDetail.KhoaPhong" asp-items="@Model.Depts" class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportDetail.KhoaPhong">
                             </select>
                         </div>
                     </div>
