@@ -114,7 +114,7 @@
                                                                 <div class="btn-group">
                                                                     @if (item.FileLink != null)
                                                                     {
-                                                                        <a href="/Report/DocumentView?link=@item.FileLink" target="_blank" class="btn btn-link">File</a>
+                                                                        <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.FileLink">File</a>
                                                                     }
                                                                     else
                                                                     {

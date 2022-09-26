@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace WebTools.Models
 {
-    [Table("ReportVersion")]
     public class ReportVersion
     {
         public string IDPhienBan { get; set; }

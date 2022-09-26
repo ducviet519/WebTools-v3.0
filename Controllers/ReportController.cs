@@ -288,7 +288,7 @@ namespace WebTools.Controllers
             return RedirectToAction("Index");
         }
 
-        //
+        //Document View
         public IActionResult DocumentView(string link)
         {
             //DocumentViewModel model = new DocumentViewModel();
@@ -303,6 +303,22 @@ namespace WebTools.Controllers
             };
 
             return PartialView("_DocumentView", documentViewer);
+        }
+        //Document View
+        public IActionResult PopUpDocumentView(string link)
+        {
+            //DocumentViewModel model = new DocumentViewModel();
+            //model.FileLink = $@"{link}";
+            var documentLink = $@"{link}";
+            var documentViewer = new DocumentViewer
+            {
+                Width = 1200,
+                Height = 600,
+                Resizable = false,
+                Document = documentLink
+            };
+
+            return PartialView("_DocumentViewPartial", documentViewer);
         }
     }
 }

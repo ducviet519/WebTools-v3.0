@@ -1,0 +1,27 @@
+{
+  "CacheSourceKey": "in4xtt",
+  "CachePdfKey": "in4xtt/in4xtt-1l5d4zc.pdf",
+  "CacheXpzKey": "in4xtt/in4xtt-kz0wq7.xpz",
+  "CacheInfoKey": "in4xtt/in4xtt-kz0wq7.json",
+  "CacheCopyKey": null,
+  "Document": "Type=FileSystem;File=1.jpg;Location='Type=Physical;Path=\"C:\\Users\\vietld\\Desktop\\New folder\\WebTools-v2.0\\wwwroot\\Upload\"'",
+  "DocumentFileName": "1.jpg",
+  "DownloadFileName": null,
+  "InputOptions": {
+    "Format": "Jpg",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "in4xtt",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": []
+}
