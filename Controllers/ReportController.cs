@@ -51,7 +51,6 @@ namespace WebTools.Controllers
         }
 
 
-
         public IActionResult Index
             (
             string sortField,
@@ -158,7 +157,7 @@ namespace WebTools.Controllers
         [HttpPost]
          public IActionResult AddReport(ReportList reportList)
         {
-            reportList.CreatedUser = "1";
+            reportList.CreatedUser = User.Identity.Name;
             if (reportList.fileUpload != null)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
@@ -192,7 +191,7 @@ namespace WebTools.Controllers
         [HttpPost]
         public IActionResult AddVersion(ReportVersion reportVersion)
         {
-            reportVersion.CreatedUser = "1";
+            reportVersion.CreatedUser = User.Identity.Name;
             string IDBieuMau = reportVersion.IDBieuMau;
             string resault = string.Empty;
             if (reportVersion.fileUpload != null)
@@ -247,7 +246,7 @@ namespace WebTools.Controllers
                 reportSoft.ViTriIn = Request.Form["ViTriIn"];
                 reportSoft.CachIn = Request.Form["CachIn"];
                 reportSoft.TrangThaiPM = Request.Form["TrangThaiPM-"+i];
-                reportSoft.User = "1";
+                reportSoft.User = User.Identity.Name;
                 if (reportSoft.IDBieuMau != null)
                 {
                     _reportSoftServices.InsertReportSoft(reportSoft);
@@ -269,7 +268,7 @@ namespace WebTools.Controllers
         //9. Tạo chức năng lưu dữ liệu khi ấn nút Lưu ở phần 8
         public IActionResult AddDetail(ReportDetail reportDetail)
         {
-            reportDetail.User = "1";
+            reportDetail.User = User.Identity.Name;
             int count = Int32.Parse(Request.Form["count"]);
             for (int i = 0; i < count; i++)
             {
@@ -312,7 +311,7 @@ namespace WebTools.Controllers
             var documentLink = $@"{link}";
             var documentViewer = new DocumentViewer
             {
-                Width = 1200,
+                Width = 1100,
                 Height = 600,
                 Resizable = false,
                 Document = documentLink
