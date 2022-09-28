@@ -7,6 +7,13 @@ for details on configuring this project to bundle and minify static web assets. 
     min-height: calc(2rem + 2px);
 }
 
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    width: 260px;
+}
+
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -71,6 +78,11 @@ body {
   font-size:14px;
   line-height: 1.2;
 }
+.content-header h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size:30px;
+    font-weight: bold;
+}
 
 .form-control {
     font-size: 14px;
@@ -99,20 +111,25 @@ body {
     background-color: #3882b6;
     padding: 0 0;
 }
-.main-header .nav-link{
-    height: none;
-    padding: 8px;
+.navbar-dark .navbar-nav .nav-link{
+    font-family:Arial, Helvetica, sans-serif;
+    color:#fff;
+    font-size:14px;
+    text-align:center
 }
-.nav-link {
-    margin: 6px;
-    font-size: 1rem;
+.main-header .nav-link {
+    height: auto;
+}
+.nav-link{
+    padding-top: 16px;
+    padding-bottom: 16px;
 }
 .nav-item:hover {
     background-color: #102da6;
 }
 .navbar-brand {
     border: 0;
-    padding: 8px 16px;
+    padding: 6px 15px;
     margin: 0;
 }
 .navbar-dark .navbar-brand {
@@ -133,4 +150,7 @@ body {
 }
 #tableReport_filter {
     display: none;
+}
+.table td, .table th {
+    vertical-align:middle;
 }

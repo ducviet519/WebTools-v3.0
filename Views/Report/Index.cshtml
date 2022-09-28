@@ -40,12 +40,12 @@
                         <!--Tìm kiếm -->
                         @using (Html.BeginForm())
                         {
-                            <div class="row">
-                                <div class="col-md">
+                            <div class="row align-items-end">
+                                <div class="col-3 pr-5">
                                     <label>Tên/Mã biểu mẫu:</label>
                                     <input type="text" class="form-control" name="SearchString" id="SearchString" autocomplete="off" />
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-auto pl-2 pr-5">
                                     <label>Ngày ban hành:</label>
                                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
                                         <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" />
@@ -54,7 +54,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-auto pl-2 pr-5">
                                     <label>Trạng thái:</label>
                                     @Html.DropDownList("SearchTrangThaiSD", new List<SelectListItem>
                                     {   new SelectListItem{Text="Đang sử dụng", Value="Đang sử dụng"},
@@ -62,7 +62,7 @@
                                         new SelectListItem{Text="Đã hủy", Value="Đã hủy"}
                                     }, "Tất cả", new { @class = "form-control" })
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-auto pl-2 pr-5">
                                     <label>Trạng thái phần mềm:</label>
                                     @Html.DropDownList("SearchTrangThaiPM", new List<SelectListItem>
                                     {   new SelectListItem{Text="Đã hoàn thành", Value="Đã hoàn thành"},
@@ -70,8 +70,8 @@
                                         new SelectListItem{Text="Chưa có", Value="Chưa có"}
                                     }, "Tất cả", new { @class = "form-control" })
                                 </div>
-                                <div class="col-md-1"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
-                                <div class="col-md-1"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
+                                <div class="col-auto"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
+                                <div class="col-auto"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
                             </div>
                         }
                     </div>
@@ -81,7 +81,7 @@
                         <div class="dataTables_wrapper dt-bootstrap4">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table class="table table-bordered dataTable dtr-inline" role="grid" id="tableReport">
+                                    <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableReport">
                                         <thead>
                                             <tr>
                                                 <th>STT</th>

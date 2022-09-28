@@ -220,13 +220,8 @@ namespace WebTools.Controllers
             model.ReportSoft = _reportSoftServices.GetReportSoft(id).FirstOrDefault();
             model.ReportSofts = _reportSoftServices.GetReportSoft(id).ToList();
 
-            //URD
-            var data = _reportURDServices.GetAll_URD().Select(x => new ReportURD()
-            {
-                Value = x.ID.ToString(),
-                Text = x.Des
-            }).ToList();
-            model.URDLists = data;
+            //URD SelectList
+            model.URDs = new SelectList(_reportURDServices.GetAll_URD(), "ID", "Des");
 
             return PartialView("_SoftPartial", model);
         }
@@ -275,7 +270,7 @@ namespace WebTools.Controllers
                 reportDetail.IDBieuMau = Request.Form["IDBieuMau"];
                 reportDetail.IDPhienBan = Request.Form["IDPhienBan-" + i];
                 reportDetail.KhoaPhong = Request.Form["KhoaPhong"];
-                reportDetail.GhiChu = Request.Form["GhiChu"];
+                reportDetail.GhiChu = Request.Form["GhiChu-" + i];
                 reportDetail.TrangThai = Request.Form["TrangThai-" + i];
                 reportDetail.User = "1";
                 if (reportDetail.IDBieuMau != null)

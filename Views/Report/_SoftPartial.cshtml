@@ -51,13 +51,8 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">URD:<br />(Quy trình vận hành)</label></div>
                         <div class="col">
-                            @for (int i = 0; i < Model.URDLists.Count; i++)
-                            {
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="@Model.URDLists[i].Value" name="URD" value="@Model.URDLists[i].Value" />
-                                    <label class="form-check-label" for="URD">@Model.URDLists[i].Text</label>
-                                </div>
-                            }
+                            <select class="select2" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="URD" id="URD"></select>
+                            <input type="hidden" id="txtURD" name="txtURD" value="@Model.ReportSoft.URD" />
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -99,10 +94,13 @@
                                             <td>@item.TrangThai</td>
                                             <td>@item.GhiChu</td>
                                             @if (item.FileLink != null)
-                                                {
-                                                    <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
-                                                }
-                                            else {<td></td> }
+                                            {
+                                                <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
                                             <td>
                                                 <input type="hidden" id="IDPhienBan" name="IDPhienBan-@count" value="@item.IDPhienBan" />
                                                 <select asp-for="@item.TrangThaiPM" asp-items="@Html.GetEnumSelectList<TrangPhaiPM>()" class="custom-select mr-sm-2" id="TrangThaiPM" name="TrangThaiPM-@count">
@@ -126,3 +124,15 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(function () {
+        var string = $('#txtURD').val();
+        var array = string.split(",").map(Number);
+        //Dropdown
+        $('.select2').select2()
+        $('#URD').val(array);
+        $('#URD').trigger('change');
+    });
+</script>

@@ -19,6 +19,8 @@ $(document).ready(function () {
         "responsive": true,
         "orderCellsTop": true,
         "fixedHeader": false,
+        "columnDefs": [{ orderable: false, targets: 8 }],
+        "order": [[4, 'desc']],
         "initComplete": function () {
             var api = this.api();
 
