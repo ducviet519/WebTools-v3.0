@@ -66,29 +66,29 @@
                                 {
                                     foreach (var item in Model.ReportDetails)
                                     {
-                                                        <tr>
-                                                            <td>@item.STT</td>
-                                                            <td>@item.PhienBan</td>
-                                                            <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
-                                                            <td>
-                                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan-@count" value="@item.IDPhienBan" />
-                                                                <select asp-for="@item.TrangThai" asp-items="@Html.GetEnumSelectList<TrangThai>()" class="custom-select mr-sm-2" id="TrangThai" name="TrangThai-@count">
-                                                                    <option selected="selected" value="@item.TrangThai">Chọn...</option>
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <input type="text" class="form-control" id="GhiChu" name="GhiChu-@count" value="@item.GhiChu">
-                                                            </td>
-                                                            @if (item.FileLink != null)
-                                                            {
-                                                                <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
-                                                            }
-                                                            else
-                                                            {
-                                                                <td></td>
-                                                            }
-                                                            <td>@item.TrangThaiPM</td>
-                                                        </tr>
+                                        <tr>
+                                            <td>@item.STT</td>
+                                            <td>@item.PhienBan</td>
+                                            <td>@item.NgayBanHanh.ToString("dd/MM/yyyy")</td>
+                                            <td>
+                                                <input type="hidden" id="IDPhienBan" name="IDPhienBan-@count" value="@item.IDPhienBan" />
+                                                <select asp-for="@item.TrangThai" asp-items="@Html.GetEnumSelectList<TrangThai>()" class="custom-select mr-sm-2" id="TrangThai" name="TrangThai-@count">
+                                                    <option selected="selected" value="@item.TrangThai">Chọn...</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" id="GhiChu" name="GhiChu-@count" value="@item.GhiChu">
+                                            </td>
+                                            @if (item.FileLink != null)
+                                            {
+                                                <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                            <td>@item.TrangThaiPM</td>
+                                        </tr>
                                         count++;
                                     }
                                 }
@@ -96,17 +96,19 @@
                         </tbody>
                     </table>
                     <input type="hidden" name="count" value="@count" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" data-save="modal">Lưu</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary" data-save="modal">Lưu</button>
-            </div>
+            
         </div>
     </div>
 </div>
 
 <script>
+
     $(function () {
         var string = $('#txtKhoaPhong').val();
         var array = string.split(",").map(Number);

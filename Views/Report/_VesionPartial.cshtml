@@ -1,4 +1,5 @@
 ﻿@model WebTools.Models.ReportVersionViewModel
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
 }
@@ -10,12 +11,12 @@
                 <h5 class="modal-title">Thêm phiên bản</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>         
+                </button>
             </div>
-            <div class="modal-body">                
+            <div class="modal-body">
                 <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau"/>
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau" />
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Tên biểu mẫu:</label></div>
                         <div class="col"><span style="color:dodgerblue; font-weight:bold;">@Model.VersionList.TenBM</span></div>
@@ -26,7 +27,7 @@
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
                             <div class="input-group date" id="versiondate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#versiondate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required value="@Model.VersionList.NgayBanHanhNew"/>
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#versiondate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required value="@Model.VersionList.NgayBanHanhNew" />
                                 <div class="input-group-append" data-target="#versiondate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -34,7 +35,7 @@
                         </div>
                     </div>
                     <!--Bảng -->
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="versionTable">
                         <thead>
                             <tr>
                                 <th>STT</th>
@@ -50,7 +51,7 @@
                                 if (Model.VersionLists != null && Model.VersionLists.Count > 0)
                                 {
                                     foreach (var item in Model.VersionLists)
-                                    { 
+                                    {
                                         <tr>
                                             <td>@item.STT</td>
                                             <td>@item.PhienBan</td>
@@ -58,11 +59,17 @@
                                             <td>@item.TrangThai</td>
                                             <td>@item.GhiChu</td>
                                             @if (item.FileLink != null)
-                                                {
-                                                    <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
-                                                }
-                                            else {<td></td> }
-                                        </tr>
+                                            {
+                                                <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td hidden></td>
+                                            }
+                                            <td align="center">
+                                                <a class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.PhienBan"></a>
+                                            </td>
+                                        </tr>                                       
                                     }
                                 }
                             }
@@ -77,19 +84,20 @@
                             </div>
                         </div>
                         <div class="col text-right"><label for="PhienBanSD">Phiên bản:</label></div>
-                        <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan"/></div>
+                        <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan" /></div>
                         <div class="col mr-2 text-right"><label for="PhienBanSD">Số PB:&nbsp;<span style="color:dodgerblue; font-weight:bold;">@Model.VersionList.SoPB</span></label></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="GhiChu">Ghi chú:</label></div>
-                        <div class="col"><input type="text" class="form-control" name="GhiChu" id="GhiChu" value="@Model.VersionList.GhiChu"/></div>
+                        <div class="col"><input type="text" class="form-control" name="GhiChu" id="GhiChu" value="@Model.VersionList.GhiChu" /></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -117,37 +125,37 @@
     })
 
 
-    $(function () {
-        $(this).on('click', '[data-save="modalFile"]', function (event) {           
-            event.preventDefault();
-            var actionUrl = $("#myForm").attr('action');
-            var methodType = $("#myForm").attr('method');
+    //$(function () {
+    //    $(this).on('click', '[data-save="modalFile"]', function (event) {
+    //        event.preventDefault();
+    //        var actionUrl = $("#myForm").attr('action');
+    //        var methodType = $("#myForm").attr('method');
 
-            var formData = new FormData();
-            formData.append("IDBieuMau", $("#IDBieuMau").val());
-            formData.append("TenBM", $("#TenBM").val());
-            formData.append("MaBM", $("#MaBM").val());
-            formData.append("NgayBanHanh", $("#NgayBanHanh").val());
-            formData.append("fileUpload", $("#fileUpload")[0].files[0]);
-            formData.append("PhienBan", $("#PhienBan").val());
-            formData.append("GhiChu", $("#GhiChu").val());
-            $.ajax({
-                type: methodType,
-                url: actionUrl,
-                data: formData,
-                processData: false,
-                contentType: false,
+    //        var formData = new FormData();
+    //        formData.append("IDBieuMau", $("#IDBieuMau").val());
+    //        formData.append("TenBM", $("#TenBM").val());
+    //        formData.append("MaBM", $("#MaBM").val());
+    //        formData.append("NgayBanHanh", $("#NgayBanHanh").val());
+    //        formData.append("fileUpload", $("#fileUpload")[0].files[0]);
+    //        formData.append("PhienBan", $("#PhienBan").val());
+    //        formData.append("GhiChu", $("#GhiChu").val());
+    //        $.ajax({
+    //            type: methodType,
+    //            url: actionUrl,
+    //            data: formData,
+    //            processData: false,
+    //            contentType: false,
 
-                success: function (data) {
-                    alert("Thành công!");
-                },
-                error: function (data) {
-                    alert("Lỗi!");
-                }
-            }).done(function (data) {
-                $(this).find('.modal').modal('hide');
-                location.reload();
-            })
-        });
-    });
+    //            success: function (data) {
+    //                alert("Thành công!");
+    //            },
+    //            error: function (data) {
+    //                alert("Lỗi!");
+    //            }
+    //        }).done(function (data) {
+    //            $(this).find('.modal').modal('hide');
+    //            location.reload();
+    //        })
+    //    });
+    //});
 </script>

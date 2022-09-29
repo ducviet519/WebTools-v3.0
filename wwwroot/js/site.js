@@ -98,28 +98,28 @@ $(document).ready(function () {
         });
     });
 
-    ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
-        event.preventDefault();
-        var form = $(this).parents('.modal').find('form');
-        var actionUrl = form.attr('action');
-        var methodType = form.attr('method');
+    //ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
+    //    event.preventDefault();
+    //    var form = $(this).parents('.modal').find('form');
+    //    var actionUrl = form.attr('action');
+    //    var methodType = form.attr('method');
 
-        console.log(form.serialize());
-        $.ajax({
-            type: methodType,
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                alert("Thành công!");
-            },
-            error: function (xhr, desc, err) {
-                alert("Lỗi!");
-            }
-        }).done(function (data) {
-            ReportPopupElement.find('.modal').modal('hide');
-            location.reload();
-        })
-    });
+    //    console.log(form.serialize());
+    //    $.ajax({
+    //        type: methodType,
+    //        url: actionUrl,
+    //        data: form.serialize(),
+    //        success: function (data) {
+    //            alert("Thành công!");
+    //        },
+    //        error: function (xhr, desc, err) {
+    //            alert("Lỗi!");
+    //        }
+    //    }).done(function (data) {
+    //        ReportPopupElement.find('.modal').modal('hide');
+    //        location.reload();
+    //    })
+    //});
 });
 
 $(function () {
@@ -138,4 +138,29 @@ $(function () {
     //File upload show name file
     bsCustomFileInput.init()
 });
+
+$(function () {
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+});
+
+
+
+
+
 

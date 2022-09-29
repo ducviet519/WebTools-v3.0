@@ -20,15 +20,16 @@
                 @{
                     if (TempData["SuccessMsg"] != null)
                     {
-                        <div class="alert alert-success" role="alert">
-                            @TempData["SuccessMsg"]
-                        </div>
+                        <script type="text/javascript">
+                            window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
+                        </script>
+
                     }
                     if (TempData["ErrorMsg"] != null)
                     {
-                        <div class="alert alert-danger" role="alert">
-                            @TempData["ErrorMsg"]
-                        </div>
+                        <script type="text/javascript">
+                            window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
+                        </script>
                     }
                 }
             </div>

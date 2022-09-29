@@ -156,7 +156,7 @@ namespace WebTools.Controllers
 
         [HttpPost]
          public IActionResult AddReport(ReportList reportList)
-        {
+            {
             reportList.CreatedUser = User.Identity.Name;
             if (reportList.fileUpload != null)
             {
@@ -167,15 +167,32 @@ namespace WebTools.Controllers
                     reportList.fileUpload.CopyTo(fileStream);
                 }
                 reportList.FileLink = filePath;
-                _reportListServices.InsertReportList(reportList);
+                var result = _reportListServices.InsertReportList(reportList);
+                if(result == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm biểu mẫu: "+ reportList.TenBM +" thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Lỗi!"+ result;
+                }
                 return RedirectToAction("Index");
             }
             else
             {
-                _reportListServices.InsertReportList(reportList);
+                var result = _reportListServices.InsertReportList(reportList);
+                if (result == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Lỗi!" + result;
+                }
                 return RedirectToAction("Index");
             }               
         }
+       
 
         //4. Tạo chức năng hiển thị phiên bản
         public IActionResult Version(string id)
@@ -203,14 +220,45 @@ namespace WebTools.Controllers
                     reportVersion.fileUpload.CopyTo(fileStream);
                 }
                 reportVersion.FileLink = filePath;
-                _reportVersionServices.InsertReportVersion(reportVersion);
+                var result = _reportVersionServices.InsertReportVersion(reportVersion);
+                if (result == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Lỗi!" + result;
+                }
                 return RedirectToAction("Index");
             }
             else
             {
-                _reportVersionServices.InsertReportVersion(reportVersion);
+                var result = _reportVersionServices.InsertReportVersion(reportVersion);
+                if (result == "OK")
+                {
+                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Lỗi!" + result;
+                }
                 return RedirectToAction("Index");
             }
+        }
+
+        public IActionResult DeleteVersion(string id)
+        {
+            var result =  _reportVersionServices.DeleteReportVersion(id);
+            if (result == "DEL")
+            {
+                TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
+            }
+            else
+            {
+                TempData["ErrorMsg"] = "Lỗi!" + result;
+            }
+            //return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         //6. Tạo cửa sổ Phần mềm
@@ -244,7 +292,15 @@ namespace WebTools.Controllers
                 reportSoft.User = User.Identity.Name;
                 if (reportSoft.IDBieuMau != null)
                 {
-                    _reportSoftServices.InsertReportSoft(reportSoft);
+                    var result = _reportSoftServices.InsertReportSoft(reportSoft);
+                    if (result == "OK")
+                    {
+                        TempData["SuccessMsg"] = "Cập nhật thông tin thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Lỗi!" + result;
+                    }
                 }
             }
             return RedirectToAction("Index");
@@ -275,7 +331,15 @@ namespace WebTools.Controllers
                 reportDetail.User = "1";
                 if (reportDetail.IDBieuMau != null)
                 {
-                    _reportDetailServices.InsertReportDetail(reportDetail);
+                    var result = _reportDetailServices.InsertReportDetail(reportDetail);
+                    if (result == "OK")
+                    {
+                        TempData["SuccessMsg"] = "Cập nhật thông tin thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Lỗi!" + result;
+                    }
                 }
 
             }

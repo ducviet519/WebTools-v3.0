@@ -26,6 +26,32 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
+        public string DeleteReportVersion(string IDPhienBan)
+        {
+            string result = "";
+            var query = "DELETE FROM Products WHERE ID = @IDPhienBan";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
+                    var data = dbConnection.Query<ReportVersion>(query, new{ IDPhienBan = IDPhienBan }, commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "DEL";
+                    }
+                    dbConnection.Close();                   
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
         //Lấy về danh sách Phiên bản sp_Report_Version_View
         public List<ReportVersion> GetReportVersion(string IdBieuMau)
         {
@@ -85,7 +111,49 @@ namespace WebTools.Services
             }
             catch (Exception ex)
             {
-                string errorMsg = ex.Message;
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public string UpdateReportVersion(ReportVersion reportVersion)
+        {
+            string result = "";
+            var query = "sp_Report_Version_Edit";
+            DateTime? NgayBanHanh = null;
+            if (!String.IsNullOrEmpty(reportVersion.NgayBanHanh))
+            {
+                NgayBanHanh = DateTime.ParseExact(reportVersion.NgayBanHanh, "dd/MM/yyyy", null);
+            }
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    if (dbConnection.State == ConnectionState.Closed)
+                        dbConnection.Open();
+                    var data = dbConnection.Query<ReportVersion>(query
+                        ,new 
+                        { 
+                            IDPhienBan = reportVersion.IDPhienBan,
+                            NgayBH = NgayBanHanh,
+                            FileLink = reportVersion.FileLink,
+                            GhiChu = reportVersion.GhiChu,
+                            PhienBan = reportVersion.PhienBan,
+                            User = reportVersion.CreatedUser
+
+                        }
+                        , commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
                 return result;
             }
         }

@@ -88,7 +88,7 @@ namespace WebTools.Services
             }
             catch (Exception ex)
             {
-                string errorMsg = ex.Message;
+                result = ex.Message;
                 return result;
             }
         }
