@@ -29,15 +29,15 @@ namespace WebTools.Services
         public string DeleteReportVersion(string IDPhienBan)
         {
             string result = "";
-            var query = "DELETE FROM Products WHERE ID = @IDPhienBan";
+            var query = "DELETE FROM Report_version WHERE ID = @IDPhienBan";
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     if (dbConnection.State == ConnectionState.Closed)
                         dbConnection.Open();
-                    var data = dbConnection.Query<ReportVersion>(query, new{ IDPhienBan = IDPhienBan }, commandType: CommandType.StoredProcedure);
-                    if (data != null)
+                    var data = dbConnection.Execute(query, new{ IDPhienBan = IDPhienBan });
+                    if (data != 0)
                     {
                         result = "DEL";
                     }

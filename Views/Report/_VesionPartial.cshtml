@@ -66,9 +66,10 @@
                                             {
                                                 <td hidden></td>
                                             }
-                                            <td align="center">
-                                                <a class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.PhienBan"></a>
-                                            </td>
+                                        <td align="center">
+                                            <a onclick="DeleteVersion('@item.IDPhienBan', '@item.IDBieuMau')" style="cursor:pointer;" class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau"></a>
+                                            @*/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau*@
+                                        </td>
                                         </tr>                                       
                                     }
                                 }
@@ -158,4 +159,30 @@
     //        })
     //    });
     //});
+
+    @*function DeleteVersion(IDPhienBan, IDBieuMau) {
+        let response = confirm("Bạn có chắc chắn muốn xóa phiên bản này?");
+        if (response) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteVersion", "Report")',
+                data: {
+                    IDPhienBan: IDPhienBan,
+                    IDBieuMau: IDBieuMau
+                },
+                success: function (response) {
+                    if (response.message == "Del") {
+                        window.location.reload();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+                complete: function () { },
+                failure: function (jqXHR, textStatus, errorThrown) {
+                    alert("Lỗi!");
+                }
+            })
+        }
+    }*@
 </script>

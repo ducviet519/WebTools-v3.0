@@ -246,18 +246,20 @@ namespace WebTools.Controllers
             }
         }
 
-        public IActionResult DeleteVersion(string id)
+        public IActionResult DeleteVersion(string IDPhienBan, string IDBieuMau)
         {
-            var result =  _reportVersionServices.DeleteReportVersion(id);
+            string url = Request.Headers["Referer"].ToString();
+            var result =  _reportVersionServices.DeleteReportVersion(IDPhienBan);
             if (result == "DEL")
             {
                 TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
+                //return Json(new {message = "Del" });
             }
             else
             {
                 TempData["ErrorMsg"] = "Lỗi!" + result;
+                //return Json(new { message = "Lỗi! Phiên bản chưa được xóa" });
             }
-            //return RedirectToAction("Index");
             return RedirectToAction("Index");
         }
 
