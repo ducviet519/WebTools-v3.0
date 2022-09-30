@@ -103,7 +103,7 @@ namespace WebTools.Controllers
                 {
                     var UserName = login.UserName.Trim().ToLower();
                     var Password = login.Password.Trim();
-
+                    var IP = HttpContext.Connection.RemoteIpAddress.ToString();
                     var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.Name, user.Name),

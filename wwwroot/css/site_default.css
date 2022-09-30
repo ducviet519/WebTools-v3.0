@@ -89,7 +89,12 @@ body {
     line-height: 1.2;
     height: calc(2rem + 2px);
 }
-
+.custom-select{
+    font-size:inherit;
+}
+.modal-header{
+    padding:6px;
+}
 .btn {
     font-size: 14px;
 }

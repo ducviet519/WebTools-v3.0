@@ -174,7 +174,7 @@ namespace WebTools.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "Lỗi!"+ result;
+                    TempData["ErrorMsg"] = "Lỗi! "+ result;
                 }
                 return RedirectToAction("Index");
             }
@@ -187,7 +187,7 @@ namespace WebTools.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "Lỗi!" + result;
+                    TempData["ErrorMsg"] = "Lỗi! " + result;
                 }
                 return RedirectToAction("Index");
             }               
@@ -227,7 +227,7 @@ namespace WebTools.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "Lỗi!" + result;
+                    TempData["ErrorMsg"] = "Lỗi! " + result;
                 }
                 return RedirectToAction("Index");
             }
@@ -236,7 +236,7 @@ namespace WebTools.Controllers
                 var result = _reportVersionServices.InsertReportVersion(reportVersion);
                 if (result == "OK")
                 {
-                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
+                    TempData["SuccessMsg"] = "Thêm phiên bản "+ reportVersion.PhienBan +" cho biểu mẫu "+ reportVersion.TenBM +" thành công!";
                 }
                 else
                 {

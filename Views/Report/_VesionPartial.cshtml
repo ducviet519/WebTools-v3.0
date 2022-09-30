@@ -10,7 +10,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Thêm phiên bản</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;&nbsp;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -20,6 +20,7 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Tên biểu mẫu:</label></div>
                         <div class="col"><span style="color:dodgerblue; font-weight:bold;">@Model.VersionList.TenBM</span></div>
+                        <input type="hidden" id="TenBM" name="TenBM" value="@Model.VersionList.TenBM" />
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
@@ -160,9 +161,9 @@
     //    });
     //});
 
-    @*function DeleteVersion(IDPhienBan, IDBieuMau) {
+    function DeleteVersion(IDPhienBan, IDBieuMau) {
         let response = confirm("Bạn có chắc chắn muốn xóa phiên bản này?");
-        if (response) {
+        @*   if (response) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("DeleteVersion", "Report")',
@@ -183,6 +184,6 @@
                     alert("Lỗi!");
                 }
             })
-        }
-    }*@
+        }*@
+    }
 </script>

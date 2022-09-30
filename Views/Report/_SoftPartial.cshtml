@@ -7,27 +7,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Phần mềm</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        @{
-                            if (TempData["SuccessMsg"] != null)
-                            {
-                                <div class="alert alert-success" role="alert">
-                                    @TempData["SuccessMsg"]
-                                </div>
-                            }
-                            if (TempData["ErrorMsg"] != null)
-                            {
-                                <div class="alert alert-danger" role="alert">
-                                    @TempData["ErrorMsg"]
-                                </div>
-                            }
-                        }
-                    </div>
-                </div>
+                <h5 class="modal-title">Phần mềm</h5>               
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;&nbsp;</span>
                 </button>
             </div>
             <div class="modal-body">

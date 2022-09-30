@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using WebTools.Context;
 using WebTools.Services;
 using WebTools.Services.Interface;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace WebTools
 {
@@ -74,6 +75,12 @@ namespace WebTools
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -95,6 +102,8 @@ namespace WebTools
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            
 
             app.UseEndpoints(endpoints =>
             {
