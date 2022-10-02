@@ -5,7 +5,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <a class="nav-link" href="/User/Logout">@User.Identity.Name (IP: @Context.Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString())</a>
+    <a class="nav-link" href="/User/Logout">@User.Identity.Name (IP: 0.0.0.1)</a>
 }
 else
 {

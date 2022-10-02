@@ -1,0 +1,27 @@
+{
+  "CacheSourceKey": "ly3tvm",
+  "CachePdfKey": "ly3tvm/ly3tvm-npq31v.pdf",
+  "CacheXpzKey": "ly3tvm/ly3tvm-ksm4h8.xpz",
+  "CacheInfoKey": "ly3tvm/ly3tvm-ksm4h8.json",
+  "CacheCopyKey": null,
+  "Document": "Type=FileSystem;File=\"TA_HSBA_126_V3_Phieu nhan dinh ban dau nguoi benh mo phu khoa danh cho dieu duong, ho sinh khoa phu san.pdf\";Location='Type=Physical;Path=\"C:\\Users\\Admin\\Desktop\\Project\\New folder\\WebTools-v2.0\\wwwroot\\Upload\"'",
+  "DocumentFileName": "TA_HSBA_126_V3_Phieu nhan dinh ban dau nguoi benh mo phu khoa danh cho dieu duong, ho sinh khoa phu san.pdf",
+  "DownloadFileName": null,
+  "InputOptions": {
+    "Format": "Pdf",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "ly3tvm",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": []
+}

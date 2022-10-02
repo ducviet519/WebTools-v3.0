@@ -14,7 +14,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm">
+                <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau" />
                     <div class="row mb-3">
@@ -53,25 +53,25 @@
                                 {
                                     foreach (var item in Model.VersionLists)
                                     {
-                                        <tr>
-                                            <td>@item.STT</td>
-                                            <td>@item.PhienBan</td>
-                                            <td>@item.NgayBanHanh</td>
-                                            <td>@item.TrangThai</td>
-                                            <td>@item.GhiChu</td>
-                                            @if (item.FileLink != null)
+                                            <tr>
+                                                <td>@item.STT</td>
+                                                <td>@item.PhienBan</td>
+                                                <td>@item.NgayBanHanh</td>
+                                                <td>@item.TrangThai</td>
+                                                <td>@item.GhiChu</td>
+                                                @if (item.FileLink != null)
                                             {
-                                                <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                                    <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
                                             }
                                             else
                                             {
-                                                <td hidden></td>
+                                                    <td hidden></td>
                                             }
-                                        <td align="center">
-                                            <a onclick="DeleteVersion('@item.IDPhienBan', '@item.IDBieuMau')" style="cursor:pointer;" class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau"></a>
-                                            @*/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau*@
-                                        </td>
-                                        </tr>                                       
+                                            <td align="center">
+                                                <a onclick="DeleteVersion('@item.IDPhienBan', '@item.IDBieuMau')" style="cursor:pointer;" class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau"></a>
+                                                @*/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau*@
+                                            </td>
+                                            </tr>                                       
                                     }
                                 }
                             }
@@ -81,7 +81,7 @@
                         <div class="col-2"><label for="fileUpload">File:</label></div>
                         <div class="col-5">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input fileUpload" id="fileUpload" name="fileUpload" />
+                                <input type="file" class="custom-file-input" id="fileUpload" name="fileUpload" />
                                 <label class="custom-file-label" for="customFile">Chọn file</label>
                             </div>
                         </div>
@@ -92,14 +92,17 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="GhiChu">Ghi chú:</label></div>
                         <div class="col"><input type="text" class="form-control" name="GhiChu" id="GhiChu" value="@Model.VersionList.GhiChu" /></div>
-                    </div>
+                    </div>  
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                         <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
                     </div>
                 </form>
             </div>
-
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" data-save="modalFile">Lưu</button>
+            </div>*@
         </div>
     </div>
 </div>
@@ -149,14 +152,14 @@
     //            contentType: false,
 
     //            success: function (data) {
-    //                alert("Thành công!");
+    //                console.log(data);
     //            },
     //            error: function (data) {
-    //                alert("Lỗi!");
+    //                console.log(data);
     //            }
     //        }).done(function (data) {
     //            $(this).find('.modal').modal('hide');
-    //            location.reload();
+    //            location.reload();              
     //        })
     //    });
     //});

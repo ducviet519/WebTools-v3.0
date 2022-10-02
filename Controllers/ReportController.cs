@@ -1,6 +1,7 @@
 ﻿using GleamTech.DocumentUltimate.AspNet.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
@@ -158,7 +159,7 @@ namespace WebTools.Controllers
          public IActionResult AddReport(ReportList reportList)
             {
             reportList.CreatedUser = User.Identity.Name;
-            if (reportList.fileUpload != null)
+            if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, reportList.fileUpload.FileName);
@@ -211,7 +212,7 @@ namespace WebTools.Controllers
             reportVersion.CreatedUser = User.Identity.Name;
             string IDBieuMau = reportVersion.IDBieuMau;
             string resault = string.Empty;
-            if (reportVersion.fileUpload != null)
+            if (reportVersion.fileUpload != null && reportVersion.fileUpload.Length > 0)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, reportVersion.fileUpload.FileName);
