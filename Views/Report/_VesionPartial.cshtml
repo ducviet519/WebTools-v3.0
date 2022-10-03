@@ -14,7 +14,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau" />
                     <div class="row mb-3">

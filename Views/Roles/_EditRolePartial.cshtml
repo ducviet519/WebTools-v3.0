@@ -1,0 +1,48 @@
+﻿@model WebTools.Models.RolesViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editRolesLabel" aria-hidden="true" id="RolesPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh sửa thông tin Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;&nbsp;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Roles" asp-action="EditRoles" id="roleForm">
+                    @Html.AntiForgeryToken()
+                    <div class="row form-group" hidden>
+                        <div class="col-2"><label for="RoleID">ID:</label></div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="RoleID" id="RoleID" value="@Model.Roles.RoleID" readonly />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-2"><label for="RoleName">Tên Role:</label></div>
+                        <div class="col"><input type="text" class="form-control" name="RoleName" id="RoleName" value="@Model.Roles.RoleName" required /></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-2"><label for="Description">Mô tả:</label></div>
+                        <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description">@Model.Roles.Description</textarea></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-2"><label for="Status">Trạng thái:</label></div>
+                        <div class="col">
+                            <select asp-for="@Model.Roles.Status" asp-items="@Html.GetEnumSelectList<Status>()" class="custom-select mr-sm-2" id="Status" name="Status">
+                                <option selected="selected" value="@Model.Roles.Status">Chọn...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

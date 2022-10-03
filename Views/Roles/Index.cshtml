@@ -1,0 +1,157 @@
+﻿@model WebTools.Models.RolesViewModel
+
+@{
+    ViewData["Title"] = "Phân quyền người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12 text-center">
+
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                @{
+                    if (TempData["SuccessMsg"] != null)
+                    {
+                    <script type="text/javascript">
+                            window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
+                    </script>
+
+                    }
+                    if (TempData["ErrorMsg"] != null)
+                    {
+                    <script type="text/javascript">
+                            window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
+                    </script>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-body">
+                    <!--Bảng biểu mẫu -->
+                    <div class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Danh sách Role</h3>
+                                        @* <a class="btn btn-success justify-content-end" data-toggle="ajax-modal" data-target="#addRoles" data-url="/Roles/CreateRoles"><i class="fa fa-plus"></i> &nbsp Thêm Role</a>*@
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form>
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableRoles">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Tên nhóm quyền</th>
+                                                        <th>Mô tả</th>
+                                                        <th>Trạng thái</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                            if (Model.RolesList != null && Model.RolesList.Count > 0)
+                                                            {
+                                                                foreach (var item in Model.RolesList)
+                                                                {
+                                                        <tr>
+                                                            <td>@item.RoleID</td>
+                                                            <td>@item.RoleName</td>
+                                                            <td>@item.Description</td>
+                                                            <td>
+                                                                @if (item.Status == 1)
+                                                                            {
+                                                                <span class="badge bg-success">Đang sử dụng</span>
+                                                                            }
+                                                                            else if (item.Status == 0)
+                                                                            {
+                                                                <span class="badge bg-danger">Ngưng sử dụng</span>
+                                                                            }
+                                                            </td>
+                                                            <td>
+                                                                <div class="row justify-content-center">
+                                                                    <div class="col-auto"><a class="btn btn-info btn-sm" data-toggle="ajax-modal" data-target="#editRoles" data-url="/Roles/EditRoles?id=@item.RoleID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a></div>
+                                                                    <div class="col-auto"><a class="btn btn-danger btn-sm" href="/Roles/DeleteRoles?id=@item.RoleID"><i class="fa fa-trash-alt"></i> &nbspXóa</a></div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                                }
+                                                            }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Thêm Role</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form method="post" asp-action="CreateRoles" id="roleForm">
+                                        <div class="card-body">
+                                            <div class="row form-group" hidden>
+                                                <div class="col-2"><label for="RoleID">ID:</label></div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" name="RoleID" id="RoleID" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-2"><label for="RoleName">Tên Role:</label></div>
+                                                <div class="col"><input type="text" class="form-control" name="RoleName" id="RoleName" placeholder="Nhập tên Role" required /></div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-2"><label for="Description">Mô tả:</label></div>
+                                                <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description"></textarea></div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-2"><label for="Status">Trạng thái:</label></div>
+                                                <div class="col">
+                                                    <select asp-items="@Html.GetEnumSelectList<Status>()" class="custom-select mr-sm-2" id="Status" name="Status">
+                                                        <option selected="selected">Chọn...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+
+                                        <div class="card-footer">
+                                            <div class="row justify-content-center">
+                                                <div class="col-auto mr-3">
+                                                    <button type="reset" class="btn btn-info">Làm mới</button>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="submit" class="btn btn-success">Thêm mới</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ReportPopup"></div>
+</section>

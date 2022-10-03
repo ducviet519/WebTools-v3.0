@@ -13,7 +13,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-area="" asp-controller="Report" asp-action="AddReport" id="reportForm" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddReport" id="reportForm">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" />
 
