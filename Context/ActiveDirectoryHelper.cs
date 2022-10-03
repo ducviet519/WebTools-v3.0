@@ -42,6 +42,7 @@ namespace WebTools.Context
             }
             catch(Exception ex)
             {
+                var errorMessage = ex.Message;
                 return false;
             }
             return true;

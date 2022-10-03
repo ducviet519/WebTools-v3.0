@@ -26,7 +26,7 @@ namespace WebTools.Controllers
             return View();
         }
 
-        private UserAccount CheckLoginDomain(string domain, string username, string password)
+        private Users CheckLoginDomain(string domain, string username, string password)
         {
             try
             {
@@ -40,9 +40,9 @@ namespace WebTools.Controllers
 
                     var userInfo = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userprincipal);
 
-                    return new UserAccount()
+                    return new Users()
                     {
-                        User_ID = 0, //string.IsNullOrEmpty(userInfo.Description) ? 0 : int.Parse(userInfo.Description),
+                        UserID = 0, //string.IsNullOrEmpty(userInfo.Description) ? 0 : int.Parse(userInfo.Description),
                         DisplayName = userInfo.DisplayName,
                         UserName = $@"{username.Trim().ToLower()}@{domain}",
                         Password = password,
@@ -78,6 +78,7 @@ namespace WebTools.Controllers
             var isAuthorized = false;
             try
             {
+                Users userAccount = new Users();
                 var userDomain = login.UserName;
                 domain = "bvta.vn";
                 //var user2 = CheckLoginDomain(domain, login.UserName, login.Password);
@@ -94,6 +95,7 @@ namespace WebTools.Controllers
                 }
                 else
                 {
+                    userAccount = CheckLoginDomain(domain, login.UserName, login.Password);
                     isAuthorized = true;
                 }
                 string adPath = $"LDAP://{domain}";
@@ -105,13 +107,13 @@ namespace WebTools.Controllers
                     var Password = login.Password.Trim();
                     var IP = HttpContext.Connection.RemoteIpAddress.ToString();
                     var claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.NameIdentifier, UserName),
-                    new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
-                    new Claim(ClaimTypes.Email, user.EmailAddress ?? ""),
-                    //new Claim(ClaimTypes.Expired, user2.Status ? "0" : "1"),
-                };
+                    {
+                        new Claim(ClaimTypes.Name, user.Name),
+                        new Claim(ClaimTypes.NameIdentifier, UserName),
+                        new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
+                        new Claim(ClaimTypes.Email, user.EmailAddress ?? ""),
+                        //new Claim(ClaimTypes.Expired, user2.Status ? "0" : "1"),
+                    };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(claimsPrincipal);
@@ -122,7 +124,8 @@ namespace WebTools.Controllers
             }
             catch(Exception ex)
             {
-                TempData["Error"] = "Lỗi! Tài khoản hoặc Mật khẩu không chính xác";
+                var errorMessage = ex.Message;
+                TempData["Error"] = $"Lỗi! {errorMessage}";
                 return View();
             }
         }

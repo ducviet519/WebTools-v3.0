@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebTools.Models.Entity
 {
-    public class UserAccount
+    public class Users
     {
-        public int User_ID { get; set; }
+        public int UserID { get; set; }
         public string DisplayName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -15,5 +15,6 @@ namespace WebTools.Models.Entity
         public string Email { get; set; }
         public bool Status { get; set; }
 
+        public int RoleID { get; set; }
     }
 }

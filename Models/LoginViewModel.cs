@@ -14,7 +14,7 @@ namespace WebTools.Models
         public string LoginType { get; set; }
 
         public string UpdatedBy { get; set; }
-        public UserAccount userAccount { get; set; }
+        public Users Users { get; set; }
         public string ReturnUrl { get; set; }
     }
 }
