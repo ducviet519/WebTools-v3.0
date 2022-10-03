@@ -11,11 +11,19 @@ using System.Threading.Tasks;
 using WebTools.Context;
 using WebTools.Models;
 using WebTools.Models.Entity;
+using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
-{
+{  
     public class UserController : Controller
     {
+        private readonly IUserServices _userServices;
+
+        public UserController(IUserServices userServices)
+        {
+            _userServices = userServices;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -78,7 +86,6 @@ namespace WebTools.Controllers
             var isAuthorized = false;
             try
             {
-                Users userAccount = new Users();
                 var userDomain = login.UserName;
                 domain = "bvta.vn";
                 //var user2 = CheckLoginDomain(domain, login.UserName, login.Password);
@@ -95,7 +102,21 @@ namespace WebTools.Controllers
                 }
                 else
                 {
-                    userAccount = CheckLoginDomain(domain, login.UserName, login.Password);
+
+                    var userInfo = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userprincipal);
+
+                    Users userAccount = new Users()
+                    {
+                        UserID = 0, //string.IsNullOrEmpty(userInfo.Description) ? 0 : int.Parse(userInfo.Description),
+                        DisplayName = userInfo.DisplayName,
+                        UserName = login.UserName.Trim().ToLower(),
+                        Password = login.Password,
+                        Source = domain,
+                        Email = $@"{login.UserName.Trim().ToLower()}@{domain}",                       
+                        Status = (userInfo.Enabled ?? false)
+                    };
+
+                    _userServices.AddUser(userAccount);
                     isAuthorized = true;
                 }
                 string adPath = $"LDAP://{domain}";
