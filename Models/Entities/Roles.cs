@@ -17,7 +17,7 @@ namespace WebTools.Models
         public string Description { get; set; }
 
         [Required]
-        public int Status { get; set; }
+        public bool Status { get; set; }
 
         [Required]
         public string CreatedBy { get; set; }
@@ -26,12 +26,5 @@ namespace WebTools.Models
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
 
-        [EnumDataType(typeof(Status))]
-        public Status StatusDropList { get; set; }
-    }
-    public enum Status
-    {
-        [Display(Name = "Đang sử dụng")] DangSuDung = 1,
-        [Display(Name = "Ngưng sử dụng")] NgungSuDung = 0,
     }
 }

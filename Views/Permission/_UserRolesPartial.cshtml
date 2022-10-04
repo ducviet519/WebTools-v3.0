@@ -1,0 +1,68 @@
+﻿@model WebTools.Models.UsersViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editUsersLabel" aria-hidden="true" id="UsersPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Phân quyền cho người dùng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;&nbsp;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Permission" asp-action="EditUsers" id="userForm">
+                    @Html.AntiForgeryToken()
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên vai trò</th>
+                                <th>Mô tả</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 0;
+                                if (Model.RolesList != null && Model.RolesList.Count > 0)
+                                {
+                                    foreach (var item in Model.RolesList)
+                                    {
+                                <tr>
+                                    <td>
+                                        @item.RoleID
+                                    <input type="hidden" id="RoleID" name="RoleID-@count" value="@item.RoleID" />
+                                    <input type="hidden" id="UserID" name="UserID-@count" value="@Model.Users.UserID" />
+                                </td>
+                                <td>
+                                    @item.RoleName
+                                    <input type="hidden" id="RoleName" name="RoleName-@count" value="@item.RoleName" />
+                                </td>
+                                <td>
+                                    @item.Description
+                                    <input type="hidden" id="Description" name="Description-@count" value="@item.Description" />
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input asp-for="@item.Status" id="Status" name="Status-@count" class="form-check-input" />
+                                    </div>
+                                </td>
+                            </tr>
+                                        count++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

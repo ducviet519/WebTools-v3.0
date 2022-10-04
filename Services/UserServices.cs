@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WebTools.Models;
 using WebTools.Models.Entity;
 using WebTools.Services.Interface;
 
@@ -173,7 +174,7 @@ namespace WebTools.Services
             }
         }
 
-        public Users GetUsersByID(int id)
+        public Users GetUsersByID(int? id)
         {
             Users roles = new Users();
             try
@@ -181,7 +182,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    roles = dbConnection.Query<Users>("sp_Roles", new
+                    roles = dbConnection.Query<Users>("sp_Users", new
                     {
                         ID = id,
                         DisplayName = "",
@@ -201,6 +202,29 @@ namespace WebTools.Services
             {
                 string errorMsg = ex.Message;
                 return roles;
+            }
+        }
+
+        public bool IsUserInRole(int RoleID, int UserID)
+        {
+            List<UsersViewModel> userInRole = new List<UsersViewModel>();
+            var sql = "SELECT * FROM dbo.UserRoles WHERE (UserID = @UserID) AND (RoleID = @RoleID)";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    userInRole = dbConnection.Query<UsersViewModel>(sql, new { UserID = UserID, RoleID = RoleID }).ToList();
+                    dbConnection.Close();
+                }
+                if (userInRole.Count < 0) { return true; }
+                else { return false; }
+                    
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return false;
             }
         }
     }

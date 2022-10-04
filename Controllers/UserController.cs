@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices.ActiveDirectory;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTools.Context;
@@ -18,16 +21,22 @@ namespace WebTools.Controllers
     public class UserController : Controller
     {
         private readonly IUserServices _userServices;
+        private readonly IRolesServices _roleServices;
 
-        public UserController(IUserServices userServices)
+        public UserController(IUserServices userServices, IRolesServices rolesServices)
         {
             _userServices = userServices;
+            _roleServices = rolesServices;
         }
 
         public IActionResult Index()
-        {
+        {     
             return View();
         }
+
+        
+
+
         [HttpGet]
         public IActionResult Denied()
         {
@@ -146,7 +155,7 @@ namespace WebTools.Controllers
             catch(Exception ex)
             {
                 var errorMessage = ex.Message;
-                TempData["Error"] = $"Lỗi! {errorMessage}";
+                TempData["Error"] = $"Lỗi! Tài khoản hoặc Mật khẩu không chính xác";
                 return View();
             }
         }

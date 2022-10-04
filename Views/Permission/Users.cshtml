@@ -1,0 +1,127 @@
+﻿@model WebTools.Models.UsersViewModel
+
+@{
+    ViewData["Title"] = "Phân quyền người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12 text-center">
+
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                @{
+                    if (TempData["SuccessMsg"] != null)
+                    {
+                    <script type="text/javascript">
+                            window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
+                    </script>
+
+                    }
+                    if (TempData["ErrorMsg"] != null)
+                    {
+                    <script type="text/javascript">
+                            window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
+                    </script>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-body">
+                    <!--Bảng biểu mẫu -->
+                    <div class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Danh sách Người dùng</h3>
+                                        @* <a class="btn btn-success justify-content-end" data-toggle="ajax-modal" data-target="#addRoles" data-url="/Roles/CreateRoles"><i class="fa fa-plus"></i> &nbsp Thêm Role</a>*@
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form>
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableRoles">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Tên người dùng</th>
+                                                        <th>Tài khoản</th>
+                                                        <th>Email</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Vai trò</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        if (Model.UsersList != null && Model.UsersList.Count > 0)
+                                                        {
+                                                            foreach (var item in Model.UsersList)
+                                                            {
+                                                        <tr>
+                                                            <td>@item.UserID</td>
+                                                            <td>@item.DisplayName</td>
+                                                            <td>@item.UserName</td>
+                                                            <td>@item.Email</td>
+                                                            <td>
+                                                                @if (item.Status == true)
+                                                                        {
+                                                                <span class="badge bg-success">Đang sử dụng</span>
+                                                                        }
+                                                                        else if (item.Status == false)
+                                                                        {
+                                                                <span class="badge bg-danger">Ngưng sử dụng</span>
+                                                                        }
+                                                            </td>
+                                                            <td>
+                                                                @foreach (var roles in Model.RolesList)
+                                                                        {
+                                                                            if (roles.RoleID == item.RoleID)
+                                                                            {
+                                                                <span class="badge bg-primary">@roles.RoleName</span>
+                                                                            }
+                                                                        }
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown">
+                                                                        Action
+                                                                    </button>
+                                                                    <div class="dropdown-menu" role="menu">
+                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#editUsers-@item.UserID" data-url="/Permission/EditUsers?id=@item.UserID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a>
+                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#userRoles-@item.UserID" data-url="/Permission/UserRoles?id=@item.UserID"><i class="fa fa-share-alt"></i> &nbsp Manager Roles</a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                            }
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ReportPopup"></div>
+</section>

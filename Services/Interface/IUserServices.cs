@@ -10,13 +10,15 @@ namespace WebTools.Services.Interface
     {
         public List<Users> GetAllUsers();
 
-        public Users GetUsersByID(int id);
+        public Users GetUsersByID(int? id);
 
         public string AddUser(Users users);
 
         public string EditUser(Users users);
 
         public string Delete(int id);
+
+        public bool IsUserInRole(int RoleID, int UserID);
 
     }
 }

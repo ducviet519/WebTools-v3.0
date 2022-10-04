@@ -20,7 +20,7 @@ $(document).ready(function () {
         "orderCellsTop": true,
         "fixedHeader": false,
         "columnDefs": [{ orderable: false, targets: 8 }],
-        "order": [[4, 'desc']],
+        //"order": [[4, 'desc']],
         "initComplete": function () {
             var api = this.api();
 

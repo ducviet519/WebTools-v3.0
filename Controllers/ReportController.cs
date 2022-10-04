@@ -158,6 +158,7 @@ namespace WebTools.Controllers
         [HttpPost]
          public IActionResult AddReport(ReportList reportList)
             {
+            reportList.KhoaPhong = Request.Form["KhoaPhong"];
             reportList.CreatedUser = User.Identity.Name;
             if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
             {

@@ -21,16 +21,16 @@
                 @{
                     if (TempData["SuccessMsg"] != null)
                     {
-                    <script type="text/javascript">
+                        <script type="text/javascript">
                             window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
-                    </script>
+                        </script>
 
                     }
                     if (TempData["ErrorMsg"] != null)
                     {
-                    <script type="text/javascript">
+                        <script type="text/javascript">
                             window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
-                    </script>
+                        </script>
                     }
                 }
             </div>
@@ -63,33 +63,33 @@
                                                 </thead>
                                                 <tbody>
                                                     @{
-                                                            if (Model.RolesList != null && Model.RolesList.Count > 0)
+                                                        if (Model.RolesList != null && Model.RolesList.Count > 0)
+                                                        {
+                                                            foreach (var item in Model.RolesList)
                                                             {
-                                                                foreach (var item in Model.RolesList)
-                                                                {
-                                                        <tr>
-                                                            <td>@item.RoleID</td>
-                                                            <td>@item.RoleName</td>
-                                                            <td>@item.Description</td>
-                                                            <td>
-                                                                @if (item.Status == 1)
-                                                                            {
-                                                                <span class="badge bg-success">Đang sử dụng</span>
-                                                                            }
-                                                                            else if (item.Status == 0)
-                                                                            {
-                                                                <span class="badge bg-danger">Ngưng sử dụng</span>
-                                                                            }
-                                                            </td>
-                                                            <td>
-                                                                <div class="row justify-content-center">
-                                                                    <div class="col-auto"><a class="btn btn-info btn-sm" data-toggle="ajax-modal" data-target="#editRoles" data-url="/Roles/EditRoles?id=@item.RoleID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a></div>
-                                                                    <div class="col-auto"><a class="btn btn-danger btn-sm" href="/Roles/DeleteRoles?id=@item.RoleID"><i class="fa fa-trash-alt"></i> &nbspXóa</a></div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                                }
+                                                                <tr>
+                                                                    <td>@item.RoleID</td>
+                                                                    <td>@item.RoleName</td>
+                                                                    <td>@item.Description</td>
+                                                                    <td>
+                                                                        @if (item.Status == true)
+                                                                        {
+                                                                            <span class="badge bg-success">Đang sử dụng</span>
+                                                                        }
+                                                                        else if (item.Status == false)
+                                                                        {
+                                                                            <span class="badge bg-danger">Ngưng sử dụng</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="row justify-content-center">
+                                                                            <div class="col-auto"><a class="btn btn-outline-info btn-sm" data-toggle="ajax-modal" data-target="#editRoles" data-url="/Permission/EditRoles?id=@item.RoleID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a></div>
+                                                                            <div class="col-auto"><a class="btn btn-outline-danger btn-sm" href="/Permission/DeleteRoles?id=@item.RoleID"><i class="fa fa-trash-alt"></i> &nbspXóa</a></div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
                                                             }
+                                                        }
                                                     }
                                                 </tbody>
                                             </table>
@@ -107,7 +107,7 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
-                                    <form method="post" asp-action="CreateRoles" id="roleForm">
+                                    <form method="post" asp-controller="Permission" asp-action="CreateRoles" id="roleForm">
                                         <div class="card-body">
                                             <div class="row form-group" hidden>
                                                 <div class="col-2"><label for="RoleID">ID:</label></div>
@@ -126,9 +126,9 @@
                                             <div class="row form-group">
                                                 <div class="col-2"><label for="Status">Trạng thái:</label></div>
                                                 <div class="col">
-                                                    <select asp-items="@Html.GetEnumSelectList<Status>()" class="custom-select mr-sm-2" id="Status" name="Status">
-                                                        <option selected="selected">Chọn...</option>
-                                                    </select>
+                                                    <div class="form-check">
+                                                        <input asp-for="@Model.Roles.Status" class="form-check-input" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
