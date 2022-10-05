@@ -90,7 +90,7 @@ $(document).ready(function () {
         });
     });
 
-    $('body').on('click','a[data-toggle="ajax-modal"]',function (event) {
+    $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
         var url = $(this).data('url');
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);
@@ -158,6 +158,14 @@ $(function () {
         "hideMethod": "fadeOut"
     }
 });
+
+
+//$(function () {
+//    $('#toggle-event').change(function () {
+//        $('#Status').attr("value", $(this).prop('checked'))
+//    })
+//});
+
 
 
 

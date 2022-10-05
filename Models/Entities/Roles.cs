@@ -11,15 +11,12 @@ namespace WebTools.Models
 
         public int RoleID { get; set; }
 
-        [Required]
         public string RoleName { get; set; }
 
         public string Description { get; set; }
 
-        [Required]
         public bool Status { get; set; }
 
-        [Required]
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
 

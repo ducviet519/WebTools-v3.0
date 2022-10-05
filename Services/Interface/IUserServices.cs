@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebTools.Models.Entities;
 using WebTools.Models.Entity;
 
 namespace WebTools.Services.Interface
@@ -14,11 +15,11 @@ namespace WebTools.Services.Interface
 
         public string AddUser(Users users);
 
-        public string EditUser(Users users);
-
         public string Delete(int id);
 
-        public bool IsUserInRole(int RoleID, int UserID);
+        public bool IsUserInRole(int UserID, int RoleID);
+
+        public string EditUserRoles(UserRoles userRoles);
 
     }
 }

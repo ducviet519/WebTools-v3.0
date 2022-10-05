@@ -1,4 +1,4 @@
-﻿@model WebTools.Models.RolesViewModel
+﻿@model WebTools.Models.RoleControllerActionViewModel
 @{
     Layout = null;
 }
@@ -28,15 +28,7 @@
                     <div class="row form-group">
                         <div class="col-2"><label for="Description">Mô tả:</label></div>
                         <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description"></textarea></div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-2"><label for="Status">Trạng thái:</label></div>
-                        <div class="col">
-                            <div class="form-check">
-                                <input asp-for="@Model.Roles.Status" class="form-check-input" />
-                            </div>
-                        </div>
-                    </div>
+                    </div>                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                         <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>

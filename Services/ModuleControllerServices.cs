@@ -6,17 +6,17 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using WebTools.Models;
 using WebTools.Models.Entities;
 using WebTools.Services.Interface;
 
 namespace WebTools.Services
 {
-    public class RolesServices : IRolesServices
+    public class ModuleControllerServices : IModuleControllerServices
     {
+        #region Connection Database
+        
         private readonly IConfiguration _configuration;
-
-        public RolesServices(IConfiguration configuration)
+        public ModuleControllerServices(IConfiguration configuration)
         {
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("ToolsDB");
@@ -28,8 +28,9 @@ namespace WebTools.Services
         {
             get { return new SqlConnection(ConnectionString); }
         }
+        #endregion
 
-        public string AddRoleControllerAction(RoleControllerActions roleControllerActions)
+        public string AddModuleController(ModuleControllers moduleControllers)
         {
             string result = "";
             try
@@ -37,46 +38,14 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<RoleControllerActions>("sp_RoleControllerAction",
-                        new
-                        {
-                            RoleID = roleControllerActions.RoleID,
-                            ControllerID = roleControllerActions.Controller_ID,
-                            ActionID = roleControllerActions.ActionID,
-                            Action = "AddRoleAction"
-                        },
-                        commandType: CommandType.StoredProcedure);
-                    if (data != null)
-                    {
-                        result = "OK";
-                    }
-                    dbConnection.Close();
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
-                result = ex.Message;
-                return result;
-            }
-        }
-
-        public string AddRoles(Roles roles)
-        {
-            string result = "";
-            try
-            {
-                using (IDbConnection dbConnection = Connection)
-                {
-                    dbConnection.Open();
-                    var data = dbConnection.Query<Roles>("sp_Roles",
+                    var data = dbConnection.Query<ModuleControllers>("sp_ModuleControllers",
                         new
                         {
                             ID = "",
-                            Name = roles.RoleName,
-                            Description = roles.Description,
-                            Status = roles.Status,
-                            User = roles.CreatedBy,
+                            Name = moduleControllers.ControllerName,
+                            Description = moduleControllers.Description,
+                            Status = moduleControllers.Status,
+                            User = moduleControllers.CreatedBy,
                             Action = "Add"
                         },
                         commandType: CommandType.StoredProcedure);
@@ -95,7 +64,7 @@ namespace WebTools.Services
             }
         }
 
-        public string DeleteRoles(int? id)
+        public string DeleteModuleController(int id)
         {
             string result = "";
             try
@@ -103,7 +72,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<Roles>("sp_Roles",
+                    var data = dbConnection.Query<ModuleControllers>("sp_ModuleControllers",
                         new
                         {
                             ID = id,
@@ -129,7 +98,7 @@ namespace WebTools.Services
             }
         }
 
-        public string EditRoles(Roles roles)
+        public string EditModuleController(ModuleControllers moduleControllers)
         {
             string result = "";
             try
@@ -137,14 +106,14 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<Roles>("sp_Roles",
+                    var data = dbConnection.Query<ModuleControllers>("sp_ModuleControllers",
                         new
                         {
-                            ID = roles.RoleID,
-                            Name = roles.RoleName,
-                            Description = roles.Description,
-                            Status = roles.Status,
-                            User = roles.CreatedBy,
+                            ID = moduleControllers.ControllerID,
+                            Name = moduleControllers.ControllerName,
+                            Description = moduleControllers.Description,
+                            Status = moduleControllers.Status,
+                            User = moduleControllers.ModifiedBy,
                             Action = "Edit"
                         },
                         commandType: CommandType.StoredProcedure);
@@ -163,15 +132,15 @@ namespace WebTools.Services
             }
         }
 
-        public List<Roles> GetAllRoles()
+        public List<ModuleControllers> GetAllModuleController()
         {
-            List<Roles> roles = new List<Roles>();
+            List<ModuleControllers> modules = new List<ModuleControllers>();
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    roles = dbConnection.Query<Roles>("sp_Roles"
+                    modules = dbConnection.Query<ModuleControllers>("sp_ModuleControllers"
                         , new
                         {
                             ID = "",
@@ -185,66 +154,44 @@ namespace WebTools.Services
                         , commandType: CommandType.StoredProcedure).ToList();
                     dbConnection.Close();
                 }
-                return roles;
+                return modules;
             }
             catch (Exception ex)
             {
                 string errorMsg = ex.Message;
-                return roles;
+                return modules;
             }
         }
 
-        public Roles GetRolesByID(int? id)
+        public ModuleControllers GetModuleControllersByID(int id)
         {
-            Roles roles = new Roles();
+            ModuleControllers modules = new ModuleControllers();
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    roles = dbConnection.Query<Roles>("sp_Roles", new
-                    {
-                        ID = id,
-                        Name = "",
-                        Description = "",
-                        Status = "",
-                        User = "",
-                        Action = "GetByID"
-                    }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    modules = dbConnection.Query<ModuleControllers>("sp_ModuleControllers"
+                        , new
+                        {
+                            ID = id,
+                            Name = "",
+                            Description = "",
+                            Status = "",
+                            User = "",
+                            Action = "GetByID"
+
+                        }
+                        , commandType: CommandType.StoredProcedure).FirstOrDefault();
                     dbConnection.Close();
                 }
-                return roles;
+                return modules;
             }
             catch (Exception ex)
             {
                 string errorMsg = ex.Message;
-                return roles;
+                return modules;
             }
         }
-
-        public bool IsRoleInControllerAction(int RoleID, int ControllerID, int ActionID)
-        {
-            List<RoleControllerActions> roleControllerActions = new List<RoleControllerActions>();
-            var sql = "SELECT * FROM dbo.RoleControllers WHERE (RoleID = @RoleID) AND (ControllerID = @ControllerID) AND (ActionID = @ActionID)";
-            try
-            {
-                using (IDbConnection dbConnection = Connection)
-                {
-                    dbConnection.Open();
-                    roleControllerActions = dbConnection.Query<RoleControllerActions>(sql, new { RoleID = RoleID, ControllerID = ControllerID, ActionID = ActionID }).ToList();
-                    dbConnection.Close();
-                }
-                if (roleControllerActions.Count > 0) { return true; }
-                else { return false; }
-
-            }
-            catch (Exception ex)
-            {
-                string errorMsg = ex.Message;
-                return false;
-            }
-        }
-
-
     }
 }

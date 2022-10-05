@@ -1,7 +1,7 @@
 ﻿@model WebTools.Models.RoleControllerActionViewModel
 
 @{
-    ViewData["Title"] = "Phân quyền người dùng";
+    ViewData["Title"] = "Quản lý Controller";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -44,31 +44,33 @@
                             <div class="col-sm-8">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Danh sách Role</h3>
+                                        <h3 class="card-title">Danh sách Action</h3>
                                         @* <a class="btn btn-success justify-content-end" data-toggle="ajax-modal" data-target="#addRoles" data-url="/Roles/CreateRoles"><i class="fa fa-plus"></i> &nbsp Thêm Role</a>*@
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <form>
                                         <div class="card-body">
-                                            <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableRoles">
+                                            <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableController">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Tên nhóm quyền</th>
+                                                        <th>Controller</th>
+                                                        <th>Action</th>
                                                         <th>Mô tả</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @{
-                                                        if (Model.RolesList != null && Model.RolesList.Count > 0)
+                                                        if (Model.RoleControllerActionLists != null && Model.RoleControllerActionLists.Count > 0)
                                                         {
-                                                            foreach (var item in Model.RolesList)
+                                                            foreach (var item in Model.RoleControllerActionLists)
                                                             {
                                                                 <tr>
-                                                                    <td>@item.RoleID</td>
-                                                                    <td>@item.RoleName</td>
+                                                                    <td>@item.ActionID</td>
+                                                                    <td>@item.ControllerName</td>
+                                                                    <td>@item.ActionName</td>
                                                                     <td>@item.Description</td>
                                                                     <td>
                                                                         <div class="btn-group">
@@ -76,11 +78,10 @@
                                                                                 Action
                                                                             </button>
                                                                             <div class="dropdown-menu" role="menu">
-                                                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#editRole" data-url="/Permission/EditRoles?id=@item.RoleID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a>
-                                                                                <a class="dropdown-item" href="/Permission/DeleteRoles?id=@item.RoleID"><i class="fa fa-trash-alt"></i> &nbspXóa</a>
-                                                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#editRoleControllerAction" data-url="/Permission/RoleActions?id=@item.RoleID"><i class="fa fa-share-alt"></i> &nbspManager Role</a>
+                                                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#editAction" data-url="/Permission/EditAction?id=@item.ActionID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a>
+                                                                                <a class="dropdown-item" href="/Permission/DeleteAction?id=@item.ActionID"><i class="fa fa-trash-alt"></i> &nbspXóa</a>
                                                                             </div>
-                                                                        </div>                                                                      
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             }
@@ -98,26 +99,35 @@
                             <div class="col-sm-4">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Thêm Role</h3>
+                                        <h3 class="card-title">Thêm Action</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
-                                    <form method="post" asp-controller="Permission" asp-action="CreateRoles" id="roleForm">
+                                    <form method="post" asp-controller="Permission" asp-action="CreateAction" id="actionForm">
                                         <div class="card-body">
                                             <div class="row form-group" hidden>
-                                                <div class="col-2"><label for="RoleID">ID:</label></div>
+                                                <div class="col-2"><label for="ActionID">ID:</label></div>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" name="RoleID" id="RoleID" readonly />
+                                                    <input type="text" class="form-control" name="ActionID" id="ActionID" readonly />
                                                 </div>
                                             </div>
                                             <div class="row form-group">
-                                                <div class="col-2"><label for="RoleName">Tên Role:</label></div>
-                                                <div class="col"><input type="text" class="form-control" name="RoleName" id="RoleName" placeholder="Nhập tên Role" required /></div>
+                                                <div class="col-2"><label for="ControllerID">Controller:</label></div>
+                                                <div class="col">
+                                                    <select asp-items="@Model.SelectController" class="select2" data-placeholder="Chọn Controller" style="width: 100%;" name="ControllerID" id="ControllerID">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-2"><label for="ActionName">Action:</label></div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" name="ActionName" id="ActionName" />
+                                                </div>
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col-2"><label for="Description">Mô tả:</label></div>
                                                 <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description"></textarea></div>
-                                            </div>                                           
+                                            </div>
                                         </div>
                                         <!-- /.card-body -->
 

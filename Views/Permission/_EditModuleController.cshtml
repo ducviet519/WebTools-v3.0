@@ -13,21 +13,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-controller="Permission" asp-action="EditRoles" id="roleForm">
+                <form method="post" asp-controller="Permission" asp-action="EditController" id="controllerForm">
                     @Html.AntiForgeryToken()
                     <div class="row form-group" hidden>
-                        <div class="col-2"><label for="RoleID">ID:</label></div>
+                        <div class="col-2"><label for="ControllerID">ID:</label></div>
                         <div class="col">
-                            <input type="text" class="form-control" name="RoleID" id="RoleID" value="@Model.Roles.RoleID" readonly />
+                            <input type="text" class="form-control" name="ControllerID" id="ControllerID" value="@Model.Controllers.ControllerID" readonly />
                         </div>
                     </div>
                     <div class="row form-group">
-                        <div class="col-2"><label for="RoleName">Tên Role:</label></div>
-                        <div class="col"><input type="text" class="form-control" name="RoleName" id="RoleName" value="@Model.Roles.RoleName" required /></div>
+                        <div class="col-2"><label for="RoleName">Controller:</label></div>
+                        <div class="col"><input type="text" class="form-control" name="ControllerName" id="ControllerName" value="@Model.Controllers.ControllerName" required /></div>
                     </div>
                     <div class="row form-group">
                         <div class="col-2"><label for="Description">Mô tả:</label></div>
-                        <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description">@Model.Roles.Description</textarea></div>
+                        <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description">@Model.Controllers.Description</textarea></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

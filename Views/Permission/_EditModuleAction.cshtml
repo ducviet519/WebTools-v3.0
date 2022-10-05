@@ -1,0 +1,56 @@
+﻿@model WebTools.Models.RoleControllerActionViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editActionLabel" aria-hidden="true" id="ActionPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chỉnh sửa thông tin Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;&nbsp;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Permission" asp-action="EditAction" id="actionForm">
+                    @Html.AntiForgeryToken()
+                    <div class="row form-group" hidden>
+                        <div class="col-2"><label for="ActionID">ID:</label></div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="ActionID" id="ActionID" value="@Model.RoleControllerActions.ActionID" readonly />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-2"><label for="ControllerID">Controller:</label></div>
+                        <div class="col">
+                            <select asp-items="@Model.SelectController" class="select2" data-placeholder="Chọn Controller" style="width: 100%;" name="ControllerID" id="ControllerID">
+                                <option value="@Model.RoleControllerActions.Controller_ID" selected="selected" disabled>@Model.RoleControllerActions.ControllerName</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-2"><label for="ActionName">Action:</label></div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="ActionName" id="ActionName" value="@Model.RoleControllerActions.ActionName"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-2"><label for="Description">Mô tả:</label></div>
+                        <div class="col"><textarea rows="4" class="form-control" name="Description" id="Description">@Model.RoleControllerActions.Description</textarea></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+    });
+</script>

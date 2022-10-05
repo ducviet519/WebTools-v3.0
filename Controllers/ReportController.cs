@@ -21,6 +21,8 @@ namespace WebTools.Controllers
     [Authorize]
     public class ReportController : Controller
     {
+        #region Connnection Database
+
         private readonly IConfiguration _configuration;
         private readonly IReportListServices _reportListServices;
         private readonly IReportVersionServices _reportVersionServices;
@@ -50,7 +52,9 @@ namespace WebTools.Controllers
             _depts = depts;
             _webHostEnvironment = webHostEnvironment;
         }
+        #endregion
 
+        #region Index Page
 
         public IActionResult Index
             (
@@ -104,16 +108,17 @@ namespace WebTools.Controllers
             model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
             return View(model);
         }
+        #endregion
 
-        //Khử dấu cho string
+        #region Khử dấu cho string        
         public static string convertToUnSign(string s)
         {
             Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
             string temp = s.Normalize(NormalizationForm.FormD);
             return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
         }
-
-        //Sắp xếp
+        #endregion
+        #region Sắp xếp
         private List<ReportList> SortData(List<ReportList> model, string sortField, string currentSortField, string currentSortOrder)
         {
             if (string.IsNullOrEmpty(sortField))
@@ -145,6 +150,7 @@ namespace WebTools.Controllers
             }
             return model;
         }
+        #endregion
 
         //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
         [HttpGet]

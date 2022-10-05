@@ -1,25 +1,25 @@
-﻿@model WebTools.Models.UsersViewModel
+﻿@model WebTools.Models.RoleControllerActionViewModel
 @{
     Layout = null;
 }
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editUsersLabel" aria-hidden="true" id="UsersPopup">
-    <div class="modal-dialog">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="roleActionLabel" aria-hidden="true" id="RoleActionPopup">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Phân quyền cho người dùng: <strong>@Model.Users.UserName</strong></h5>
+                <h5 class="modal-title">Phân quyền Role: <strong>@Model.Roles.RoleName</strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;&nbsp;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-controller="Permission" asp-action="EditUserRole" id="userForm">
+                <form method="post" asp-controller="Permission" asp-action="AddRoldAction" id="userForm">
                     @Html.AntiForgeryToken()
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Tên vai trò</th>
+                                <th>Controller</th>
+                                <th>Action</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
                             </tr>
@@ -27,19 +27,19 @@
                         <tbody>
                             @{
                                 int count = 0;
-                                if (Model.RolesList != null && Model.RolesList.Count > 0)
+                                if (Model.RoleControllerActionLists != null && Model.RoleControllerActionLists.Count > 0)
                                 {
-                                    foreach (var item in Model.RolesList)
+                                    foreach (var item in Model.RoleControllerActionLists)
                                     {
                                         <tr>
                                             <td>
-                                                @item.RoleID
-                                                <input type="hidden" id="RoleID" name="RoleID-@count" value="@item.RoleID" />
-                                                <input type="hidden" id="UserID" name="UserID-@count" value="@Model.Users.UserID" />
+                                                @item.ControllerName
+                                                <input type="hidden" id="ControllerID" name="ControllerID-@count" value="@item.Controller_ID" />
+                                                <input type="hidden" id="RoleID" name="RoleID-@count" value="@Model.Roles.RoleID" />
                                             </td>
                                             <td>
-                                                @item.RoleName
-                                                <input type="hidden" id="RoleName" name="RoleName-@count" value="@item.RoleName" />
+                                                @item.ActionName
+                                                <input type="hidden" id="ActionID" name="ActionID-@count" value="@item.ActionID" />
                                             </td>
                                             <td>
                                                 @item.Description

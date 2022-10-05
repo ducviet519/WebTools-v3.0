@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using WebTools.Models;
+using WebTools.Models.Entities;
 using WebTools.Models.Entity;
 using WebTools.Services.Interface;
 
@@ -103,7 +104,8 @@ namespace WebTools.Services
             }
         }
 
-        public string EditUser(Users users)
+
+        public string EditUserRoles(UserRoles userRoles)
         {
             string result = "";
             try
@@ -114,15 +116,15 @@ namespace WebTools.Services
                     var data = dbConnection.Query<Users>("sp_Users",
                         new
                         {
-                            ID = users.UserID,
-                            DisplayName = users.DisplayName,
-                            UserName = users.UserName,
-                            Password = users.Password,
-                            Source = users.Source,
-                            Email = users.Email,
-                            Status = users.Status,
-                            Role_ID = users.RoleID,
-                            Action = "Edit"
+                            ID = userRoles.UserID,
+                            DisplayName = "",
+                            UserName = "",
+                            Password = "",
+                            Source = "",
+                            Email = "",
+                            Status = "",
+                            Role_ID = userRoles.RoleID,
+                            Action = "AddUserRoles"
                         },
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
@@ -205,7 +207,7 @@ namespace WebTools.Services
             }
         }
 
-        public bool IsUserInRole(int RoleID, int UserID)
+        public bool IsUserInRole(int UserID, int RoleID)
         {
             List<UsersViewModel> userInRole = new List<UsersViewModel>();
             var sql = "SELECT * FROM dbo.UserRoles WHERE (UserID = @UserID) AND (RoleID = @RoleID)";
@@ -217,7 +219,7 @@ namespace WebTools.Services
                     userInRole = dbConnection.Query<UsersViewModel>(sql, new { UserID = UserID, RoleID = RoleID }).ToList();
                     dbConnection.Close();
                 }
-                if (userInRole.Count < 0) { return true; }
+                if (userInRole.Count > 0) { return true; }
                 else { return false; }
                     
             }
