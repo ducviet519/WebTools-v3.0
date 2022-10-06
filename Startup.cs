@@ -15,6 +15,8 @@ using WebTools.Context;
 using WebTools.Services;
 using WebTools.Services.Interface;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Authorization;
+using WebTools.Permission;
 
 namespace WebTools
 {
@@ -30,8 +32,10 @@ namespace WebTools
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            //services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddControllersWithViews();
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
                     options.LoginPath = "/User/Login";
@@ -40,12 +44,12 @@ namespace WebTools
                     {
                         OnSigningIn = async context =>
                         {
-                            var principal = context.Principal;
-                            if(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "Admin")
-                            {
-                                var claimsIdentity = principal.Identity as ClaimsIdentity;
-                                claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                            }
+                            //var principal = context.Principal;
+                            //if(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "Admin")
+                            //{
+                            //    var claimsIdentity = principal.Identity as ClaimsIdentity;
+                            //    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                            //}
                             await Task.CompletedTask;
                         },
                         OnSignedIn = async context =>

@@ -141,8 +141,8 @@ namespace WebTools.Controllers
                         new Claim(ClaimTypes.Name, user.Name),
                         new Claim(ClaimTypes.NameIdentifier, UserName),
                         new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
-                        new Claim(ClaimTypes.Email, user.EmailAddress ?? ""),
-                        //new Claim(ClaimTypes.Expired, user2.Status ? "0" : "1"),
+                        new Claim(ClaimTypes.Email, $@"{login.UserName.Trim().ToLower()}@{domain}" ?? ""),
+                        //new Claim(ClaimTypes.Expired, user.Enabled ? "0" : "1"),
                     };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

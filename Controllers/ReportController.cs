@@ -73,6 +73,8 @@ namespace WebTools.Controllers
             ReportListViewModel model = new ReportListViewModel();
             List<ReportList> data = _reportListServices.GetReportList().ToList();
 
+
+
             if (SearchString != null)
             {
                 pageNo = 1;
@@ -106,6 +108,8 @@ namespace WebTools.Controllers
             model.ReportLists = data;
             int pageSize = 10;
             model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
+            TempData["SearchString"] = SearchString;
+            TempData["SearchDate"] = SearchDate;
             return View(model);
         }
         #endregion
@@ -162,12 +166,15 @@ namespace WebTools.Controllers
         }
 
         [HttpPost]
-         public IActionResult AddReport(ReportList reportList)
+        [DisableRequestSizeLimit]
+        public IActionResult AddReport(ReportList reportList)
             {
+            string getDateS = DateTime.Now.ToString("ddMMyyyy");
             reportList.KhoaPhong = Request.Form["KhoaPhong"];
             reportList.CreatedUser = User.Identity.Name;
             if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
             {
+                string fileName = $"{getDateS}_{reportList.MaBM}_{reportList.PhienBan}_{reportList.fileUpload.FileName}";
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, reportList.fileUpload.FileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -214,43 +221,51 @@ namespace WebTools.Controllers
 
         //5. Tạo chức năng Lưu phiên bản
         [HttpPost]
+        [DisableRequestSizeLimit]
         public IActionResult AddVersion(ReportVersion reportVersion)
         {
-            reportVersion.CreatedUser = User.Identity.Name;
-            string IDBieuMau = reportVersion.IDBieuMau;
-            string resault = string.Empty;
-            if (reportVersion.fileUpload != null && reportVersion.fileUpload.Length > 0)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, reportVersion.fileUpload.FileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    reportVersion.fileUpload.CopyTo(fileStream);
-                }
-                reportVersion.FileLink = filePath;
-                var result = _reportVersionServices.InsertReportVersion(reportVersion);
-                if (result == "OK")
-                {
-                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Lỗi! " + result;
-                }
-                return RedirectToAction("Index");
-            }
+            var data = _reportVersionServices.GetReportVersion(reportVersion.IDBieuMau).Where(v => v.PhienBan.Contains(reportVersion.PhienBan));
+            if (data.Any()) { TempData["ErrorMsg"] = $"Lỗi! Biểu mẫu đã tồn tại phiên bản: {reportVersion.PhienBan} xin vui lòng kiểm tra lại"; return RedirectToAction("Index"); }
             else
             {
-                var result = _reportVersionServices.InsertReportVersion(reportVersion);
-                if (result == "OK")
+                reportVersion.CreatedUser = User.Identity.Name;
+                string getDateS = DateTime.Now.ToString("ddMMyyyy");
+                string IDBieuMau = reportVersion.IDBieuMau;
+                string resault = string.Empty;
+                if (reportVersion.fileUpload != null && reportVersion.fileUpload.Length > 0)
                 {
-                    TempData["SuccessMsg"] = "Thêm phiên bản "+ reportVersion.PhienBan +" cho biểu mẫu "+ reportVersion.TenBM +" thành công!";
+                    string fileName = $"{getDateS}_{reportVersion.MaBM}_{reportVersion.PhienBan}_{reportVersion.fileUpload.FileName}";
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        reportVersion.fileUpload.CopyTo(fileStream);
+                    }
+                    reportVersion.FileLink = filePath;
+                    var result = _reportVersionServices.InsertReportVersion(reportVersion);
+                    if (result == "OK")
+                    {
+                        TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Lỗi! " + result;
+                    }
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "Lỗi!" + result;
+                    var result = _reportVersionServices.InsertReportVersion(reportVersion);
+                    if (result == "OK")
+                    {
+                        TempData["SuccessMsg"] = "Thêm phiên bản " + reportVersion.PhienBan + " cho biểu mẫu " + reportVersion.TenBM + " thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Lỗi!" + result;
+                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
             }
         }
 

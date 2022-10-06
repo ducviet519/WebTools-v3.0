@@ -13,5 +13,7 @@ namespace WebTools.Services.Interface
         public string AddModuleActions(ModuleActions moduleActions);
         public string EditModuleActions(ModuleActions moduleActions);
         public string DeleteModuleActions(int id);
+
+        public List<ModuleActions> GetActionsInController(int controllerID);
     }
 }
