@@ -11,5 +11,7 @@ namespace WebTools.Models.Entities
         public string RoleName { get; set; }
         public int Controller_ID { get; set; }
         public string ControllerName { get; set; }
+        
+
     }
 }

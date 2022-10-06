@@ -14,6 +14,8 @@ namespace WebTools.Controllers
     /// <summary>
     /// Permission Users, Roles, ModuleControllers, ModuleActions
     /// </summary>
+    #region Connection Database
+
     public class PermissionController : Controller
     {
         private readonly IUserServices _userServices;
@@ -28,6 +30,23 @@ namespace WebTools.Controllers
             _moduleControllerServices = moduleControllerServices;
             _moduleActionServices = moduleActionServices;
         }
+
+        #endregion
+
+        #region Permission
+        //Tạo chuỗi Permission từ Controller và Actions
+        public List<string> GeneratePermissionsForModule(int controllerID)
+        {
+            var permissionList = new List<string>();
+            var controllerData = _moduleControllerServices.GetModuleControllersByID(controllerID);
+            foreach(var action in _moduleActionServices.GetActionsInController(controllerID))
+            {
+                string permissionString = $"Permissions.{controllerData.ControllerName}.{action.ActionName}";
+                permissionList.Add(permissionString);
+            }
+            return permissionList;
+        }
+        #endregion
         public IActionResult Index()
         {
             return View();
@@ -44,9 +63,6 @@ namespace WebTools.Controllers
         }
 
 
-        /// <summary>
-        /// Lấy danh sách Role cho User
-        /// </summary>
         [HttpGet]
         public IActionResult UserRoles(int? id)
         {
@@ -77,9 +93,7 @@ namespace WebTools.Controllers
 
             return PartialView("_UserRolesPartial", model);
         }
-        /// <summary>
-        /// Thêm dữ liệu vào dbo.UserRoles(UserID, RoleID)
-        /// </summary>
+
         [HttpPost]
         public IActionResult EditUserRole(UserRoles userRoles)
         {
@@ -191,7 +205,7 @@ namespace WebTools.Controllers
                 }
                 return RedirectToAction("Roles");
             }
-            TempData["ErrorMsg"] = "Lỗi! Không tìm thấy ID Role";
+            TempData["ErrorMsg"] = "Lỗi! Không thể xóa Role mặc định";
             return RedirectToAction("Roles");
         }
 

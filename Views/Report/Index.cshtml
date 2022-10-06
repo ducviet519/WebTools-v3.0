@@ -1,4 +1,6 @@
-﻿@model WebTools.Models.ReportListViewModel
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model WebTools.Models.ReportListViewModel
 
 @{
     ViewData["Title"] = "Quản lý biểu mẫu";
@@ -44,12 +46,12 @@
                             <div class="row align-items-end">
                                 <div class="col-3 pr-5">
                                     <label>Tên/Mã biểu mẫu:</label>
-                                    <input type="text" class="form-control" name="SearchString" id="SearchString" autocomplete="off" />
+                                    <input type="text" class="form-control" name="SearchString" id="SearchString" value="@TempData["SearchString"]" />
                                 </div>
                                 <div class="col-auto pl-2 pr-5">
                                     <label>Ngày ban hành:</label>
                                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" />
+                                        <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" value="@TempData["SearchDate"]" />
                                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -72,7 +74,10 @@
                                     }, "Tất cả", new { @class = "form-control" })
                                 </div>
                                 <div class="col-auto"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
-                                <div class="col-auto"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
+                                @*@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Products.Create)).Result.Succeeded)
+                                {*@
+                                    <div class="col-auto"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
+                                @*}*@
                             </div>
                         }
                     </div>
@@ -111,7 +116,7 @@
                                                             <td>@item.TrangThai</td>
                                                             <td>@item.PhanMem</td>
                                                             <td>@item.TrangThaiPM</td>
-                                                            <td>                                                              
+                                                            <td>
                                                                 <div class="btn-group">
                                                                     @if (item.FileLink != null)
                                                                     {

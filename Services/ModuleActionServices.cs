@@ -135,6 +135,27 @@ namespace WebTools.Services
             }
         }
 
+        public List<ModuleActions> GetActionsInController(int controllerID)
+        {
+            List<ModuleActions> actionInController = new List<ModuleActions>();
+            var sql = "SELECT ID AS ActionID, Name AS ActionName FROM dbo.ModuleActions WHERE ControllerID = @ControllerID";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    actionInController = dbConnection.Query<ModuleActions>(sql,new { ControllerID = controllerID }, commandType: CommandType.StoredProcedure).ToList();
+                    dbConnection.Close();
+                }
+                return actionInController;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return actionInController;
+            }
+        }
+
         public List<ModuleActions> GetAllModuleActions()
         {
             List<ModuleActions> modules = new List<ModuleActions>();
