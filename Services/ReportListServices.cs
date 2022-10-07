@@ -124,7 +124,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<ReportList>("sp_Report_New",
+                    var data = dbConnection.Query<ReportList>("sp_Report_Edit",
                         new
                         {
                             IDBieuMau = reportList.IDBieuMau,

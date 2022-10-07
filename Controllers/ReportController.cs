@@ -246,7 +246,7 @@ namespace WebTools.Controllers
             }
             else
             {
-                var result = _reportListServices.InsertReportList(reportList);
+                var result = _reportListServices.UpdateReportList(reportList);
                 if (result == "OK")
                 {
                     TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
