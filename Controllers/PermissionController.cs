@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
+    [Authorize(Roles = "Admin")]
     /// <summary>
     /// Permission Users, Roles, ModuleControllers, ModuleActions
     /// </summary>
@@ -98,6 +100,7 @@ namespace WebTools.Controllers
         public IActionResult EditUserRole(UserRoles userRoles)
         {
             int count = Int32.Parse(Request.Form["count"]);
+            if (count > 0) { _userServices.DeleteRoleInUser(userRoles.UserID); }
             for (int i = 0; i < count; i++)
             {
                 userRoles.UserID = Int32.Parse(Request.Form["UserID-" + i]);
@@ -118,6 +121,7 @@ namespace WebTools.Controllers
                     }
                 }
             }
+
             return RedirectToAction("Users");
 
         }

@@ -13,6 +13,7 @@ namespace WebTools.Services
 {
     public class ReportListServices : IReportListServices
     {
+        #region Connection String
         private readonly IConfiguration _configuration;
         public ReportListServices(IConfiguration configuration)
         {
@@ -26,8 +27,26 @@ namespace WebTools.Services
         {
             get { return new SqlConnection(ConnectionString); }
         }
-
-
+        #endregion
+        public ReportList GetReportByID(string id)
+        {
+            ReportList reports = new ReportList();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    reports = dbConnection.Query<ReportList>("sp_Report_GetByID", new { IDBieuMau = id }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    dbConnection.Close();
+                }
+                return reports;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return reports;
+            }
+        }
         //Thực thi StoredProcedure sp_Report_List lấy về danh sách Biểu mẫu
         public List<ReportList> GetReportList()
         {
@@ -49,7 +68,6 @@ namespace WebTools.Services
                 return reportLists;
             }
         }
-
         //Thực thi StoredProcedure sp_Report_New thêm mới Biểu mẫu
         public string InsertReportList(ReportList reportList)
         {
@@ -67,6 +85,50 @@ namespace WebTools.Services
                     var data = dbConnection.Query<ReportList>("sp_Report_New",
                         new
                         {
+                            TenBM = reportList.TenBM,
+                            MaBM = reportList.MaBM,
+                            NgayBH = NgayBanHanh,
+                            FileLink = reportList.FileLink,
+                            GhiChu = reportList.GhiChu,
+                            KhoaPhongSD = reportList.KhoaPhong,
+                            PhienBan = reportList.PhienBan,
+                            TheLoai = reportList.postTheLoai,
+                            User = reportList.CreatedUser
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public string UpdateReportList(ReportList reportList)
+        {
+            string result = "";
+            DateTime? NgayBanHanh = null;
+            if (!String.IsNullOrEmpty(reportList.NgayBanHanh))
+            {
+                NgayBanHanh = DateTime.ParseExact(reportList.NgayBanHanh, "dd/MM/yyyy", null);
+            }
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<ReportList>("sp_Report_New",
+                        new
+                        {
+                            IDBieuMau = reportList.IDBieuMau,
+                            IDPhienBan = reportList.IDPhienBan,
                             TenBM = reportList.TenBM,
                             MaBM = reportList.MaBM,
                             NgayBH = NgayBanHanh,

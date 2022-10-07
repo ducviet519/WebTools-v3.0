@@ -3,7 +3,7 @@
     Layout = null;
 }
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addReportLabel" aria-hidden="true" id="addReport">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="editReportLabel" aria-hidden="true" id="editReport">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,21 +13,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddReport" id="reportForm">
+                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="EditReport" id="reportForm">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" />
-
+                    <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.ReportList.IDBieuMau" />
+                    <input type="hidden" id="IDPhienBan" name="IDPhienBan" value="@Model.ReportList.IDPhienBan" />
                     <div class="row mb-3">
                         <div class="col-3"><label for="TenBM">Tên biểu mẫu:</label></div>
-                        <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu" required /></div>
+                        <div class="col-9"><input type="text" class="form-control" name="TenBM" id="TenBM" placeholder="Nhập tên biểu mẫu" value="@Model.ReportList.TenBM" required /></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="MaBM">Mã biểu mẫu:</label></div>
-                        <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" required /></div>
+                        <div class="col-3"><input type="text" class="form-control" name="MaBM" id="MaBM" placeholder="Nhập mã biểu mẫu" value="@Model.ReportList.MaBM" readonly /></div>
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
                             <div class="input-group date" id="reportdate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" required />
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" value="@Model.ReportList.NgayBanHanh" required />
                                 <div class="input-group-append" data-target="#reportdate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -42,24 +42,30 @@
                                 <label class="custom-file-label" for="customFile">Chọn file</label>
                             </div>
                         </div>
+                        <div class="col-auto">
+                            <a href="/Report/DocumentView?link=@Model.ReportList.FileLink" target="_blank"><span>File cũ</span></a>
+                            <input type="hidden" id="FileLink" name="FileLink" value="@Model.ReportList.FileLink" />
+                        </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
-                        <div class="col-2"><input type="text" class="form-control" id="PhienBan" name="PhienBan" /></div>
+                        <div class="col-2"><input type="text" class="form-control" id="PhienBan" name="PhienBan" value="@Model.ReportList.PhienBan" readonly /></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="GhiChu">Ghi chú:</label></div>
-                        <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" /></div>
+                        <div class="col-9"><input type="text" class="form-control" name="GhiChu" id="GhiChu" value="@Model.ReportList.GhiChu" /></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-9">
-                            <select class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong"></select>
+                            <select asp-for="@Model.ReportList.KhoaPhong" asp-items="@Model.Depts" class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportList.KhoaPhong">
+                            </select>
+                            <input type="hidden" id="txtKhoaPhong" name="txtKhoaPhong" value="@Model.ReportList.KhoaPhong" />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3"><label for="TheLoai">Thể loại:</label></div>
                         <div class="col-4">
                             <select class="form-control" name="postTheLoai" id="postTheLoai">
-                                <option selected>Choose...</option>
+                                <option selected disabled>@Model.ReportList.TheLoai</option>
                                 <option value="1">Biểu mẫu chuyên môn</option>
                                 <option value="2">Báo cáo thống kê</option>
                                 <option value="3">Biểu đồ</option>
@@ -70,11 +76,11 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                         @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
                         {
-                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                            <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
                         }
                     </div>
                 </form>
-            </div>           
+            </div>
         </div>
     </div>
 </div>
@@ -121,7 +127,7 @@
         });
     });
 
-    //$(function () {        
+    //$(function () {
 
     //    $(this).on('click', '[data-save="modalFile"]', function (event) {
     //        event.preventDefault();
@@ -177,6 +183,14 @@
 
         //File upload show name file
         bsCustomFileInput.init()
+    });
+    $(function () {
+        var string = $('#txtKhoaPhong').val();
+        var array = string.split(",").map(Number);
+        //Dropdown
+        $('.select2').select2()
+        $('#KhoaPhong').val(array);
+        $('#KhoaPhong').trigger('change');
     });
 </script>
 

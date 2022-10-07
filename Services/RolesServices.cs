@@ -14,6 +14,7 @@ namespace WebTools.Services
 {
     public class RolesServices : IRolesServices
     {
+        #region Connection Database
         private readonly IConfiguration _configuration;
 
         public RolesServices(IConfiguration configuration)
@@ -28,7 +29,7 @@ namespace WebTools.Services
         {
             get { return new SqlConnection(ConnectionString); }
         }
-
+        #endregion
         public string AddRoleControllerAction(RoleControllerActions roleControllerActions)
         {
             string result = "";
@@ -72,7 +73,6 @@ namespace WebTools.Services
                     var data = dbConnection.Query<Roles>("sp_Roles",
                         new
                         {
-                            ID = "",
                             Name = roles.RoleName,
                             Description = roles.Description,
                             Status = roles.Status,
@@ -107,10 +107,6 @@ namespace WebTools.Services
                         new
                         {
                             ID = id,
-                            Name = "",
-                            Description = "",
-                            Status = "",
-                            User = "",
                             Action = "Delete"
                         },
                         commandType: CommandType.StoredProcedure);
@@ -163,6 +159,30 @@ namespace WebTools.Services
             }
         }
 
+        public Roles FindByName(string RoleName)
+        {
+            Roles roles = new Roles();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    roles = dbConnection.Query<Roles>("sp_Roles", new
+                    {
+                        Name = RoleName,
+                        Action = "FindByName"
+                    }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    dbConnection.Close();
+                }
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return roles;
+            }
+        }
+
         public List<Roles> GetAllRoles()
         {
             List<Roles> roles = new List<Roles>();
@@ -174,11 +194,6 @@ namespace WebTools.Services
                     roles = dbConnection.Query<Roles>("sp_Roles"
                         , new
                         {
-                            ID = "",
-                            Name = "",
-                            Description = "",
-                            Status = "",
-                            User = "",
                             Action = "GetAll"
 
                         }
@@ -205,10 +220,6 @@ namespace WebTools.Services
                     roles = dbConnection.Query<Roles>("sp_Roles", new
                     {
                         ID = id,
-                        Name = "",
-                        Description = "",
-                        Status = "",
-                        User = "",
                         Action = "GetByID"
                     }, commandType: CommandType.StoredProcedure).FirstOrDefault();
                     dbConnection.Close();
