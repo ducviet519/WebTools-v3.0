@@ -65,12 +65,15 @@
                                             }
                                             else
                                             {
-                                                    <td hidden></td>
+                                                    <td></td>
                                             }
+
+                                            @if (User.IsInRole("Manager") || User.IsInRole("Admin")){
                                             <td align="center">
                                                 <a onclick="DeleteVersion('@item.IDPhienBan', '@item.IDBieuMau')" style="cursor:pointer;" class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau"></a>
                                                 @*/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau*@
                                             </td>
+                                            }
                                             </tr>                                       
                                     }
                                 }
@@ -95,8 +98,11 @@
                     </div>  
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
-                    </div>
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                        {
+                            <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                        }
+                        </div>
                 </form>
             </div>
             @*<div class="modal-footer">

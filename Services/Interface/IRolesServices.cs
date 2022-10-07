@@ -12,6 +12,7 @@ namespace WebTools.Services.Interface
         public List<Roles> GetAllRoles();
 
         public Roles GetRolesByID(int? id);
+        public Roles FindByName(string RoleName);
 
         public string AddRoles(Roles roles);
 

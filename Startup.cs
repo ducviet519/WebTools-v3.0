@@ -5,18 +5,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTools.Context;
 using WebTools.Services;
 using WebTools.Services.Interface;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Authorization;
-using WebTools.Permission;
 
 namespace WebTools
 {
@@ -32,9 +27,6 @@ namespace WebTools
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-            //services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
@@ -45,11 +37,23 @@ namespace WebTools
                         OnSigningIn = async context =>
                         {
                             //var principal = context.Principal;
-                            //if(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "Admin")
+                            //if (principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "Admin")
                             //{
                             //    var claimsIdentity = principal.Identity as ClaimsIdentity;
                             //    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
                             //}
+                            //else
+                            //{
+                            //    var claimsIdentity = principal.Identity as ClaimsIdentity;
+                            //    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
+                            //} 
+                            var principal = context.Principal;
+                            if (principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "")
+                            {                                
+                                var claimsIdentity = principal.Identity as ClaimsIdentity;
+                                claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
+                            }
+
                             await Task.CompletedTask;
                         },
                         OnSignedIn = async context =>

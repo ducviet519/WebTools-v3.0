@@ -75,8 +75,12 @@
                                 </div>
                                 <div class="col-auto"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
                                 @*@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Products.Create)).Result.Succeeded)
-                                {*@
+                                    {*@
+                                @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                {
+
                                     <div class="col-auto"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
+                                }
                                 @*}*@
                             </div>
                         }
@@ -126,14 +130,20 @@
                                                                     {
                                                                         <a href="#" target="_blank" class="btn btn-link">&nbsp; &nbsp; &nbsp; &nbsp;</a>
                                                                     }
-                                                                    <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                                                                        Chi tiết
-                                                                    </button>
-                                                                    <div class="dropdown-menu" role="menu">
-                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
-                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
-                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
-                                                                    </div>
+
+                                                                    @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                                                    {
+                                                                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                                                            Chi tiết
+                                                                        </button>
+                                                                        <div class="dropdown-menu" role="menu">
+                                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
+                                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
+                                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
+                                                                            @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                                                            {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportEdit-@item.IDBieuMau" data-url="/Report/EditReport?id=@item.IDBieuMau">Sửa biểu mẫu</a>}
+                                                                        </div>
+                                                                    }
                                                                 </div>
                                                             </td>
                                                         </tr>

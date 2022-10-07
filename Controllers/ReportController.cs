@@ -209,6 +209,55 @@ namespace WebTools.Controllers
         }
        
 
+        [HttpGet]
+        public IActionResult EditReport(string id)
+        {
+            ReportListViewModel model = new ReportListViewModel();
+            model.ReportList = _reportListServices.GetReportByID(id);
+            model.Depts = new SelectList(_depts.GetAll_Depts(), "STT", "KhoaP");
+            return PartialView("_EditReportPartial", model);
+        }
+        [HttpPost]
+        public IActionResult EditReport(ReportList reportList)
+        {
+            string getDateS = DateTime.Now.ToString("ddMMyyyy");
+            reportList.KhoaPhong = Request.Form["KhoaPhong"];
+            reportList.CreatedUser = User.Identity.Name;
+            if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
+            {
+                string fileName = $"{getDateS}_{reportList.MaBM}_{reportList.PhienBan}_{reportList.fileUpload.FileName}";
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                string filePath = Path.Combine(uploadsFolder, reportList.fileUpload.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    reportList.fileUpload.CopyTo(fileStream);
+                }
+                reportList.FileLink = filePath;
+                var result = _reportListServices.UpdateReportList(reportList);
+                if (result == "OK")
+                {
+                    TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Lỗi! " + result;
+                }
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var result = _reportListServices.InsertReportList(reportList);
+                if (result == "OK")
+                {
+                    TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMsg"] = "Lỗi! " + result;
+                }
+                return RedirectToAction("Index");
+            }
+        }
         //4. Tạo chức năng hiển thị phiên bản
         public IActionResult Version(string id)
         {

@@ -34,9 +34,6 @@ namespace WebTools.Controllers
             return View();
         }
 
-        
-
-
         [HttpGet]
         public IActionResult Denied()
         {
@@ -90,65 +87,68 @@ namespace WebTools.Controllers
                 TempData["Error"] = "Lỗi! Tài khoản hoặc mật khẩu không được bỏ trống";
                 return View(login);
             }
-
             string domain = string.Empty;
-            var isAuthorized = false;
             try
             {
+                #region Lấy thông tin người dùng từ Windows Account
                 var userDomain = login.UserName;
                 domain = "bvta.vn";
-                //var user2 = CheckLoginDomain(domain, login.UserName, login.Password);
-                //userDomain = $"{login.UserName}@{domain}";
                 var userprincipal = $@"{domain}\{login.UserName}";
-
                 using PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, userprincipal, login.Password);
-
                 UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, login.UserName);
-
                 if (user == null)
                 {
                     TempData["Error"] = "Không tìm thấy thông tin tài khoản.";
                 }
                 else
                 {
-
-                    var userInfo = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userprincipal);
-
                     Users userAccount = new Users()
                     {
                         UserID = 0, //string.IsNullOrEmpty(userInfo.Description) ? 0 : int.Parse(userInfo.Description),
-                        DisplayName = userInfo.DisplayName,
+                        DisplayName = user.DisplayName,
                         UserName = login.UserName.Trim().ToLower(),
                         Password = login.Password,
                         Source = domain,
                         Email = $@"{login.UserName.Trim().ToLower()}@{domain}",                       
-                        Status = (userInfo.Enabled ?? false)
+                        Status = (user.Enabled ?? false)
                     };
-
+                    //Ghi thông tin người dùng vào CSDL
                     _userServices.AddUser(userAccount);
-                    isAuthorized = true;
                 }
+                #endregion
+
+                #region Kiểm tra thông tin User và thêm ClaimUser
                 string adPath = $"LDAP://{domain}";
                 var ad_authenticate = new ActiveDirectoryHelper(adPath);
                 //if (isAuthorized)
                 if (ad_authenticate.IsAuthenticated(domain, login.UserName, login.Password))
                 {
-                    var UserName = login.UserName.Trim().ToLower();
-                    var Password = login.Password.Trim();
+                    var UserLoginInfo = _userServices.FindByName(login.UserName);
+                    var RoleInUser = _userServices.GetRoleInUser(UserLoginInfo.UserID);
+
                     var IP = HttpContext.Connection.RemoteIpAddress.ToString();
                     var claims = new List<Claim>()
                     {
-                        new Claim(ClaimTypes.Name, user.Name),
-                        new Claim(ClaimTypes.NameIdentifier, UserName),
+                        new Claim(ClaimTypes.Name, UserLoginInfo.DisplayName),
+                        new Claim(ClaimTypes.NameIdentifier, Convert.ToString(UserLoginInfo.UserID)),
                         new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
                         new Claim(ClaimTypes.Email, $@"{login.UserName.Trim().ToLower()}@{domain}" ?? ""),
-                        //new Claim(ClaimTypes.Expired, user.Enabled ? "0" : "1"),
                     };
+                    foreach(var role in RoleInUser)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
+                    }                   
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                    await HttpContext.SignInAsync(claimsPrincipal);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, 
+                        new AuthenticationProperties()
+                        {
+                            IsPersistent = login.RememberLogin
+                        });
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
+                #endregion
+
                 TempData["Error"] = "Lỗi! Tài khoản hoặc Mật khẩu không chính xác";
                 return View();
             }
@@ -163,7 +163,7 @@ namespace WebTools.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
