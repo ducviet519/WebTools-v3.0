@@ -1,5 +1,6 @@
 using GleamTech.AspNet.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebTools.Authorization;
 using WebTools.Context;
 using WebTools.Services;
 using WebTools.Services.Interface;
@@ -27,6 +29,9 @@ namespace WebTools
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {

@@ -40,6 +40,8 @@ namespace WebTools.Controllers
             return View();
         }
 
+        #region .
+
         private Users CheckLoginDomain(string domain, string username, string password)
         {
             try
@@ -73,12 +75,16 @@ namespace WebTools.Controllers
             return null;
         }
 
+        #endregion
+
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
             ViewData["RerurnUrl"] = returnUrl;
             return View();
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
@@ -137,7 +143,7 @@ namespace WebTools.Controllers
                     foreach(var role in RoleInUser)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
-                    }                   
+                    }
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, 
