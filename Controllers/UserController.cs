@@ -140,17 +140,14 @@ namespace WebTools.Controllers
                         new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
                         new Claim(ClaimTypes.Email, $@"{login.UserName.Trim().ToLower()}@{domain}" ?? ""),
                     };
-                    foreach(var role in RoleInUser)
+                    foreach (var role in RoleInUser)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
-<<<<<<< HEAD
                     }
-=======
-                    }                   
->>>>>>> ce8aabd51af2c24591b96cfdec873f3db48b892a
+
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, 
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal,
                         new AuthenticationProperties()
                         {
                             IsPersistent = login.RememberLogin
