@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTools.Models;
 using WebTools.Models.Entities;
@@ -100,7 +101,11 @@ namespace WebTools.Controllers
         public IActionResult EditUserRole(UserRoles userRoles)
         {
             int count = Int32.Parse(Request.Form["count"]);
-            if (count > 0) { _userServices.DeleteRoleInUser(userRoles.UserID); }
+            if (count > 0) 
+            {
+                _userServices.DeleteRoleInUser(userRoles.UserID);
+                _userServices.DeleteUserPermissions(userRoles.UserName);
+            }
             for (int i = 0; i < count; i++)
             {
                 userRoles.UserID = Int32.Parse(Request.Form["UserID-" + i]);
@@ -110,7 +115,21 @@ namespace WebTools.Controllers
                 userRoles.Status = Boolean.TryParse(Request.Form["Status-" + i], out bool b);
                 if (userRoles.UserID > 0 && userRoles.RoleID > 0 && userRoles.Status == true)
                 {
-                    var result = _userServices.EditUserRoles(userRoles);
+                    var result = _userServices.AddUserRolesByID(userRoles);
+                    UserPermissions userPermissions = new UserPermissions();
+                    
+                    foreach (var permission in _roleServices.GetRolePermissions(userRoles.RoleID))
+                    {
+                        userPermissions = new UserPermissions()
+                        {
+                            UserName = userRoles.UserName,
+                            Permission = permission.Permission,
+                            ControllerID = permission.ControllerID,
+                            ActionID = permission.ActionID,
+                        };
+                        _userServices.AddUserPermissions(userPermissions);
+                    }    
+
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = $"Người dùng đã được cập nhật lại Role thành công!";
@@ -250,6 +269,7 @@ namespace WebTools.Controllers
         public IActionResult AddRoldAction(RoleControllerActions roleControllerActions)
         {
             int count = Int32.Parse(Request.Form["count"]);
+            if(count > 0) { _roleServices.DeleteRoleControllerAction(roleControllerActions.RoleID); }
             for (int i = 0; i < count; i++)
             {
                 roleControllerActions.RoleID = Int32.Parse(Request.Form["RoleID-" + i]);
@@ -260,6 +280,7 @@ namespace WebTools.Controllers
                 if (roleControllerActions.ActionID > 0 && roleControllerActions.Controller_ID > 0 && roleControllerActions.RoleID > 0 && roleControllerActions.Status == true)
                 {
                     var result = _roleServices.AddRoleControllerAction(roleControllerActions);
+                    
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = $"Action đã được thêm vào Role thành công!";

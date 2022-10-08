@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace WebTools.Authorization
@@ -19,11 +20,18 @@ namespace WebTools.Authorization
             {
                 return;
             }
+            //Claim[] rolesOfUser = null;
+            //var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+            //if (claimsIdentity != null)
+            //{
+            //    rolesOfUser = claimsIdentity.Claims.Where(x => x.Type == "Permission").ToArray();
+            //}
+            //var test = User.FindFirstValue("Permission");
+            var permissionss = context.User.Claims.Where(x => x.Type == "Permission" &&
+                                                            x.Value == requirement.Permission &&
+                                                            x.Issuer == "LOCAL AUTHORITY");
 
-            var permissions = context.User.Claims.Where(x => x.Type == "Permission" &&
-                                x.Value == requirement.Permission && x.Issuer == "LOCAL AUTHORITY");
-
-            if (permissions.Any())
+            if (permissionss.Any())
             {
                 context.Succeed(requirement);
                 return;

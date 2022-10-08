@@ -75,11 +75,12 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<Users>("sp_AddUserRoles",
+                    var data = dbConnection.Query<Users>("sp_Users",
                         new
                         {
                             UserName = UserName,
-                            RoleName = RoleName
+                            RoleName = RoleName,
+                            Action = "AddUserRoles"
                         },
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
@@ -157,7 +158,7 @@ namespace WebTools.Services
             }
         }
 
-        public string EditUserRoles(UserRoles userRoles)
+        public string AddUserRolesByID(UserRoles userRoles)
         {
             string result = "";
             try
@@ -312,5 +313,92 @@ namespace WebTools.Services
             }
         }
 
+        public UserPermissions RenderPermissions(int ControllerID, int ActionID)
+        {
+            UserPermissions permissions = new UserPermissions();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    permissions = dbConnection.Query<UserPermissions>("sp_Users", new
+                    {
+                        Controller_ID = ControllerID,
+                        Action_ID = ActionID,
+                        Action = "RenderPermissions"
+                    }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    dbConnection.Close();
+                }
+                return permissions;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return permissions;
+            }
+        }
+
+        public string AddUserPermissions(UserPermissions userPermissions)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<UserPermissions>("sp_Users",
+                        new
+                        {
+                            UserName = userPermissions.UserName,
+                            Permission = userPermissions.Permission,
+                            Controller_ID = userPermissions.ControllerID,
+                            Action_ID = userPermissions.ActionID,
+                            Action = "AddUserPermissions"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public string DeleteUserPermissions(string UserName)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<Users>("sp_Users",
+                        new
+                        {
+                            UserName = UserName,
+                            Action = "DeleteUserPermissions"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
     }
 }

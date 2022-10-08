@@ -23,5 +23,9 @@ namespace WebTools.Services.Interface
         public bool IsRoleInControllerAction(int RoleID, int ControllerID, int ActionID);
 
         public string AddRoleControllerAction(RoleControllerActions roleControllerActions);
+
+        public string DeleteRoleControllerAction(int id);
+
+        public List<RoleControllerActions> GetRolePermissions(int id);
     }
 }

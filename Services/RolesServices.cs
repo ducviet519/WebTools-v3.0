@@ -38,10 +38,10 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<RoleControllerActions>("sp_RoleControllerAction",
+                    var data = dbConnection.Query<RoleControllerActions>("sp_Roles",
                         new
                         {
-                            RoleID = roleControllerActions.RoleID,
+                            ID = roleControllerActions.RoleID,
                             ControllerID = roleControllerActions.Controller_ID,
                             ActionID = roleControllerActions.ActionID,
                             Action = "AddRoleAction"
@@ -78,6 +78,36 @@ namespace WebTools.Services
                             Status = roles.Status,
                             User = roles.CreatedBy,
                             Action = "Add"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public string DeleteRoleControllerAction(int id)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<RoleControllerActions>("sp_Roles",
+                        new
+                        {
+                            ID = id,
+                            Action = "DeleteRoleAction"
                         },
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
@@ -195,6 +225,33 @@ namespace WebTools.Services
                         , new
                         {
                             Action = "GetAll"
+
+                        }
+                        , commandType: CommandType.StoredProcedure).ToList();
+                    dbConnection.Close();
+                }
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return roles;
+            }
+        }
+
+        public List<RoleControllerActions> GetRolePermissions(int id)
+        {
+            List<RoleControllerActions> roles = new List<RoleControllerActions>();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    roles = dbConnection.Query<RoleControllerActions>("sp_Roles"
+                        , new
+                        {
+                            ID = id,
+                            Action = "GetRolePermissions"
 
                         }
                         , commandType: CommandType.StoredProcedure).ToList();

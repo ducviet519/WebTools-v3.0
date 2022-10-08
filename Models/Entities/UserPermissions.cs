@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace WebTools.Models.Entities
 {
-    public class UserRoles:Roles
+    public class UserPermissions
     {
-        public int UserID { get; set; }
+        public string Permission { get; set; }
         public string UserName { get; set; }
+        public int ControllerID { get; set; }
+        public int ActionID { get; set; }
     }
 }

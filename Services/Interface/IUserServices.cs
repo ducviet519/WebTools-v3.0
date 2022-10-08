@@ -25,9 +25,12 @@ namespace WebTools.Services.Interface
         public bool IsUserInRole(int UserID, int RoleID);
 
         public string DeleteRoleInUser(int id);
-        public string EditUserRoles(UserRoles userRoles);
-
+        public string AddUserRolesByID(UserRoles userRoles);
         public string AddUserRoles(string UserName, string RoleName);
+        public UserPermissions RenderPermissions(int ControllerID, int ActionID);
+
+        public string AddUserPermissions(UserPermissions userPermissions);
+        public string DeleteUserPermissions(string UserName);
 
     }
 }
