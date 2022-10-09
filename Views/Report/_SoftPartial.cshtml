@@ -22,18 +22,18 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
-                        <div class="col-6"><span style="color:dodgerblue; font-weight:bold;">@Model.ReportSoft.MaBM</span></div>
+                        <div class="col-4"><span style="color:dodgerblue; font-weight:bold;">@Model.ReportSoft.MaBM</span></div>
                         <div class="col-2 text-right"><label for="PhanMem">Phần mềm:</label></div>
-                        <div class="col-2">
-                            <select asp-for="ReportSoft.PhanMem" asp-items="@Html.GetEnumSelectList<PhanMem>()" class="form-control" id="PhanMem" name="PhanMem">
-                                <option selected="selected" value="@Model.ReportSoft.PhanMem">Chọn...</option>
-                            </select>
+                        <div class="col-4">
+                            @*@Html.GetEnumSelectList<PhanMem>()*@
+                            <select class="selectPhanMem" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.PhanMems" id="PhanMem" name="PhanMem"></select>
+                                <input type="hidden" id="txtPhanMem" name="txtPhanMem" value="@Model.ReportSoft.PhanMem" />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">URD:<br />(Quy trình vận hành)</label></div>
                         <div class="col">
-                            <select class="select2" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="URD" id="URD"></select>
+                            <select class="selectURD" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="URD" id="URD"></select>
                             <input type="hidden" id="txtURD" name="txtURD" value="@Model.ReportSoft.URD" />
                         </div>
                     </div>
@@ -117,8 +117,16 @@
         var string = $('#txtURD').val();
         var array = string.split(",").map(Number);
         //Dropdown
-        $('.select2').select2()
+        $('.selectURD').select2()
         $('#URD').val(array);
         $('#URD').trigger('change');
+    });
+    $(function () {
+        var string = $('#txtPhanMem').val();
+        var array = string.split(",").map(Number);
+        //Dropdown
+        $('.selectPhanMem').select2()
+        $('#PhanMem').val(array);
+        $('#PhanMem').trigger('change');
     });
 </script>

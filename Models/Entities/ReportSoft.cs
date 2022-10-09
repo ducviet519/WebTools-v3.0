@@ -32,6 +32,12 @@ namespace WebTools.Models
         public PhanMem TrangThaiPMDropList { get; set; }
     }
 
+    public class PhanMems
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+
     public enum PhanMem
     {
         [Display(Name = "HIS")] HIS = 1,

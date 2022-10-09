@@ -345,6 +345,16 @@ namespace WebTools.Controllers
             //URD SelectList
             model.URDs = new SelectList(_reportURDServices.GetAll_URD(), "ID", "Des");
 
+            //Softs SelectList
+            var PhanMems = new List<PhanMems>
+            {
+                new PhanMems{ID =  1, Name = "HIS" },
+                new PhanMems{ID =  2, Name = "IVF" },
+                new PhanMems{ID =  3, Name = "HRM" },
+                new PhanMems{ID =  4, Name = "PM Kế toán" },
+            };
+            model.PhanMems = new SelectList(PhanMems, "Name", "Name");
+
             return PartialView("_SoftPartial", model);
         }
 
