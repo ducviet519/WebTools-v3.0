@@ -22,16 +22,16 @@
                 @{
                     if (TempData["SuccessMsg"] != null)
                     {
-                        <script type="text/javascript">
-                            window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
-                        </script>
+                            <script type="text/javascript">
+                                window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
+                            </script>
 
                     }
                     if (TempData["ErrorMsg"] != null)
                     {
-                        <script type="text/javascript">
-                            window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
-                        </script>
+                            <script type="text/javascript">
+                                window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
+                            </script>
                     }
                 }
             </div>
@@ -74,9 +74,9 @@
                                     }, "Tất cả", new { @class = "form-control" })
                                 </div>
                                 <div class="col-auto"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
-                                @*@if ((AuthorizationService.AuthorizeAsync(User, Permissions.Products.Create)).Result.Succeeded)
-                                    {*@
-                                @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+
+                                @*@if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))*@
+                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Reports.Add")).Result.Succeeded)
                                 {
 
                                     <div class="col-auto"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
@@ -111,42 +111,48 @@
                                                 {
                                                     foreach (var item in Model.ReportLists)
                                                     {
-                                                        <tr>
-                                                            <td>@item.STT</td>
-                                                            <td>@item.TenBM</td>
-                                                            <td>@item.MaBM</td>
-                                                            <td>@item.PhienBan</td>
-                                                            <td>@item.NgayBanHanh</td>
-                                                            <td>@item.TrangThai</td>
-                                                            <td>@item.PhanMem</td>
-                                                            <td>@item.TrangThaiPM</td>
-                                                            <td>
-                                                                <div class="btn-group">
-                                                                    @if (item.FileLink != null)
+                                                            <tr>
+                                                                <td>@item.STT</td>
+                                                                <td>@item.TenBM</td>
+                                                                <td>@item.MaBM</td>
+                                                                <td>@item.PhienBan</td>
+                                                                <td>@item.NgayBanHanh</td>
+                                                                <td>@item.TrangThai</td>
+                                                                <td>@item.PhanMem</td>
+                                                                <td>@item.TrangThaiPM</td>
+                                                                <td>
+                                                                    <div class="btn-group">
+                                                                        @if (item.FileLink != null)
                                                                     {
-                                                                        <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.FileLink">File</a>
+                                                                            <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.FileLink">File</a>
                                                                     }
                                                                     else
                                                                     {
-                                                                        <a href="#" target="_blank" class="btn btn-link">&nbsp; &nbsp; &nbsp; &nbsp;</a>
+                                                                            <a href="#" target="_blank" class="btn btn-link">&nbsp; &nbsp; &nbsp; &nbsp;</a>
                                                                     }
 
-                                                                    @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                                                        @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
                                                                     {
-                                                                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                                                                            Chi tiết
-                                                                        </button>
-                                                                        <div class="dropdown-menu" role="menu">
-                                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>
-                                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>
-                                                                            <a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>
-                                                                            @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                                                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                                                                Chi tiết
+                                                                            </button>
+                                                                            <div class="dropdown-menu" role="menu">
+                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Versions.View")).Result.Succeeded)
+                                                                                {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>}
+
+                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Softs.View")).Result.Succeeded)
+                                                                                {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>}
+
+                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Details.View")).Result.Succeeded)
+                                                                                {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>}
+
+                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Reports.Edit")).Result.Succeeded)
                                                                             {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportEdit-@item.IDBieuMau" data-url="/Report/EditReport?id=@item.IDBieuMau">Sửa biểu mẫu</a>}
-                                                                        </div>
+                                                                            </div>
                                                                     }
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                     }
                                                 }
                                             }

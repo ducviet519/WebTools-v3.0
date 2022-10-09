@@ -71,17 +71,17 @@ namespace WebTools
                         }
                     };
                 });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminOnly", policy => {
-                    policy.RequireAuthenticatedUser();
-                    //policy.RequireClaim("Admin");
-                    policy.RequireRole("Admin");
-                });
-                options.AddPolicy("ITOnly", policy => policy.RequireClaim("Permission", "IT"));
-                options.AddPolicy("SuperIT",policy => policy.RequireClaim("Permission", "IT")
-                                                            .RequireClaim("IT"));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Admin", policy => {
+            //        policy.RequireAuthenticatedUser();                   
+            //        policy.RequireRole("Admin");
+            //        //policy.RequireClaim("Permission","");
+            //    });
+            //    options.AddPolicy("ITOnly", policy => policy.RequireClaim("Permission", "IT"));
+            //    options.AddPolicy("SuperIT",policy => policy.RequireClaim("Permission", "IT")
+            //                                                .RequireClaim("IT"));
+            //});
             services.AddScoped<IReportListServices, ReportListServices>();
             services.AddScoped<IReportVersionServices, ReportVersionServices>();
             services.AddScoped<IReportSoftServices, ReportSoftServices>();
@@ -110,7 +110,8 @@ namespace WebTools
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebTools.Authorization;
 using WebTools.Models;
 using WebTools.Models.Entities;
 using WebTools.Models.Entity;
@@ -13,8 +14,8 @@ using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
-    //[Authorize(Roles = "Admin")]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Roles = "Admin")]
+    //[Authorize(Policy = "AdminOnly")]
     /// <summary>
     /// Permission Users, Roles, ModuleControllers, ModuleActions
     /// </summary>
@@ -57,6 +58,7 @@ namespace WebTools.Controllers
         }
 
         #region User
+        //[ControllerModelConvention]
         public IActionResult Users()
         {
             UsersViewModel model = new UsersViewModel();
@@ -68,6 +70,7 @@ namespace WebTools.Controllers
 
 
         [HttpGet]
+        //[ControllerModelConvention]
         public IActionResult UserRoles(int? id)
         {
             var viewModel = new List<Roles>();

@@ -132,12 +132,12 @@ namespace WebTools.Controllers
                 {
                     var UserLoginInfo = _userServices.FindByName(login.UserName);
                     var RoleInUser = _userServices.GetRoleInUser(UserLoginInfo.UserID);
+                    var PermissionsInUser = _userServices.GetAllUserPermissions(UserLoginInfo.UserName);
 
                     var IP = HttpContext.Connection.RemoteIpAddress.ToString();
                     var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, UserLoginInfo.DisplayName),
-                        new Claim("Permission", "Permission.Controller.Action"),
                         new Claim(ClaimTypes.NameIdentifier, Convert.ToString(UserLoginInfo.UserID)),
                         new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
                         new Claim(ClaimTypes.Email, $@"{login.UserName.Trim().ToLower()}@{domain}" ?? ""),
@@ -145,10 +145,14 @@ namespace WebTools.Controllers
                     foreach (var role in RoleInUser)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
-                        claims.Add(new Claim($"{role.RoleName}", "Permission.Controller.Action"));
+
+                    }
+                    foreach (var permission in PermissionsInUser)
+                    {
+                        claims.Add(new Claim("Permission", $"{permission.Permission}"));
                     }
 
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal,
                         new AuthenticationProperties()

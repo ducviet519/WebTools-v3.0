@@ -32,5 +32,7 @@ namespace WebTools.Services.Interface
         public string AddUserPermissions(UserPermissions userPermissions);
         public string DeleteUserPermissions(string UserName);
 
+        public List<UserPermissions> GetAllUserPermissions(string userName);
+
     }
 }

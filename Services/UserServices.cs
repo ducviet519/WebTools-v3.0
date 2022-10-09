@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -398,6 +399,30 @@ namespace WebTools.Services
             {
                 result = ex.Message;
                 return result;
+            }
+        }
+
+        public List<UserPermissions> GetAllUserPermissions(string userName)
+        {
+            List<UserPermissions> permissions = new List<UserPermissions>();
+            var sql = "SELECT * FROM dbo.UserPermissions WHERE UPPER(Username) = UPPER(@UserName)";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    permissions = dbConnection.Query<UserPermissions>(sql, new
+                    {
+                        UserName = userName,
+                    }).ToList();
+                    dbConnection.Close();
+                }
+                return permissions;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return permissions;
             }
         }
     }
