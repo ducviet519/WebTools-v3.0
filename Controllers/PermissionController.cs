@@ -13,7 +13,8 @@ using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminOnly")]
     /// <summary>
     /// Permission Users, Roles, ModuleControllers, ModuleActions
     /// </summary>

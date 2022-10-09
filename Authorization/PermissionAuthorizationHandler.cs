@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebTools.Authorization
@@ -20,6 +19,7 @@ namespace WebTools.Authorization
             {
                 return;
             }
+            var prinicpal = (ClaimsPrincipal)Thread.CurrentPrincipal;
             //Claim[] rolesOfUser = null;
             //var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
             //if (claimsIdentity != null)
@@ -27,7 +27,7 @@ namespace WebTools.Authorization
             //    rolesOfUser = claimsIdentity.Claims.Where(x => x.Type == "Permission").ToArray();
             //}
             //var test = User.FindFirstValue("Permission");
-            var permissionss = context.User.Claims.Where(x => x.Type == "Permission" &&
+            var permissionss = prinicpal.Claims.Where(x => x.Type == "Permission" &&
                                                             x.Value == requirement.Permission &&
                                                             x.Issuer == "LOCAL AUTHORITY");
 

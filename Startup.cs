@@ -71,6 +71,17 @@ namespace WebTools
                         }
                     };
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => {
+                    policy.RequireAuthenticatedUser();
+                    //policy.RequireClaim("Admin");
+                    policy.RequireRole("Admin");
+                });
+                options.AddPolicy("ITOnly", policy => policy.RequireClaim("Permission", "IT"));
+                options.AddPolicy("SuperIT",policy => policy.RequireClaim("Permission", "IT")
+                                                            .RequireClaim("IT"));
+            });
             services.AddScoped<IReportListServices, ReportListServices>();
             services.AddScoped<IReportVersionServices, ReportVersionServices>();
             services.AddScoped<IReportSoftServices, ReportSoftServices>();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Identity.Web;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -144,6 +145,7 @@ namespace WebTools.Controllers
                     foreach (var role in RoleInUser)
                     {
                         claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
+                        claims.Add(new Claim($"{role.RoleName}", "Permission.Controller.Action"));
                     }
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
