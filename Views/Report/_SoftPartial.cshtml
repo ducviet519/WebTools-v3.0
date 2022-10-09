@@ -123,7 +123,8 @@
     });
     $(function () {
         var string = $('#txtPhanMem').val();
-        var array = string.split(",").map(Number);
+        //var array = string.split(",").map(Number);
+        var array = string.split(",");
         //Dropdown
         $('.selectPhanMem').select2()
         $('#PhanMem').val(array);
