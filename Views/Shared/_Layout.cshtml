@@ -46,7 +46,7 @@
                         <li class="nav-item d-none d-sm-inline-block">
                             <a class="nav-link" asp-area="" asp-controller="Report" asp-action="Index">Quản lý biểu mẫu</a>
                         </li>
-                        
+
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
@@ -111,6 +111,8 @@
         <script src="~/lib/toastr/toastr.min.js"></script>
         <!-- Bootstrap Toggle -->
         <script src="~/lib/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+        <!-- ChartJS -->
+        <script src="/lib/chart.js/Chart.min.js"></script>
         <!-- AdminLTE App -->
         <script src="~/lib/admin-lte/js/adminlte.min.js"></script>
         @await RenderSectionAsync("Scripts", required: false)
