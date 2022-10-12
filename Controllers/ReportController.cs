@@ -174,7 +174,7 @@ namespace WebTools.Controllers
             reportList.CreatedUser = User.Identity.Name;
             if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
             {
-                string fileName = $"{getDateS}_{reportList.MaBM}_{reportList.PhienBan}_{reportList.fileUpload.FileName}";
+                string fileName = $"{getDateS}_{reportList.fileUpload.FileName}";
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
@@ -225,7 +225,7 @@ namespace WebTools.Controllers
             reportList.CreatedUser = User.Identity.Name;
             if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
             {
-                string fileName = $"{getDateS}_{reportList.MaBM}_{reportList.PhienBan}_{reportList.fileUpload.FileName}";
+                string fileName = $"{getDateS}_{reportList.fileUpload.FileName}";
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
