@@ -169,43 +169,53 @@ namespace WebTools.Controllers
         [DisableRequestSizeLimit]
         public IActionResult AddReport(ReportList reportList)
             {
-            string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
-            reportList.KhoaPhong = Request.Form["KhoaPhong"];
-            reportList.CreatedUser = User.Identity.Name;
-            if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
+            var data = _reportListServices.GetReportList();
+            data = data.Where(r => r.MaBM != null && r.MaBM.ToUpper() == reportList.MaBM.ToUpper()).ToList();
+            if (data.Count > 0) 
             {
-                string fileName = $"{getDateS}_{reportList.fileUpload.FileName}";
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-                {
-                    reportList.fileUpload.CopyTo(fileStream);
-                }
-                reportList.FileLink = filePath;
-                var result = _reportListServices.InsertReportList(reportList);
-                if(result == "OK")
-                {
-                    TempData["SuccessMsg"] = "Thêm biểu mẫu: "+ reportList.TenBM +" thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Lỗi! "+ result;
-                }
+                TempData["ErrorMsg"] = $"Lỗi! Mã biểu mẫu: {reportList.MaBM} đã tồn tại. Xin vui lòng kiểm tra lại";
                 return RedirectToAction("Index");
             }
             else
             {
-                var result = _reportListServices.InsertReportList(reportList);
-                if (result == "OK")
+                string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
+                reportList.KhoaPhong = Request.Form["KhoaPhong"];
+                reportList.CreatedUser = User.Identity.Name;
+                if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
                 {
-                    TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
+                    string fileName = $"{getDateS}_{reportList.fileUpload.FileName}";
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    {
+                        reportList.fileUpload.CopyTo(fileStream);
+                    }
+                    reportList.FileLink = filePath;
+                    var result = _reportListServices.InsertReportList(reportList);
+                    if (result == "OK")
+                    {
+                        TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Lỗi! " + result;
+                    }
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["ErrorMsg"] = "Lỗi! " + result;
+                    var result = _reportListServices.InsertReportList(reportList);
+                    if (result == "OK")
+                    {
+                        TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
+                    }
+                    else
+                    {
+                        TempData["ErrorMsg"] = "Lỗi! " + result;
+                    }
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
-            }               
+            }          
         }
        
 
