@@ -17,5 +17,25 @@ namespace WebTools.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> PhieuKhamCXKAsync()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> PhieuASDASAsync()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> PhieuDAPSAAsync()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> PhieuPASIAsync()
+        {
+            return View();
+        }
     }
 }

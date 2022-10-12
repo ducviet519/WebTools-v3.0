@@ -4,700 +4,803 @@
     ViewData["Title"] = "Phiếu khám Cơ Xương Khớp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
-    <div class="col-12 col-sm-12">
-        <div class="card card-primary card-outline card-outline-tabs">
-            <div class="card-header p-0 pt-1">
-                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-one-home-phieuKham" data-toggle="pill" href="#custom-tabs-one-phieuKham" role="tab" aria-controls="custom-tabs-one-phieuKham" aria-selected="true">Phiếu khám</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-one-profile-bieuDo" data-toggle="pill" href="#custom-tabs-one-bieuDo" role="tab" aria-controls="custom-tabs-one-bieuDo" aria-selected="false">Biểu đồ</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="custom-tabs-one-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-one-phieuKham" role="tabpanel" aria-labelledby="custom-tabs-one-phieuKham-tab">
-                        <div class="row">
-                            <div class="col-3">
-                                <div class="container-fluid h-auto">
-                                    <div class="card card-info card-outline">
-                                        <div class="card-header">
-                                            <h5 class="card-title">Phòng khám</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="customCheckbox1" disabled>
-                                                <label for="customCheckbox1" class="custom-control-label">Bug</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="customCheckbox2" disabled>
-                                                <label for="customCheckbox2" class="custom-control-label">Feature</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="customCheckbox3" disabled>
-                                                <label for="customCheckbox3" class="custom-control-label">Enhancement</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="customCheckbox4" disabled>
-                                                <label for="customCheckbox4" class="custom-control-label">Documentation</label>
-                                            </div>
-                                            <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="customCheckbox5" disabled>
-                                                <label for="customCheckbox5" class="custom-control-label">Examples</label>
-                                            </div>
-                                        </div>
-                                        <div class="container-fluid h-auto">
-                                            <div class="card card-info card-outline">
-                                                <div class="card-body">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox" id="customCheckbox1" disabled>
-                                                        <label for="customCheckbox1" class="custom-control-label">Bug</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox" id="customCheckbox2" disabled>
-                                                        <label for="customCheckbox2" class="custom-control-label">Feature</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox" id="customCheckbox3" disabled>
-                                                        <label for="customCheckbox3" class="custom-control-label">Enhancement</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox" id="customCheckbox4" disabled>
-                                                        <label for="customCheckbox4" class="custom-control-label">Documentation</label>
-                                                    </div>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input class="custom-control-input" type="checkbox" id="customCheckbox5" disabled>
-                                                        <label for="customCheckbox5" class="custom-control-label">Examples</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-9">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-3">Mã KH:</div>
-                                            <div class="col-3">Nơi sinh:</div>
-                                            <div class="col-3">Họ và tên:</div>
-                                            <div class="col-3">Giới tính:</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-auto"><label>Ngày khám:</label></div>
-                                            <div class="col-auto">
-                                                <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                            </div>
-                                            <div class="col-auto"><label>Giờ khám:</label></div>
-                                            <div class="col-auto">
-                                                <input type="text" class="form-control form-control-sm" id="GioKham" name="GioKham" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-auto"><label>Đối tượng:</label></div>
-                                            <div class="col-auto">
-                                                <span>Thu phí</span>
-                                            </div>
-                                            <div class="col-auto"><label>Phòng khám:</label></div>
-                                            <div class="col-auto">
-                                                <span>Phòng khám 01</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-auto"><label>Bác sĩ:</label></div>
-                                                <div class="col-2">
-                                                    <select class="custom-select">
-                                                        <option selected>002</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-6">
-                                                    <select class="custom-select">
-                                                        <option selected>Đặng Thị Hồng Hoa</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-auto"><label>Điều dưỡng:</label></div>
-                                                <div class="col-2">
-                                                    <select class="custom-select">
-                                                        <option selected>002</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-6">
-                                                    <select class="custom-select">
-                                                        <option selected>Đặng Thị Hồng Hoa</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-2">
-                                                <div class="row">
-                                                    <div class="col-sm-4 pr-0"><label>Mạch:&nbsp;</label></div>
-                                                    <div class="col-sm-5 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                    <div class="col-sm-3 pl-0"><label>&nbsp;1/p</label></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-1">
-                                                <div class="row">
-                                                    <div class="col-sm-3 pr-0"><label>T*:&nbsp;</label></div>
-                                                    <div class="col-sm-6 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                    <div class="col-sm-3 pl-0"><label>&nbsp;*C</label></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="row">
-                                                    <div class="col-sm-3 pr-0"><label>HA:</label></div>
-                                                    <div class="col-sm-4 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                    <div class="col-sm-auto pr-0 pl-0"><label>/</label></div>
-                                                    <div class="col-sm-4 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="row">
-                                                    <div class="col-sm-5 pr-0"><label>Nhịp thở:</label></div>
-                                                    <div class="col-sm-5 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                    <div class="col-sm-2 pr-0 pl-0"><label>1/p</label></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="row">
-                                                    <div class="col-sm-3 pr-0"><label>Cao:</label></div>
-                                                    <div class="col-sm-6 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                    <div class="col-sm-3 pr-0 pl-0"><label>cm</label></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="row">
-                                                    <div class="col-sm-6 pr-0"><label>Cân nặng:</label></div>
-                                                    <div class="col-sm-4 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                    <div class="col-sm-2 pr-0 pl-0"><label>kg</label></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-1">
-                                                <div class="row">
-                                                    <div class="col-sm-5 pr-0"><label>BMI:&nbsp;</label></div>
-                                                    <div class="col-sm-5 pr-0 pl-0">
-                                                        <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row-cols-12">
-                                    <div class="form-group">
-                                        <label>Lý do đến khám:</label>
-                                        <textarea class="form-control" rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row-cols-12">
-                                    <div class="form-group">
-                                        <label>1.Bệnh sử:</label>
-                                        <textarea class="form-control" rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <p style="font-weight:bold">2.Tiền sử bệnh</p>
-                                <p style="font-weight:bold">&nbsp;&nbsp;&nbsp; 2.1 Bản thân</p>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="col-auto"><label>&nbsp;&nbsp;&nbsp;&minus; Thời gian khởi phát:</label></div>
-                                            <div class="col-2">
-                                                <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                            </div>
-                                            <div class="col-auto"><label>tháng</label></div>
-                                            <div class="col-2">
-                                                <input type="text" class="form-control form-control-sm" id="GioKham" name="GioKham" />
-                                            </div>
-                                            <div class="col-auto"><label>năm</label></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="col-auto"><label>&minus;&nbsp; Tiền sử:</label></div>
-                                            <div class="col-10">
-                                                <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card card-outline card-primary">
-                                            <div class="card-header">
-                                                <p class="card-title">Triệu chứng khởi phát</p>
+<style type="text/css">
+    .nav-item:hover {
+        background-color: transparent;
+    }
+</style>
+<div class="card card-link card-tabs">
+    <div class="card-header p-0 pt-0">
+        <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="custom-tabs-one-home-phieuKham" data-toggle="pill" href="#custom-tabs-one-phieuKham" role="tab" aria-controls="custom-tabs-one-phieuKham" aria-selected="true">Phiếu khám</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="custom-tabs-one-profile-bieuDo" data-toggle="pill" href="#custom-tabs-one-bieuDo" role="tab" aria-controls="custom-tabs-one-bieuDo" aria-selected="false">Biểu đồ</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="custom-tabs-one-tabContent">
+            <div class="tab-pane fade show active" id="custom-tabs-one-phieuKham" role="tabpanel" aria-labelledby="custom-tabs-one-phieuKham-tab">
+                <div class="row">
+                    <div class="col-3">
 
-                                                <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <!-- /.card-tools -->
-                                            </div>
-                                            <!-- /.card-header -->
-                                            <div class="card-body">
-                                                <p>&minus;&nbsp;Tại khớp</p>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Đau lưng kiểu viên:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Viên khớp ngoại vi:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Viên điểm bám gân:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Đau vùng mông (khớp cùng chậu):</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Viên ngón:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Khác:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <br />
-                                                <p>&minus;&nbsp;Ngoài khớp</p>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Vảy nến:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Mắt:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Hô hấp:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Tổn thương móng:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Ruột:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Tim mạch:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-2">
-                                                        <!-- checkbox -->
-                                                        <div class="form-group">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                <label for="customCheckbox1" class="form-check-label">Khác:</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-10">
-                                                        <input class="form-control" type="text" id="txtCheck">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.card-body -->
-                                        </div>
-                                        <!-- /.card -->
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-auto"><label>&minus;&nbsp; Chẩn đoán trước đó:</label></div>
-                                            <div class="col-10">
-                                                <input type="text" class="form-control form-control-sm" id="NgayKham" name="NgayKham" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card card-outline card-primary">
-                                            <div class="card-header">
-                                                <p class="card-title">Thuốc điều trị</p>
-
-                                                <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <!-- /.card-tools -->
-                                            </div>
-                                            <!-- /.card-header -->
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="row mb-3">
-                                                            <div class="col-2">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">NSAIDs:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-10">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-2">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Corticoid:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-10">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-2">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">DMARDs:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-10">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-2">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Thuốc sinh học:</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row ml-5 mr-5">
-                                                    <div class="col-sm-6">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Infliximab (Remicade):</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Adalimumab (Humira):</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Golimumab (Simponi):</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <!-- checkbox -->
-                                                                <div class="form-group">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                        <label for="customCheckbox1" class="form-check-label">Secukinumab (Fraizero):</label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-8">
-                                                                <input class="form-control" type="text" id="txtCheck">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-2">
-                                                        <!-- checkbox -->
-                                                        <div class="form-group">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" id="customCheckbox1" value="option1">
-                                                                <label for="customCheckbox1" class="form-check-label">Thuốc khác khác:</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-10">
-                                                        <input class="form-control" type="text" id="txtCheck">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <label for="customCheckbox1" class="form-check-label">Tiền sử dị ứng, kháng thuốc, TDKMM gặp phải với các thuốc trên:</label>
-                                                    <input class="form-control" type="text" id="txtCheck">
-                                                </div>
-                                            </div>
-                                            <!-- /.card-body -->
-                                        </div>
-                                        <!-- /.card -->
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
-                    <div class="tab-pane fade" id="custom-tabs-one-bieuDo" role="tabpanel" aria-labelledby="custom-tabs-one-bieuDo-tab">
+                    <div class="col-9">
                         <div class="row">
-                            <div class="col-md-6">
-                                <!-- LINE CHART -->
-                                <div class="card card-info">
-                                    <div class="card-body">
-                                        <div class="chart">
-                                            <canvas id="lineChartASDAS" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            <label class="col-form-label col-3">Mã KH: <strong>18009858</strong></label>
+                            <label class="col-form-label col-3">Họ và tên: Nguyễn Thị A</label>
+                            <label class="col-form-label col-3">Ngày sinh: 01/01/1987</label>
+                            <label class="col-form-label col-3">Giới tính: Nữ</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <label for="NguoiDanhGia" class="col-form-label col-auto">Ngày khám:</label>
+                                            <div class="col-7">
+                                                <input type="text" id="ngayKham" name="ngayKham" class="form-control" />
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <p style="text-align:center;">Dashboard ASDAS CRP</p>
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <label for="NguoiDanhGia" class="col-form-label col-auto">Giờ khám:</label>
+                                            <div class="col-6">
+                                                <input type="text" id="gioKham" name="gioKham" class="form-control" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- /.card -->
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <label for="NguoiDanhGia" class="col-form-label col-auto">Đối tượng: Thu phí</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <label for="NguoiDanhGia" class="col-form-label col-auto">Phòng khám: Phòng khám 01</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <!-- LINE CHART -->
-                                <div class="card card-info">
-                                    <div class="card-body">
-                                        <div class="chart">
-                                            <canvas id="lineChartDAPSA" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                    <div class="card-footer">
-                                        <p style="text-align:center;">Dashboard DAPSA</p>
-                                    </div>
+                            <div class="col-6">
+                                <div class="chart">
+                                    <canvas id="lineChartASDAS" style="min-height: 100px; height: 100px; max-height: 100px; max-width: 100%;"></canvas>
                                 </div>
-                                <!-- /.card -->
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="BacSi" class="col-form-label col-auto">Bác sĩ:</label>
+                                    <div class="col-auto">
+                                        <select class="form-control" id="MaBacSi" name="MaBacSi">
+                                            <option>0002</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select class="form-control" id="BacSi" name="BacSi">
+                                            <option>Đặng Thị Hồng Hoa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label for="DieuDuong" class="col-form-label col-auto">Điều dưỡng:</label>
+                                    <div class="col-auto">
+                                        <select class="form-control" id="MaDieuDuong" name="MaDieuDuong">
+                                            <option>0002</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select class="form-control" id="DieuDuong" name="DieuDuong">
+                                            <option>Đặng Thị Hồng Hoa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <label for="Mach" class="col-form-label col-auto pl-0 pr-0">Mạch:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="Mach" name="Mach" class="form-control" />
+                                    </div>
+                                    <label for="Mach" class="col-form-label col-auto pl-0 pr-2">1/p</label>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="form-group row">
+                                    <label for="NhietDo" class="col-form-label col-auto pl-0 pr-0">T*:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="NhietDo" name="NhietDo" class="form-control" />
+                                    </div>
+                                    <label for="NhietDo" class="col-form-label col-auto pl-0">*C</label>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <label for="HA" class="col-form-label col-auto pl-0 pr-0">HA:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="HA" name="HA" class="form-control" />
+                                    </div>
+                                    <label for="HA2" class="col-form-label col-auto pl-0 pr-0">/</label>
+                                    <div class="col pl-0">
+                                        <input type="text" id="HA2" name="HA2" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <label for="NhipTho" class="col-form-label col-auto pl-0 pr-0">Nhịp thở:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="NhipTho" name="NhipTho" class="form-control" />
+                                    </div>
+                                    <label for="NhipTho" class="col-form-label col-auto pl-0">1/p</label>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <label for="ChieuCao" class="col-form-label col-auto pl-0 pr-0">Cao:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="ChieuCao" name="ChieuCao" class="form-control" />
+                                    </div>
+                                    <label for="ChieuCao" class="col-form-label col-auto pl-0">cm</label>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <label for="CanNang" class="col-form-label col-auto pl-0 pr-0">Cân nặng:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="CanNang" name="CanNang" class="form-control" />
+                                    </div>
+                                    <label for="CanNang" class="col-form-label col-auto pl-0">kg</label>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="form-group row">
+                                    <label for="BMI" class="col-form-label col-auto pl-0 pr-0">BMI:</label>
+                                    <div class="col pl-0 pr-0">
+                                        <input type="text" id="BMI" name="BMI" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-cols-12">
+                            <div class="form-group">
+                                <label for="lyDoKham">Lý do đến khám</label>
+                                <textarea class="form-control" id="lyDoKham" name="lyDoKham" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row-cols-12">
+                            <div class="form-group">
+                                <label for="benhSu">1. Bệnh sử</label>
+                                <textarea class="form-control" id="benhSu" name="benhSu" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- #start Tiền sử bệnh -->
+                        <div class="row">
+                            <label class="col-form-label col-12">2. Tiền sử bệnh</label>
+                            <label class="col-form-label col-12">&nbsp;&nbsp;&nbsp; 2.1 Bản thân</label>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&minus; Thời gian khởi phát:</label>
+                                    <div class="col-2">
+                                        <input type="text" id="Thang" name="Thang" class="form-control" />
+                                    </div>
+                                    <label class="col-form-label col-auto">tháng</label>
+                                    <div class="col-2">
+                                        <input type="text" id="Nam" name="Nam" class="form-control" />
+                                    </div>
+                                    <label class="col-form-label col-auto">năm</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-auto">&minus; Tiền sử:</label>
+                                    <div class="col">
+                                        <input type="text" id="TienSu" name="TienSu" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <fieldset class="border p-2">
+                            <legend class="col-auto mb-0" style="font-size:14px;">Triệu chứng khởi phát</legend>
+                            <label class="col-form-label col-auto">&minus; Tại khớp:</label>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="DauLungKieuViem" />
+                                            <label for="DauLungKieuViem">Đau lưng kiểm viêm: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="DauLungKieuViem" name="DauLungKieuViem" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="DauVungMong" />
+                                            <label for="DauVungMong">Đau vùng mông (khớp cùng chậu): </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="DauVungMong" name="DauVungMong" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="ViemKhopNgoaiVi" />
+                                            <label for="ViemKhopNgoaiVi">Viêm khớp ngoại vi: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ViemKhopNgoaiVi" name="ViemKhopNgoaiVi" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="ViemNgon" />
+                                            <label for="ViemNgon">Viêm ngón: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ViemNgon" name="ViemNgon" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="ViemDiemBamGam" />
+                                            <label for="ViemDiemBamGam">Viêm điểm bám gân</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ViemDiemBamGam" name="ViemDiemBamGam" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="Khac" />
+                                            <label for="Khac">Khác: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Khac" name="Khac" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-form-label col-auto">&minus; Ngoài khớp:</label>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="VayNen" />
+                                            <label for="VayNen">Vảy nến: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="VayNen" name="VayNen" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="TonThuongMong" />
+                                            <label for="TonThuongMong">Tổn thương móng: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="TonThuongMong" name="TonThuongMong" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="Mat" />
+                                            <label for="Mat">Mắt</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Mat" name="Mat" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="Ruot" />
+                                            <label for="Ruot">Ruột: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Ruot" name="Ruot" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="HoHap" />
+                                            <label for="HoHap">Hô hấp</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="HoHap" name="HoHap" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="TimMach" />
+                                            <label for="TimMach">Tim mạch: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="TimMach" name="TimMach" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-2">
+                                            <input type="checkbox" id="Khac" />
+                                            <label for="TienSuKhac">Khác: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="TienSuKhac" name="TienSuKhac" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- #end Tiền sử bệnh -->
+
+                        <div class="form-group row mt-3">
+                            <label class="col-form-label col-auto">&nbsp;&nbsp;&nbsp;&minus; Chẩn đoán trước đó:</label>
+                            <div class="col">
+                                <input type="text" id="ChanDoan" name="ChanDoan" class="form-control" />
+                            </div>
+                        </div>
+
+                        <!-- #start Thuốc điều trị -->
+                        <fieldset class="border p-2">
+                            <legend class="col-auto" style="font-size:14px;">Thuốc điều trị</legend>
+                            <div class="form-group row">
+                                <div class="checkbox icheck-belizehole col-2">
+                                    <input type="checkbox" id="NSAIDs" />
+                                    <label for="NSAIDs">NSAIDs: </label>
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="NSAIDs" name="NSAIDs" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="checkbox icheck-belizehole col-2">
+                                    <input type="checkbox" id="Corticoid" />
+                                    <label for="Corticoid">Corticoid: </label>
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="Corticoid" name="Corticoid" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="checkbox icheck-belizehole col-2">
+                                    <input type="checkbox" id="DMARDs" />
+                                    <label for="DMARDs">DMARDs: </label>
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="DMARDs" name="DMARDs" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="checkbox icheck-belizehole col-auto">
+                                    <input type="checkbox" id="ThuocSinhHoc" />
+                                    <label for="ThuocSinhHoc">Thuốc sinh học: </label>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-5 ml-5">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="Infliximab" />
+                                            <label for="Infliximab">Infliximab (Remicade): </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Infliximab" name="Infliximab" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="Adalimumab" />
+                                            <label for="Adalimumab">Adalimumab (Humira): </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Adalimumab" name="Adalimumab" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5 ml-5">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="Golimumab" />
+                                            <label for="Golimumab">Golimumab (Simponi): </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Golimumab" name="Golimumab" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-5">
+                                            <input type="checkbox" id="Secukinumab" />
+                                            <label for="Secukinumab">Secukinumab (Fraizeron): </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="Secukinumab" name="Secukinumab" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-2">
+                                            <input type="checkbox" id="ThuocKhac" />
+                                            <label for="ThuocKhac">Thuốc khác: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ThuocKhac" name="ThuocKhac" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="ThuocKhac" class="col-12">Tiền sử dị ứng, kháng thuốc, TDKMM gặp phải với mỗi thuốc trên: </label>
+                                <div class="col-12">
+                                    <input type="text" id="ThuocKhac" name="ThuocKhac" class="form-control" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- #end Thuốc điều trị -->
+
+                        <div class="row">
+                            <label class="col-form-label col-12"><strong>Khám lâm sàng</strong></label>
+                            <div class="col-6">
+                                <label class="col-form-label col-12">1. Toàn thân</label>
+                                <textarea class="form-control col" rows="3"></textarea>
+                            </div>
+                            <div class="col-6">
+                                <label class="col-form-label col-12">2. Các bộ phận</label>
+                                <textarea class="form-control col" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- #start Triệu chứng lâm sàng -->
+                        <fieldset class="border p-2">
+                            <legend class="col-auto mb-0" style="font-size:14px;">Triệu chứng lâm sàng</legend>
+                            <label class="col-form-label col-auto">1. Tại khớp</label>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="DauLungKieuViemLS" />
+                                            <label for="DauLungKieuViemLS">Đau lưng kiểm viêm: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="DauLungKieuViemLS" name="DauLungKieuViemLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="ViemKhopNgoaiViLS" />
+                                            <label for="ViemKhopNgoaiViLS">Viêm khớp ngoại vi: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ViemKhopNgoaiViLS" name="ViemKhopNgoaiViLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="ViemNgonLS" />
+                                            <label for="ViemNgonLS">Viêm ngón: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ViemNgonLS" name="ViemNgonLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="ViemDiemBamGanLS" />
+                                            <label for="ViemDiemBamGanLS">Viêm điểm bám gân: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="ViemDiemBamGanLS" name="ViemDiemBamGanLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="KhacTaiKhopLS" />
+                                            <label for="KhacTaiKhopLS">Khác:</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="KhacTaiKhopLS" name="KhacTaiKhopLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                </div>
+                            </div>
+                            <label class="col-form-label col-auto">2. Ngoài khớp</label>
+                            <label class="col-form-label col-auto">2.1 Liên quan tới VKCS:</label>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="VayNenLS" />
+                                            <label for="VayNenLS">Vảy nến: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="VayNenLS" name="VayNenLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="TonThuongMongLS" />
+                                            <label for="TonThuongMongLS">Tổn thương móng: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="TonThuongMongLS" name="TonThuongMongLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="MatLS" />
+                                            <label for="MatLS">Mắt</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="MatLS" name="MatLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="RuotLS" />
+                                            <label for="RuotLS">Ruột: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="RuotLS" name="RuotLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="HoHapLS" />
+                                            <label for="HoHapLS">Hô hấp</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="HoHapLS" name="HoHapLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="checkbox icheck-belizehole col-4">
+                                            <input type="checkbox" id="TimMachLS" />
+                                            <label for="TimMachLS">Tim mạch: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="TimMachLS" name="TimMachLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group row mb-0">
+                                        <div class="checkbox icheck-belizehole col-2">
+                                            <input type="checkbox" id="KhacNgoaiKhopLS" />
+                                            <label for="KhacNgoaiKhopLS">Khác: </label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="KhacNgoaiKhopLS" name="KhacNgoaiKhopLS" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="KhacNgoaiKhopLS" class="col-12">2.2 Liên quan đến bệnh lý mắc kèm </label>
+                                <div class="col">
+                                    <textarea class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- #end Triệu chứng lâm sàng -->
+                        <!-- #start Kết quả ngoại viện -->
+                        <fieldset class="border p-2">
+                            <legend class="col-auto mb-0" style="font-size:14px;">Kết quả ngoại viện</legend>
+                            <label class="col-form-label col-auto">1. Kết quả xét nghiệm</label>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-success mt-2"><i class="fas fa-plus"></i> Thêm mới</button>
+                                </div>
+                                <div class="col">
+                                    <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableXetNghiem">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên XN</th>
+                                                <th>KQ</th>
+                                                <th>Đơn vị</th>
+                                                <th>Thời gian</th>
+                                                <th>Nơi trả KQ</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <label class="col-form-label col-auto">2. Kết quả CĐHA</label>
+                            <div class="row justify-content-between">
+                                <div class="col-6">
+                                    <div class="form-group row mb-0 ml-3">
+                                        <div class="checkbox icheck-belizehole col-auto">
+                                            <input type="checkbox" id="KetQuaXray" />
+                                            <label for="KetQuaXray">Viêm khớp CC trên X-ray: </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row mb-0 ml-3">
+                                        <div class="checkbox icheck-belizehole col-auto">
+                                            <input type="checkbox" id="KetQuaMRI" />
+                                            <label for="KetQuaMRI">Viêm khớp CC trên MRI: </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- #end Kết quả ngoại viện -->
+                        <!-- #start Chẩn đoán -->
+                        <fieldset class="border p-2">
+                            <legend class="col-auto mb-0" style="font-size:14px;">Kết quả ngoại viện</legend>
+                            <div class="form-group row">
+                                <label class="col-form-label col-2">Bệnh chính: </label>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <select class="form-control col-2" id="ICDBenhChinh" name="ICDBenhChinh">
+                                            <option>A00.1</option>
+                                        </select>
+                                        <select class="form-control col mr-5" id="BenhChinh" name="BenhChinh">
+                                            <option>Bệnh a</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <label class="col-form-label col-2">Bệnh kèm theo: </label>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <select class="form-control col-2" id="ICDBenhChinh" name="ICDBenhChinh">
+                                            <option>A00.1</option>
+                                        </select>
+                                        <select class="form-control col mr-5" id="BenhChinh" name="BenhChinh">
+                                            <option>Bệnh a</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <select class="form-control col-2" id="ICDBenhChinh" name="ICDBenhChinh">
+                                            <option>A00.1</option>
+                                        </select>
+                                        <select class="form-control col mr-5" id="BenhChinh" name="BenhChinh">
+                                            <option>Bệnh a</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <select class="form-control col-2" id="ICDBenhChinh" name="ICDBenhChinh">
+                                            <option>A00.1</option>
+                                        </select>
+                                        <select class="form-control col mr-5" id="BenhChinh" name="BenhChinh">
+                                            <option>Bệnh a</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- #end Chẩn đoán -->
                     </div>
                 </div>
             </div>
-            <!-- /.card -->
+
+            <div class="tab-pane fade" id="custom-tabs-one-bieuDo" role="tabpanel" aria-labelledby="custom-tabs-one-bieuDo-tab">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- LINE CHART -->
+                        <div class="card card-info">
+                            <div class="card-body">
+                                <div class="chart">
+                                    <canvas id="lineChartASDAS" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <p style="text-align:center;">Dashboard ASDAS CRP</p>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <div class="col-md-6">
+                        <!-- LINE CHART -->
+                        <div class="card card-info">
+                            <div class="card-body">
+                                <div class="chart">
+                                    <canvas id="lineChartDAPSA" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <p style="text-align:center;">Dashboard DAPSA</p>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <!-- /.card -->
+</div>
+<div class="row col-12 justify-content-center">
+    <div class="col-auto">
+        <button class="btn btn-success " type="submit"><i class="fas fa-save"></i> Lưu</button>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-warning" style="color:white" type="button"><i class="fas fa-print"></i> In</button>
+    </div>
+    <div class="col-auto">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Đóng</button>
     </div>
 </div>
 
@@ -783,6 +886,7 @@
                 options: lineChartOptions
             })
 
+            bsCustomFileInput.init();
         })
     </script>
 }

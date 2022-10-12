@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css">
     <!-- daterange picker -->
     <link rel="stylesheet" href="~/lib/daterangepicker/daterangepicker.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="/lib/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="~/lib/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- Select2 -->
@@ -47,13 +49,15 @@
                             <a class="nav-link" asp-area="" asp-controller="Report" asp-action="Index">Quản lý biểu mẫu</a>
                         </li>
 
+
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item dropdown">
-                                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Phân quyền người dùng</a>
+                            @*dropdown-hover*@
+                            <li class="nav-item dropdown dropdown-hover">
+                                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Phân quyền</a>
                                 <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                    <li><a asp-area="" asp-controller="Permission" asp-action="Users" class="dropdown-item">Users </a></li>
-                                    <li><a asp-area="" asp-controller="Permission" asp-action="Roles" class="dropdown-item">Roles</a></li>
+                                    <li><a asp-area="" asp-controller="Permission" asp-action="Users" class="dropdown-item">Tài khoản người dùng </a></li>
+                                    <li><a asp-area="" asp-controller="Permission" asp-action="Roles" class="dropdown-item">Vai trò hệ thống</a></li>
                                     <li><a asp-area="" asp-controller="Permission" asp-action="ModuleController" class="dropdown-item">ModuleControllers</a></li>
                                     <li><a asp-area="" asp-controller="Permission" asp-action="ModuleAction" class="dropdown-item">ModuleActions</a></li>
                                 </ul>

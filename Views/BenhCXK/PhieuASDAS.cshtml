@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewData["Title"] = "_PhieuASDAS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-xl" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #3882b6;">
+                <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color:white;">&times;&nbsp;&nbsp;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formASDAS">
+                    <h1 style="text-align:center;">CHỈ SỐ ASDAS</h1>
+                    <div class="row">
+                        <label class="col-form-label col-2">Mã KH: <strong>18009858</strong></label>
+                        <label class="col-form-label col-3">Họ và tên: Nguyễn Thị A</label>
+                        <label class="col-form-label col-2">Ngày sinh: 01/01/1987</label>
+                        <label class="col-form-label col-2">Giới tính: Nữ</label>
+                        <div class="form-group row">
+                            <label for="NguoiDanhGia" class="col-form-label col-auto">Người đánh giá:</label>
+                            <div class="col-auto">
+                                <select class="form-control" id="NguoiDanhGia" name="NguoiDanhGia">
+                                    <option>Đặng Thị Hồng Hoa</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-form-label col-4">1. Mức độ đau tại cột sống cổ, lưng và khớp háng</div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong00" name="dauCotSong" />
+                                <label for="dauCotSong00">0</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong01" name="dauCotSong" />
+                                <label for="dauCotSong01">1</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong02" name="dauCotSong" />
+                                <label for="dauCotSong02">2</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong03" name="dauCotSong" />
+                                <label for="dauCotSong03">3</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong04" name="dauCotSong" />
+                                <label for="dauCotSong04">4</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong05" name="dauCotSong" />
+                                <label for="dauCotSong05">5</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong06" name="dauCotSong" />
+                                <label for="dauCotSong06">6</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong07" name="dauCotSong" />
+                                <label for="dauCotSong07">7</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong08" name="dauCotSong" />
+                                <label for="dauCotSong08">8</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong09" name="dauCotSong" />
+                                <label for="dauCotSong09">9</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="dauCotSong10" name="dauCotSong" />
+                                <label for="dauCotSong10">10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-form-label col-4">2. Thời gian cứng khớp buổi sáng</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <div class="radio icheck-belizehole mb-3">
+                                <input type="radio" id="cungKhop0" name="cungKhop" />
+                                <label for="cungKhop0">Không cứng khớp</label>
+                            </div>
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="cungKhop90" name="cungKhop" />
+                                <label for="cungKhop90">Cứng khớp buổi sáng kéo dài 90 phút</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="radio icheck-belizehole mb-3">
+                                <input type="radio" id="cungKhop30" name="cungKhop" />
+                                <label for="cungKhop30">Cứng khớp buổi sáng kéo dài 30 phút</label>
+                            </div>
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="cungKhop120" name="cungKhop" />
+                                <label for="cungKhop120">Cứng khớp buổi sáng kéo dài 120 phút</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="radio icheck-belizehole mb-3">
+                                <input type="radio" id="cungKhop60" name="cungKhop" />
+                                <label for="cungKhop60">Cứng khớp buổi sáng kéo dài 60 phút</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <label class="col-form-label col-4">3. Tình trạng bệnh do bệnh nhân tự đánh giá</label>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia00" name="tuDanhGia" />
+                                <label for="tuDanhGia00">0</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia01" name="tuDanhGia" />
+                                <label for="tuDanhGia01">1</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia02" name="tuDanhGia" />
+                                <label for="tuDanhGia02">2</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia03" name="tuDanhGia" />
+                                <label for="tuDanhGia03">3</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia04" name="tuDanhGia" />
+                                <label for="tuDanhGia04">4</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia05" name="tuDanhGia" />
+                                <label for="tuDanhGia05">5</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia06" name="tuDanhGia" />
+                                <label for="tuDanhGia06">6</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia07" name="tuDanhGia" />
+                                <label for="tuDanhGia07">7</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia08" name="tuDanhGia" />
+                                <label for="tuDanhGia08">8</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia09" name="tuDanhGia" />
+                                <label for="tuDanhGia09">9</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="tuDanhGia10" name="tuDanhGia" />
+                                <label for="tuDanhGia10">10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <label class="col-form-label col-4">4. Mức độ sưng đau khớp ngoại vi</label>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi00" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi00">0</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi01" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi01">1</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi02" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi02">2</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi03" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi03">3</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi04" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi04">4</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi05" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi05">5</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi06" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi06">6</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi07" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi07">7</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi08" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi08">8</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi09" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi09">9</label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="radio icheck-belizehole">
+                                <input type="radio" id="khopNgoaiVi10" name="khopNgoaiVi" />
+                                <label for="khopNgoaiVi10">10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <div class="form-group row">
+                                <label for="CRP" class="col-sm-3 col-form-label">CRP(mg/L):</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="CRP" placeholder="CRP">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success">Đánh giá</button>
+                        </div>
+                        <label class="col-auto col-form-label">Kết luận</label>
+                        <label class="col-auto col-form-label">ASDAS = </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-info" type="submit">Lưu</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+}
