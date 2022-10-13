@@ -189,7 +189,7 @@ namespace WebTools.Controllers
                     string filePath = Path.Combine(uploadsFolder, fileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                     {
-                        reportList.fileUpload.CopyTo(fileStream);
+                        await reportList.fileUpload.CopyToAsync(fileStream);
                     }
                     reportList.FileLink = filePath;
                     var result = await _reportListServices.InsertReportListAsync(reportList);
@@ -241,7 +241,7 @@ namespace WebTools.Controllers
                 string filePath = Path.Combine(uploadsFolder, fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {
-                    reportList.fileUpload.CopyTo(fileStream);
+                    await reportList.fileUpload.CopyToAsync(fileStream);
                 }
                 reportList.FileLink = filePath;
                 var result = await _reportListServices.UpdateReportListAsync(reportList);
