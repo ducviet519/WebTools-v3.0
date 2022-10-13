@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using WebTools.Context;
 using WebTools.Models;
 using WebTools.Services;
@@ -56,7 +57,7 @@ namespace WebTools.Controllers
 
         #region Index Page
 
-        public IActionResult Index
+        public async Task<IActionResult> Index
             (
             string sortField,
             string currentSortField,
@@ -71,7 +72,7 @@ namespace WebTools.Controllers
             )
         {
             ReportListViewModel model = new ReportListViewModel();
-            List<ReportList> data = _reportListServices.GetReportList().ToList();
+            List<ReportList> data = await _reportListServices.GetReportListAsync();
 
 
 
@@ -158,18 +159,18 @@ namespace WebTools.Controllers
 
         //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
         [HttpGet]
-        public IActionResult AddReport()
+        public async Task<IActionResult> AddReport()
         {
             ReportListViewModel model = new ReportListViewModel();
-            model.Depts = new SelectList(_depts.GetAll_Depts(), "STT", "KhoaP");
+            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(), "STT", "KhoaP");
             return PartialView("_AddReportPartial", model);
         }
 
         [HttpPost]
         [DisableRequestSizeLimit]
-        public IActionResult AddReport(ReportList reportList)
+        public async Task<IActionResult> AddReport(ReportList reportList)
             {
-            var data = _reportListServices.GetReportList();
+            var data = await _reportListServices.GetReportListAsync();
             data = data.Where(r => r.MaBM != null && r.MaBM.ToUpper() == reportList.MaBM.ToUpper()).ToList();
             if (data.Count > 0) 
             {
@@ -191,7 +192,7 @@ namespace WebTools.Controllers
                         reportList.fileUpload.CopyTo(fileStream);
                     }
                     reportList.FileLink = filePath;
-                    var result = _reportListServices.InsertReportList(reportList);
+                    var result = await _reportListServices.InsertReportListAsync(reportList);
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
@@ -204,7 +205,7 @@ namespace WebTools.Controllers
                 }
                 else
                 {
-                    var result = _reportListServices.InsertReportList(reportList);
+                    var result = await _reportListServices.InsertReportListAsync(reportList);
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
@@ -220,15 +221,15 @@ namespace WebTools.Controllers
        
 
         [HttpGet]
-        public IActionResult EditReport(string id)
+        public async Task<IActionResult> EditReport(string id)
         {
             ReportListViewModel model = new ReportListViewModel();
-            model.ReportList = _reportListServices.GetReportByID(id);
-            model.Depts = new SelectList(_depts.GetAll_Depts(), "STT", "KhoaP");
+            model.ReportList = await _reportListServices.GetReportByIDAsync(id);
+            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(), "STT", "KhoaP");
             return PartialView("_EditReportPartial", model);
         }
         [HttpPost]
-        public IActionResult EditReport(ReportList reportList)
+        public async Task<IActionResult> EditReport(ReportList reportList)
         {
             string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
             reportList.KhoaPhong = Request.Form["KhoaPhong"];
@@ -243,7 +244,7 @@ namespace WebTools.Controllers
                     reportList.fileUpload.CopyTo(fileStream);
                 }
                 reportList.FileLink = filePath;
-                var result = _reportListServices.UpdateReportList(reportList);
+                var result = await _reportListServices.UpdateReportListAsync(reportList);
                 if (result == "OK")
                 {
                     TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
@@ -256,7 +257,7 @@ namespace WebTools.Controllers
             }
             else
             {
-                var result = _reportListServices.UpdateReportList(reportList);
+                var result = await _reportListServices.UpdateReportListAsync(reportList);
                 if (result == "OK")
                 {
                     TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
@@ -269,11 +270,11 @@ namespace WebTools.Controllers
             }
         }
         //4. Tạo chức năng hiển thị phiên bản
-        public IActionResult Version(string id)
+        public async Task<IActionResult> Version(string id)
         {
             ReportVersionViewModel model = new ReportVersionViewModel();
-            model.VersionList = _reportVersionServices.GetReportVersion(id).LastOrDefault();
-            model.VersionLists = _reportVersionServices.GetReportVersion(id).ToList();
+            model.VersionList = (await _reportVersionServices.GetReportVersionAsync(id)).LastOrDefault();
+            model.VersionLists = (await _reportVersionServices.GetReportVersionAsync(id)).ToList();
 
             return PartialView("_VesionPartial", model);
         }
@@ -281,9 +282,9 @@ namespace WebTools.Controllers
         //5. Tạo chức năng Lưu phiên bản
         [HttpPost]
         [DisableRequestSizeLimit]
-        public IActionResult AddVersion(ReportVersion reportVersion)
+        public async Task<IActionResult> AddVersion(ReportVersion reportVersion)
         {
-            var data = _reportVersionServices.GetReportVersion(reportVersion.IDBieuMau).Where(v => v.PhienBan.Contains(reportVersion.PhienBan));
+            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => v.PhienBan.Contains(reportVersion.PhienBan));
             if (data.Any()) { TempData["ErrorMsg"] = $"Lỗi! Biểu mẫu đã tồn tại phiên bản: {reportVersion.PhienBan} xin vui lòng kiểm tra lại"; return RedirectToAction("Index"); }
             else
             {
@@ -301,7 +302,7 @@ namespace WebTools.Controllers
                         reportVersion.fileUpload.CopyTo(fileStream);
                     }
                     reportVersion.FileLink = filePath;
-                    var result = _reportVersionServices.InsertReportVersion(reportVersion);
+                    var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
@@ -314,7 +315,7 @@ namespace WebTools.Controllers
                 }
                 else
                 {
-                    var result = _reportVersionServices.InsertReportVersion(reportVersion);
+                    var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = "Thêm phiên bản " + reportVersion.PhienBan + " cho biểu mẫu " + reportVersion.TenBM + " thành công!";
@@ -328,10 +329,10 @@ namespace WebTools.Controllers
             }
         }
 
-        public IActionResult DeleteVersion(string IDPhienBan, string IDBieuMau)
+        public async Task<IActionResult> DeleteVersion(string IDPhienBan, string IDBieuMau)
         {
             string url = Request.Headers["Referer"].ToString();
-            var result =  _reportVersionServices.DeleteReportVersion(IDPhienBan);
+            var result =  await _reportVersionServices.DeleteReportVersionAsync(IDPhienBan);
             if (result == "DEL")
             {
                 TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
@@ -346,14 +347,14 @@ namespace WebTools.Controllers
         }
 
         //6. Tạo cửa sổ Phần mềm
-        public IActionResult Soft(string id)
+        public async Task<IActionResult> Soft(string id)
         {
             ReportSoftViewModel model = new ReportSoftViewModel();
-            model.ReportSoft = _reportSoftServices.GetReportSoft(id).FirstOrDefault();
-            model.ReportSofts = _reportSoftServices.GetReportSoft(id).ToList();
+            model.ReportSoft = (await _reportSoftServices.GetReportSoftAsync(id)).FirstOrDefault();
+            model.ReportSofts = (await _reportSoftServices.GetReportSoftAsync(id)).ToList();
 
             //URD SelectList
-            model.URDs = new SelectList(_reportURDServices.GetAll_URD(), "ID", "Des");
+            model.URDs = new SelectList(await _reportURDServices.GetAll_URDAsync(), "ID", "Des");
 
             //Softs SelectList
             var PhanMems = new List<PhanMems>
@@ -370,7 +371,7 @@ namespace WebTools.Controllers
 
         //7. Tạo chức năng lưu dữ liệu khi ấn nút Lưu ở phần 6
         [HttpPost]
-        public IActionResult AddSoft(ReportSoft reportSoft)
+        public async Task<IActionResult> AddSoft(ReportSoft reportSoft)
         {
             string url = Request.Headers["Referer"].ToString();
             int count = Int32.Parse(Request.Form["count"]);
@@ -386,7 +387,7 @@ namespace WebTools.Controllers
                 reportSoft.User = User.Identity.Name;
                 if (reportSoft.IDBieuMau != null)
                 {
-                    var result = _reportSoftServices.InsertReportSoft(reportSoft);
+                    var result = await _reportSoftServices.InsertReportSoftAsync(reportSoft);
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = "Cập nhật thông tin thành công!";
@@ -401,17 +402,17 @@ namespace WebTools.Controllers
         }
 
         //8. Tạo giao diện Chi tiết
-        public IActionResult Detail(string id)
+        public async Task<IActionResult> Detail(string id)
         {
             ReportDetailViewModel model = new ReportDetailViewModel();
-            model.ReportDetail = _reportDetailServices.GetReportDetail(id).FirstOrDefault();
-            model.ReportDetails = _reportDetailServices.GetReportDetail(id).ToList();
-            model.Depts = new SelectList(_depts.GetAll_Depts(),"STT","KhoaP");
+            model.ReportDetail = (await _reportDetailServices.GetReportDetailAsync(id)).FirstOrDefault();
+            model.ReportDetails = (await _reportDetailServices.GetReportDetailAsync(id)).ToList();
+            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(),"STT","KhoaP");
             return PartialView("_DetailPartial", model);
         }
 
         //9. Tạo chức năng lưu dữ liệu khi ấn nút Lưu ở phần 8
-        public IActionResult AddDetail(ReportDetail reportDetail)
+        public async Task<IActionResult> AddDetail(ReportDetail reportDetail)
         {
             reportDetail.User = User.Identity.Name;
             int count = Int32.Parse(Request.Form["count"]);
@@ -425,7 +426,7 @@ namespace WebTools.Controllers
                 reportDetail.User = "1";
                 if (reportDetail.IDBieuMau != null)
                 {
-                    var result = _reportDetailServices.InsertReportDetail(reportDetail);
+                    var result = await _reportDetailServices.InsertReportDetailAsync(reportDetail);
                     if (result == "OK")
                     {
                         TempData["SuccessMsg"] = "Cập nhật thông tin thành công!";

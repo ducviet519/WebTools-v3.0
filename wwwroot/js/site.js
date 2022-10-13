@@ -12,6 +12,10 @@ $(document).ready(function () {
     var table = $('#tableReport').DataTable({
         "paging": true,
         "lengthChange": false,
+        //"lengthMenu": [
+        //    [10, 25, 50, -1],
+        //    [10, 25, 50, 'All'],
+        //],
         "searching": true,
         "ordering": true,
         "info": true,

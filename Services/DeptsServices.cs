@@ -13,6 +13,8 @@ namespace WebTools.Services
 {
     public class DeptsServices : IDepts
     {
+        #region Connection Database
+
         private readonly IConfiguration _configuration;
         public DeptsServices(IConfiguration configuration)
         {
@@ -27,7 +29,8 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
-        public List<Depts> GetAll_Depts()
+        #endregion
+        public async Task<List<Depts>> GetAll_DeptsAsync()
         {
             List<Depts> reporDepts = new List<Depts>();
             var sql = "SELECT * FROM Depts";
@@ -36,7 +39,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    reporDepts = dbConnection.Query<Depts>(sql).ToList();
+                    reporDepts = (await dbConnection.QueryAsync<Depts>(sql)).ToList();
                     dbConnection.Close();
                 }
                 return reporDepts;

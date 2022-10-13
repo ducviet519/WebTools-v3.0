@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using Dapper;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebTools.Services
 
@@ -28,7 +29,7 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
         #endregion
-        public ReportList GetReportByID(string id)
+        public async Task<ReportList> GetReportByIDAsync(string id)
         {
             ReportList reports = new ReportList();
             try
@@ -36,7 +37,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    reports = dbConnection.Query<ReportList>("sp_Report_GetByID", new { IDBieuMau = id }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    reports = (await dbConnection.QueryAsync<ReportList>("sp_Report_GetByID", new { IDBieuMau = id }, commandType: CommandType.StoredProcedure)).FirstOrDefault();
                     dbConnection.Close();
                 }
                 return reports;
@@ -48,7 +49,7 @@ namespace WebTools.Services
             }
         }
         //Thực thi StoredProcedure sp_Report_List lấy về danh sách Biểu mẫu
-        public List<ReportList> GetReportList()
+        public async Task<List<ReportList>> GetReportListAsync()
         {
             List<ReportList> reportLists = new List<ReportList>();
 
@@ -57,7 +58,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    reportLists = dbConnection.Query<ReportList>("sp_Report_List", commandType: CommandType.StoredProcedure).ToList();
+                    reportLists = (await dbConnection.QueryAsync<ReportList>("sp_Report_List", commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();                   
                 }
                 return reportLists;
@@ -69,7 +70,7 @@ namespace WebTools.Services
             }
         }
         //Thực thi StoredProcedure sp_Report_New thêm mới Biểu mẫu
-        public string InsertReportList(ReportList reportList)
+        public async Task<string> InsertReportListAsync(ReportList reportList)
         {
             string result = "";
             DateTime? NgayBanHanh = null;
@@ -82,7 +83,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {                  
                     dbConnection.Open();
-                    var data = dbConnection.Query<ReportList>("sp_Report_New",
+                    var data = await dbConnection.QueryAsync<ReportList>("sp_Report_New",
                         new
                         {
                             TenBM = reportList.TenBM,
@@ -111,7 +112,7 @@ namespace WebTools.Services
             }
         }
 
-        public string UpdateReportList(ReportList reportList)
+        public async Task<string> UpdateReportListAsync(ReportList reportList)
         {
             string result = "";
             DateTime? NgayBanHanh = null;
@@ -124,7 +125,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var data = dbConnection.Query<ReportList>("sp_Report_Edit",
+                    var data = await dbConnection.QueryAsync<ReportList>("sp_Report_Edit",
                         new
                         {
                             IDBieuMau = reportList.IDBieuMau,

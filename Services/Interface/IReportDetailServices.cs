@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebTools.Models;
 
 namespace WebTools.Services
 {
     public interface IReportDetailServices
     {
-        public List<ReportDetail> GetReportDetail(string IdBieuMau);
+        public Task<List<ReportDetail>> GetReportDetailAsync(string IdBieuMau);
 
-        public string InsertReportDetail(ReportDetail reportDetail);
+        public Task<string> InsertReportDetailAsync(ReportDetail reportDetail);
     }
 }

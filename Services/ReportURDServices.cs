@@ -7,11 +7,14 @@ using Microsoft.Extensions.Configuration;
 using System;
 using Dapper;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebTools.Services
 {
     public class ReportURDServices:IReportURDServices
     {
+        #region Connection Database
+
         private readonly IConfiguration _configuration;
         public ReportURDServices(IConfiguration configuration)
         {
@@ -26,7 +29,8 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
-        public List<ReportURD> GetAll_URD()
+        #endregion
+        public async Task<List<ReportURD>> GetAll_URDAsync()
         {
             List<ReportURD> reporURDs = new List<ReportURD>();
             var sql = "SELECT * FROM Report_URD";
@@ -35,7 +39,7 @@ namespace WebTools.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    reporURDs = dbConnection.Query<ReportURD>(sql).ToList();
+                    reporURDs = (await dbConnection.QueryAsync<ReportURD>(sql)).ToList();
                     dbConnection.Close();
                 }
                 return reporURDs;
