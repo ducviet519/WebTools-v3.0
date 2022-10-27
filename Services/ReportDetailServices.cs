@@ -13,6 +13,8 @@ namespace WebTools.Services
 {
     public class ReportDetailServices : IReportDetailServices
     {
+        #region Connection Database
+
         private readonly IConfiguration _configuration;
         public ReportDetailServices(IConfiguration configuration)
         {
@@ -27,7 +29,8 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
-        public List<ReportDetail> GetReportDetail(string IdBieuMau)
+        #endregion
+        public async Task<List<ReportDetail>> GetReportDetailAsync(string IdBieuMau)
         {
             List<ReportDetail> reportLists = new List<ReportDetail>();
             try
@@ -36,7 +39,7 @@ namespace WebTools.Services
                 {
                     if(dbConnection.State==ConnectionState.Closed)
                     dbConnection.Open();
-                    reportLists = dbConnection.Query<ReportDetail>("sp_Report_Detail_View", new { IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure).ToList();
+                    reportLists = (await dbConnection.QueryAsync<ReportDetail>("sp_Report_Detail_View", new { IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();                   
                 }
                 return reportLists;
@@ -48,7 +51,7 @@ namespace WebTools.Services
             }
         }
 
-        public string InsertReportDetail(ReportDetail reportDetail)
+        public async Task<string> InsertReportDetailAsync(ReportDetail reportDetail)
         {
             string result = "";
             var detailTable = new List<ReportDetail>
@@ -68,7 +71,7 @@ namespace WebTools.Services
                 {
                     if (dbConnection.State == ConnectionState.Closed)
                         dbConnection.Open();
-                    var data = dbConnection.Query<ReportDetail>("sp_Report_Detail_Add",
+                    var data = await dbConnection.QueryAsync<ReportDetail>("sp_Report_Detail_Add",
                         new
                         {
                             ReportDetail = detailTable.AsTableValuedParameter("dbo.ReportDetail",

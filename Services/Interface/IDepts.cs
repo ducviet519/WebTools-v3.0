@@ -8,6 +8,6 @@ namespace WebTools.Services.Interface
 {
     public interface IDepts
     {
-        public List<Depts> GetAll_Depts();
+        public Task<List<Depts>> GetAll_DeptsAsync();
     }
 }

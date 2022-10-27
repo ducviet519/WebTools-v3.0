@@ -8,6 +8,6 @@ namespace WebTools.Services
 {
     public interface IReportURDServices
     {
-        public List<ReportURD> GetAll_URD();
+        public Task<List<ReportURD>> GetAll_URDAsync();
     }
 }

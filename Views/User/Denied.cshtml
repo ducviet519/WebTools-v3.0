@@ -1,7 +1,28 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Lockscreen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Truy cập bị từ chối</h1>
-<p>Bạn không có quyền truy cập trang web này.</p>
+<body class="hold-transition lockscreen">
+    <!-- Automatic element centering -->
+    <div class="lockscreen-wrapper" style="color:red; text-align:center; font-size:16px">
+        <div class="lockscreen-logo">
+            <strong>Truy cập bị từ chối</strong>
+        </div>
+        <!-- User name -->
+        <div class="lockscreen-name">Người dùng: @User.Identity.Name</div>
+
+
+        <div class="help-block text-center">
+            Tài khoản của bạn không có quyền quy cập trang web này. Vui lòng liên hệ phòng IT để biết thêm chi tiết
+        </div>
+        <div class="text-center">
+            <a href="@Url.Action("Index","Home")">Hoặc bấm vào đây để vể trang chủ</a>
+        </div>
+
+    </div>
+    <!-- /.center -->
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebTools.Models.Entities;
 using WebTools.Models.Entity;
 
 namespace WebTools.Models
@@ -18,5 +19,9 @@ namespace WebTools.Models
         public List<Roles> RolesList { get; set; }
 
         public Roles Roles { get; set; }
+
+        public UserPermissions UserPermissions { get; set; }
+
+        public List<UserPermissions> UserPermissionLists { get; set; }
     }
 }

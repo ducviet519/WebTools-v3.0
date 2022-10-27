@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebTools.Models;
 
 namespace WebTools.Services
 {
     public interface IReportVersionServices
     {
-        public List<ReportVersion> GetReportVersion(string IdBieuMau);
+        public Task<List<ReportVersion>> GetReportVersionAsync(string IdBieuMau);
 
-        public string InsertReportVersion(ReportVersion reportVersion);
+        public Task<string> InsertReportVersionAsync(ReportVersion reportVersion);
 
-        public string UpdateReportVersion(ReportVersion reportVersion);
+        public Task<string> UpdateReportVersionAsync(ReportVersion reportVersion);
 
-        public string DeleteReportVersion(string IDPhienBan);
+        public Task<string> DeleteReportVersionAsync(string IDPhienBan);
     }
 }

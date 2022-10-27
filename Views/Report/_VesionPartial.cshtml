@@ -8,9 +8,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm phiên bản</h5>
+                <h5 class="modal-title"><i class="fas fa-grip-vertical"></i> Thêm phiên bản</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;&nbsp;</span>
+                    <span aria-hidden="true" style="color:white">&times;&nbsp;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -37,13 +37,14 @@
                     </div>
                     <!--Bảng -->
                     <table class="table table-bordered" id="versionTable">
-                        <thead>
+                        <thead class="thead">
                             <tr>
                                 <th>STT</th>
                                 <th>Phiên bản</th>
                                 <th>Ngày ban hành</th>
                                 <th>Trạng thái</th>
                                 <th>Ghi chú</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -65,12 +66,15 @@
                                             }
                                             else
                                             {
-                                                    <td hidden></td>
+                                                    <td></td>
                                             }
+
+                                            @if (User.IsInRole("Manager") || User.IsInRole("Admin")){
                                             <td align="center">
                                                 <a onclick="DeleteVersion('@item.IDPhienBan', '@item.IDBieuMau')" style="cursor:pointer;" class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau"></a>
                                                 @*/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau*@
                                             </td>
+                                            }
                                             </tr>                                       
                                     }
                                 }
@@ -86,7 +90,7 @@
                             </div>
                         </div>
                         <div class="col text-right"><label for="PhienBanSD">Phiên bản:</label></div>
-                        <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan" /></div>
+                        <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan" required/></div>
                         <div class="col mr-2 text-right"><label for="PhienBanSD">Số PB:&nbsp;<span style="color:dodgerblue; font-weight:bold;">@Model.VersionList.SoPB</span></label></div>
                     </div>
                     <div class="row mb-3">
@@ -95,8 +99,11 @@
                     </div>  
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
-                    </div>
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                        {
+                            <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                        }
+                        </div>
                 </form>
             </div>
             @*<div class="modal-footer">

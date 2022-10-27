@@ -1,25 +1,54 @@
-﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
+﻿@{
+    ViewData["Title"] = "500 - Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+    <!-- Main content -->
+    <section class="content">
+        <div class="error-page">
+            <h2 class="headline text-danger">500</h2>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+            <div class="error-content">
+                <h3><i class="fas fa-exclamation-triangle text-danger"></i> Lỗi! Sự cố không mong muốn.</h3>                   
+                <p>
+                    Chúng tôi sẽ khắc phục trong thời gian sớm nhất.
+                    <a href="@Url.Action("Index","Home")">Bấm vào đây để trở về trang chủ</a>
+                </p>
+            </div>
+        </div>
+        <br />
+        
+
+        <!-- /.error-page -->
+
+    </section>
+    <!-- /.content -->
+    <section class="content-footer">
+        <p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            @ViewBag.ExceptionPath <br />
+            @ViewBag.ExceptionMessage <br />
+            @ViewBag.StackTrace <br />
+        </p>
+        </section>
+</div>
+<!-- /.content-wrapper -->

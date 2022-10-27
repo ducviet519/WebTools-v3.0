@@ -7,11 +7,14 @@ using Dapper;
 using System;
 using System.Linq;
 using WebTools.Context;
+using System.Threading.Tasks;
 
 namespace WebTools.Services
 {
     public class ReportVersionServices : IReportVersionServices
     {
+        #region Connection Database
+
         private readonly IConfiguration _configuration;
         public ReportVersionServices(IConfiguration configuration)
         {
@@ -26,7 +29,8 @@ namespace WebTools.Services
             get { return new SqlConnection(ConnectionString); }
         }
 
-        public string DeleteReportVersion(string IDPhienBan)
+        #endregion
+        public async Task<string> DeleteReportVersionAsync(string IDPhienBan)
         {
             string result = "";
             var query = "DELETE FROM Report_version WHERE ID = @IDPhienBan";
@@ -36,7 +40,7 @@ namespace WebTools.Services
                 {
                     if (dbConnection.State == ConnectionState.Closed)
                         dbConnection.Open();
-                    var data = dbConnection.Execute(query, new{ IDPhienBan = IDPhienBan });
+                    var data = await dbConnection.ExecuteAsync(query, new{ IDPhienBan = IDPhienBan });
                     if (data != 0)
                     {
                         result = "DEL";
@@ -53,7 +57,7 @@ namespace WebTools.Services
         }
 
         //Lấy về danh sách Phiên bản sp_Report_Version_View
-        public List<ReportVersion> GetReportVersion(string IdBieuMau)
+        public async Task<List<ReportVersion>> GetReportVersionAsync(string IdBieuMau)
         {
             List<ReportVersion> reportLists = new List<ReportVersion>();
 
@@ -63,7 +67,7 @@ namespace WebTools.Services
                 {
                     if (dbConnection.State == ConnectionState.Closed)
                         dbConnection.Open();
-                    reportLists = dbConnection.Query<ReportVersion>("sp_Report_Version_View",new{ IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure).ToList();
+                    reportLists = (await dbConnection.QueryAsync<ReportVersion>("sp_Report_Version_View",new{ IDBieuMau = IdBieuMau }, commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();                   
                 }
                 return reportLists;
@@ -76,7 +80,7 @@ namespace WebTools.Services
         }
 
         //Thêm mới phiên bản sp_Report_Version_Add
-        public string InsertReportVersion(ReportVersion reportVersion)
+        public async Task<string> InsertReportVersionAsync(ReportVersion reportVersion)
         {
             string result = "";
             DateTime? NgayBanHanh = null;
@@ -90,7 +94,7 @@ namespace WebTools.Services
                 {
                     if (dbConnection.State == ConnectionState.Closed)
                         dbConnection.Open();
-                    var data = dbConnection.Query<ReportVersion>("sp_Report_Version_Add",
+                    var data = await dbConnection.QueryAsync<ReportVersion>("sp_Report_Version_Add",
                         new
                         {
                             IDBieuMau = reportVersion.IDBieuMau,
@@ -116,7 +120,7 @@ namespace WebTools.Services
             }
         }
 
-        public string UpdateReportVersion(ReportVersion reportVersion)
+        public async Task<string> UpdateReportVersionAsync(ReportVersion reportVersion)
         {
             string result = "";
             var query = "sp_Report_Version_Edit";
@@ -131,7 +135,7 @@ namespace WebTools.Services
                 {
                     if (dbConnection.State == ConnectionState.Closed)
                         dbConnection.Open();
-                    var data = dbConnection.Query<ReportVersion>(query
+                    var data = await dbConnection.QueryAsync<ReportVersion>(query
                         ,new 
                         { 
                             IDPhienBan = reportVersion.IDPhienBan,

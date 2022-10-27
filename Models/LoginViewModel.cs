@@ -11,6 +11,7 @@ namespace WebTools.Models
         public string UserName { get; set; }
         public string Password { get; set; }
 
+        public bool RememberLogin { get; set; }
         public string LoginType { get; set; }
 
         public string UpdatedBy { get; set; }

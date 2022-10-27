@@ -1,0 +1,27 @@
+{
+  "CacheSourceKey": "18e0g4z",
+  "CachePdfKey": "18e0g4z/18e0g4z-jfz4vm.pdf",
+  "CacheXpzKey": "18e0g4z/18e0g4z-6je7dk.xpz",
+  "CacheInfoKey": "18e0g4z/18e0g4z-6je7dk.json",
+  "CacheCopyKey": null,
+  "Document": "Type=FileSystem;File=309448741_532357468894534_4202239653948097765_n.png;Location='Type=Physical;Path=\"C:\\Users\\vietld\\Desktop\\New folder\\WebTools-v2.0\\wwwroot\\Upload\"'",
+  "DocumentFileName": "309448741_532357468894534_4202239653948097765_n.png",
+  "DownloadFileName": null,
+  "InputOptions": {
+    "Format": "Png",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "18e0g4z",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": null
+}

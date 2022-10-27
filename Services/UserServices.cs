@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace WebTools.Services
 {
     public class UserServices : IUserServices
     {
+        #region Connection Database
         private readonly IConfiguration _configuration;
 
         public UserServices(IConfiguration configuration)
@@ -29,6 +31,7 @@ namespace WebTools.Services
         {
             get { return new SqlConnection(ConnectionString); }
         }
+        #endregion
 
         public string AddUser(Users users)
         {
@@ -41,15 +44,44 @@ namespace WebTools.Services
                     var data = dbConnection.Query<Users>("sp_Users",
                         new
                         {
-                            ID = "",
                             DisplayName = users.DisplayName,
                             UserName = users.UserName,
                             Password = users.Password,
                             Source = users.Source,
                             Email = users.Email,
                             Status = users.Status,
-                            Role_ID = "",
                             Action = "Add"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public string AddUserRoles(string UserName, string RoleName)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<Users>("sp_Users",
+                        new
+                        {
+                            UserName = UserName,
+                            RoleName = RoleName,
+                            Action = "AddUserRoles"
                         },
                         commandType: CommandType.StoredProcedure);
                     if (data != null)
@@ -79,13 +111,6 @@ namespace WebTools.Services
                         new
                         {
                             ID = id,
-                            DisplayName = "",
-                            UserName = "",
-                            Password = "",
-                            Source = "",
-                            Email = "",
-                            Status = "",
-                            Role_ID = "",
                             Action = "Delete"
                         },
                         commandType: CommandType.StoredProcedure);
@@ -104,8 +129,37 @@ namespace WebTools.Services
             }
         }
 
+        public string DeleteRoleInUser(int id)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<Users>("sp_Users",
+                        new
+                        {
+                            ID = id,
+                            Action = "DeleteRoleInUser"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
 
-        public string EditUserRoles(UserRoles userRoles)
+        public string AddUserRolesByID(UserRoles userRoles)
         {
             string result = "";
             try
@@ -117,12 +171,6 @@ namespace WebTools.Services
                         new
                         {
                             ID = userRoles.UserID,
-                            DisplayName = "",
-                            UserName = "",
-                            Password = "",
-                            Source = "",
-                            Email = "",
-                            Status = "",
                             Role_ID = userRoles.RoleID,
                             Action = "AddUserRoles"
                         },
@@ -142,6 +190,30 @@ namespace WebTools.Services
             }
         }
 
+        public Users FindByName(string userName)
+        {
+            Users roles = new Users();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    roles = dbConnection.Query<Users>("sp_Users", new
+                    {
+                        UserName = userName,
+                        Action = "FindByName"
+                    }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    dbConnection.Close();
+                }
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return roles;
+            }
+        }
+
         public List<Users> GetAllUsers()
         {
             List<Users> roles = new List<Users>();
@@ -153,15 +225,34 @@ namespace WebTools.Services
                     roles = dbConnection.Query<Users>("sp_Users"
                         , new
                         {
-                            ID = "",
-                            DisplayName = "",
-                            UserName = "",
-                            Password = "",
-                            Source = "",
-                            Email = "",
-                            Status = "",
-                            Role_ID = "",
                             Action = "GetAll"
+
+                        }
+                        , commandType: CommandType.StoredProcedure).ToList();
+                    dbConnection.Close();
+                }
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return roles;
+            }
+        }
+
+        public List<Roles> GetRoleInUser(int id)
+        {
+            List<Roles> roles = new List<Roles>();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    roles = dbConnection.Query<Roles>("sp_Users"
+                        , new
+                        {
+                            ID = id,
+                            Action = "GetRoleInUser"
 
                         }
                         , commandType: CommandType.StoredProcedure).ToList();
@@ -187,13 +278,6 @@ namespace WebTools.Services
                     roles = dbConnection.Query<Users>("sp_Users", new
                     {
                         ID = id,
-                        DisplayName = "",
-                        UserName = "",
-                        Password = "",
-                        Source = "",
-                        Email = "",
-                        Status = "",
-                        Role_ID = "",
                         Action = "GetByID"
                     }, commandType: CommandType.StoredProcedure).FirstOrDefault();
                     dbConnection.Close();
@@ -227,6 +311,118 @@ namespace WebTools.Services
             {
                 string errorMsg = ex.Message;
                 return false;
+            }
+        }
+
+        public UserPermissions RenderPermissions(int ControllerID, int ActionID)
+        {
+            UserPermissions permissions = new UserPermissions();
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    permissions = dbConnection.Query<UserPermissions>("sp_Users", new
+                    {
+                        Controller_ID = ControllerID,
+                        Action_ID = ActionID,
+                        Action = "RenderPermissions"
+                    }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    dbConnection.Close();
+                }
+                return permissions;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return permissions;
+            }
+        }
+
+        public string AddUserPermissions(UserPermissions userPermissions)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<UserPermissions>("sp_Users",
+                        new
+                        {
+                            UserName = userPermissions.UserName,
+                            Permission = userPermissions.Permission,
+                            Controller_ID = userPermissions.ControllerID,
+                            Action_ID = userPermissions.ActionID,
+                            Action = "AddUserPermissions"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public string DeleteUserPermissions(string UserName)
+        {
+            string result = "";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var data = dbConnection.Query<Users>("sp_Users",
+                        new
+                        {
+                            UserName = UserName,
+                            Action = "DeleteUserPermissions"
+                        },
+                        commandType: CommandType.StoredProcedure);
+                    if (data != null)
+                    {
+                        result = "OK";
+                    }
+                    dbConnection.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return result;
+            }
+        }
+
+        public List<UserPermissions> GetAllUserPermissions(string userName)
+        {
+            List<UserPermissions> permissions = new List<UserPermissions>();
+            var sql = "SELECT * FROM dbo.UserPermissions WHERE UPPER(Username) = UPPER(@UserName)";
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    permissions = dbConnection.Query<UserPermissions>(sql, new
+                    {
+                        UserName = userName,
+                    }).ToList();
+                    dbConnection.Close();
+                }
+                return permissions;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return permissions;
             }
         }
     }

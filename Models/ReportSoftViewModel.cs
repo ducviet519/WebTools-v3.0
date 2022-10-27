@@ -15,5 +15,7 @@ namespace WebTools.Models
         public List<ReportURD> URDLists { get; set; }
 
         public IEnumerable<SelectListItem> URDs { get; set; }
+
+        public IEnumerable<SelectListItem> PhanMems { get; set; }
     }
 }

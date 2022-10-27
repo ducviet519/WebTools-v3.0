@@ -7,9 +7,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Phần mềm</h5>               
+                <h5 class="modal-title"><i class="fas fa-grip-vertical"></i> Phần mềm</h5>               
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;&nbsp;</span>
+                    <span aria-hidden="true" style="color:white">&times;&nbsp;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -22,18 +22,18 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="MaBM">Mã biểu mẫu:</label></div>
-                        <div class="col-6"><span style="color:dodgerblue; font-weight:bold;">@Model.ReportSoft.MaBM</span></div>
+                        <div class="col-4"><span style="color:dodgerblue; font-weight:bold;">@Model.ReportSoft.MaBM</span></div>
                         <div class="col-2 text-right"><label for="PhanMem">Phần mềm:</label></div>
-                        <div class="col-2">
-                            <select asp-for="ReportSoft.PhanMem" asp-items="@Html.GetEnumSelectList<PhanMem>()" class="form-control" id="PhanMem" name="PhanMem">
-                                <option selected="selected" value="@Model.ReportSoft.PhanMem">Chọn...</option>
-                            </select>
+                        <div class="col-4">
+                            @*@Html.GetEnumSelectList<PhanMem>()*@
+                            <select class="selectPhanMem" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.PhanMems" id="PhanMem" name="PhanMem"></select>
+                                <input type="hidden" id="txtPhanMem" name="txtPhanMem" value="@Model.ReportSoft.PhanMem" />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">URD:<br />(Quy trình vận hành)</label></div>
                         <div class="col">
-                            <select class="select2" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="URD" id="URD"></select>
+                            <select class="selectURD" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="URD" id="URD"></select>
                             <input type="hidden" id="txtURD" name="txtURD" value="@Model.ReportSoft.URD" />
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                     </div>
                     <!--Bảng -->
                     <table class="table table-bordered" id="tbPhienBan">
-                        <thead>
+                        <thead class="thead">
                             <tr>
                                 <th>STT</th>
                                 <th>Phiên bản</th>
@@ -99,7 +99,10 @@
                     <input type="hidden" name="count" value="@count" />
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                        {
                         <button type="submit" class="btn btn-primary" data-save="modal">Lưu</button>
+                        }
                     </div>
                 </form>
             </div>
@@ -114,8 +117,17 @@
         var string = $('#txtURD').val();
         var array = string.split(",").map(Number);
         //Dropdown
-        $('.select2').select2()
+        $('.selectURD').select2()
         $('#URD').val(array);
         $('#URD').trigger('change');
+    });
+    $(function () {
+        var string = $('#txtPhanMem').val();
+        //var array = string.split(",").map(Number);
+        var array = string.split(",");
+        //Dropdown
+        $('.selectPhanMem').select2()
+        $('#PhanMem').val(array);
+        $('#PhanMem').trigger('change');
     });
 </script>

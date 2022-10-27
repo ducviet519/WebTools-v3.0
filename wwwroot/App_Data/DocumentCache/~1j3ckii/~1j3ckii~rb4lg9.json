@@ -1,0 +1,27 @@
+{
+  "CacheSourceKey": "1j3ckii",
+  "CachePdfKey": "1j3ckii/1j3ckii-npq31v.pdf",
+  "CacheXpzKey": "1j3ckii/1j3ckii-rb4lg9.xpz",
+  "CacheInfoKey": "1j3ckii/1j3ckii-rb4lg9.json",
+  "CacheCopyKey": null,
+  "Document": "Type=FileSystem;File=\"V6TA_HSBA_58_V4_Phieu nhan dinh ban dau san phu sau de, mo de danh cho dieu duong, ho sinh khoa phu san.pdf\";Location='Type=Physical;Path=\"C:\\Users\\vietld\\Desktop\\New folder\\WebTools-v2.0\\wwwroot\\Upload\"'",
+  "DocumentFileName": "V6TA_HSBA_58_V4_Phieu nhan dinh ban dau san phu sau de, mo de danh cho dieu duong, ho sinh khoa phu san.pdf",
+  "DownloadFileName": null,
+  "InputOptions": {
+    "Format": "Pdf",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "1j3ckii",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": null
+}

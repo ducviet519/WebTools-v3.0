@@ -12,6 +12,10 @@ $(document).ready(function () {
     var table = $('#tableReport').DataTable({
         "paging": true,
         "lengthChange": false,
+        //"lengthMenu": [
+        //    [10, 25, 50, -1],
+        //    [10, 25, 50, 'All'],
+        //],
         "searching": true,
         "ordering": true,
         "info": true,
@@ -83,6 +87,7 @@ $(document).ready(function () {
     var ReportPopupElement = $('#ReportPopup');
 
     $('button[data-toggle="ajax-modal"]').click(function (event) {
+        $("body").find(".modal-backdrop").remove();
         var url = $(this).data('url');
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);
@@ -91,6 +96,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
+        $("body").find(".modal-backdrop").remove();
         var url = $(this).data('url');
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);
