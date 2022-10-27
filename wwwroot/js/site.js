@@ -87,6 +87,7 @@ $(document).ready(function () {
     var ReportPopupElement = $('#ReportPopup');
 
     $('button[data-toggle="ajax-modal"]').click(function (event) {
+        $("body").find(".modal-backdrop").remove();
         var url = $(this).data('url');
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);
@@ -95,6 +96,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
+        $("body").find(".modal-backdrop").remove();
         var url = $(this).data('url');
         $.get(url).done(function (data) {
             ReportPopupElement.html(data);

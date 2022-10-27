@@ -1,5 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+
 .custom-file-label {
     height: calc(2rem + 2px);
 }
@@ -34,6 +35,9 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+}
+.thead:first-child{
+    background-color: cornflowerblue;
 }
 
 tr #odd {
@@ -98,7 +102,6 @@ body {
     line-height: 1.2;
 }
 
-
 .content-header h1 {
     font-family: 'Times New Roman', Times, serif;
     font-size: 30px;
@@ -118,6 +121,8 @@ body {
 
 .modal-header {
     padding: 6px;
+    background-color: #1B6EC2;
+    color: #ffffff;
 }
 
 .btn {
@@ -214,7 +219,14 @@ body {
 #tableReport_filter {
     display: none;
 }
-
+.thead:first-child {
+    background-color: #1b6ec2;
+    color: #ffffff;
+}
+.filters{
+    background-color:snow;
+    color:black;
+}
 .table td, .table th {
     vertical-align: middle;
 }
