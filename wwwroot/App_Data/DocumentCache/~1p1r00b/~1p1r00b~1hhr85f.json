@@ -1,0 +1,29 @@
+{
+  "CacheSourceKey": "1p1r00b",
+  "CachePdfKey": "1p1r00b/1p1r00b-npq31v.pdf",
+  "CacheXpzKey": "1p1r00b/1p1r00b-1hhr85f.xpz",
+  "CacheInfoKey": "1p1r00b/1p1r00b-1hhr85f.json",
+  "CacheCopyKey": null,
+  "Document": "31102022115406_DAPSA_ENG.pdf",
+  "DocumentHandlerType": null,
+  "DocumentHandlerParameters": null,
+  "DocumentLocation": "C:\\Users\\vietld\\Desktop\\P\\WebTools-v2.0\\wwwroot\\Upload",
+  "DocumentFileName": "31102022115406_DAPSA_ENG.pdf",
+  "InputOptions": {
+    "Format": "Pdf",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "1p1r00b",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": null
+}

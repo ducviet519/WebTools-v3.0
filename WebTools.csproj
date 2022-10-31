@@ -14,6 +14,7 @@
     <PackageReference Include="Catel.Core" Version="5.12.22" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="GleamTech.DocumentUltimate" Version="6.2.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.57.0.2831" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.17" />
@@ -29,11 +30,16 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Web" Version="1.25.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="MimeTypes" Version="2.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\credentials\" />
     <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
@@ -115,6 +121,17 @@
     <None Include="wwwroot\lib\pdfmake\pdfmake.min.js" />
     <None Include="wwwroot\lib\pdfmake\pdfmake.min.js.map" />
     <None Include="wwwroot\lib\pdfmake\vfs_fonts.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="credentials.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\credentials.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
