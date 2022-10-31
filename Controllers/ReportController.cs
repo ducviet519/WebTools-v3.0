@@ -30,8 +30,9 @@ namespace WebTools.Controllers
         private readonly IReportSoftServices _reportSoftServices;
         private readonly IReportDetailServices _reportDetailServices;
         private readonly IReportURDServices _reportURDServices;
-        private readonly IDepts _depts ;
+        private readonly IDepts _depts;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IGoogleDriveAPI _googleDriveAPI;
 
         public ReportController(
             IConfiguration configuration,
@@ -41,7 +42,8 @@ namespace WebTools.Controllers
             IReportDetailServices reportDetailServices,
             IReportURDServices reportURDServices,
             IDepts depts,
-            IWebHostEnvironment webHostEnvironment
+            IWebHostEnvironment webHostEnvironment,
+            IGoogleDriveAPI googleDriveAPI
             )
         {
             _configuration = configuration;
@@ -49,9 +51,10 @@ namespace WebTools.Controllers
             _reportVersionServices = reportVersionServices;
             _reportSoftServices = reportSoftServices;
             _reportDetailServices = reportDetailServices;
-            _reportURDServices = reportURDServices;           
+            _reportURDServices = reportURDServices;
             _depts = depts;
             _webHostEnvironment = webHostEnvironment;
+            _googleDriveAPI = googleDriveAPI;
         }
         #endregion
 
@@ -102,7 +105,7 @@ namespace WebTools.Controllers
             }
             if (!String.IsNullOrEmpty(SearchDate))
             {
-                data = data.Where(s => s.NgayBanHanh != null &&  s.NgayBanHanh.Contains(SearchDate.ToString())).ToList();
+                data = data.Where(s => s.NgayBanHanh != null && s.NgayBanHanh.Contains(SearchDate.ToString())).ToList();
             }
 
             var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
@@ -123,6 +126,29 @@ namespace WebTools.Controllers
             return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
         }
         #endregion
+
+        #region UploadFile
+        public async Task<string> UploadFile(IFormFile fileUpload)
+        {
+            string FileLink = "";
+            if (fileUpload != null && fileUpload.Length > 0)
+            {
+                string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
+                string fileName = $"{getDateS}_{fileUpload.FileName}";
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                //string fileGoogleID = _googleDriveAPI.UploadFile(fileUpload);
+                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                {
+                    await fileUpload.CopyToAsync(fileStream);
+                }
+                return FileLink = filePath;
+            }
+            else
+                return FileLink = "";
+        }
+        #endregion
+
         #region Sắp xếp
         private List<ReportList> SortData(List<ReportList> model, string sortField, string currentSortField, string currentSortOrder)
         {
@@ -169,56 +195,32 @@ namespace WebTools.Controllers
         [HttpPost]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> AddReport(ReportList reportList)
-            {
+        {
             var data = await _reportListServices.GetReportListAsync();
             data = data.Where(r => r.MaBM != null && r.MaBM.ToUpper() == reportList.MaBM.ToUpper()).ToList();
-            if (data.Count > 0) 
+            if (data.Count > 0)
             {
                 TempData["ErrorMsg"] = $"Lỗi! Mã biểu mẫu: {reportList.MaBM} đã tồn tại. Xin vui lòng kiểm tra lại";
                 return RedirectToAction("Index");
             }
             else
             {
-                string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
                 reportList.KhoaPhong = Request.Form["KhoaPhong"];
                 reportList.CreatedUser = User.Identity.Name;
-                if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
+                reportList.FileLink = await UploadFile(reportList.fileUpload);
+                var result = await _reportListServices.InsertReportListAsync(reportList);
+                if (result == "OK")
                 {
-                    string fileName = $"{getDateS}_{reportList.fileUpload.FileName}";
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                    string filePath = Path.Combine(uploadsFolder, fileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-                    {
-                        await reportList.fileUpload.CopyToAsync(fileStream);
-                    }
-                    reportList.FileLink = filePath;
-                    var result = await _reportListServices.InsertReportListAsync(reportList);
-                    if (result == "OK")
-                    {
-                        TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
-                    }
-                    else
-                    {
-                        TempData["ErrorMsg"] = "Lỗi! " + result;
-                    }
-                    return RedirectToAction("Index");
+                    TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
                 }
                 else
                 {
-                    var result = await _reportListServices.InsertReportListAsync(reportList);
-                    if (result == "OK")
-                    {
-                        TempData["SuccessMsg"] = "Thêm biểu mẫu: " + reportList.TenBM + " thành công!";
-                    }
-                    else
-                    {
-                        TempData["ErrorMsg"] = "Lỗi! " + result;
-                    }
-                    return RedirectToAction("Index");
+                    TempData["ErrorMsg"] = "Lỗi! " + result;
                 }
-            }          
+                return RedirectToAction("Index");
+            }
         }
-       
+
 
         [HttpGet]
         public async Task<IActionResult> EditReport(string id)
@@ -234,40 +236,18 @@ namespace WebTools.Controllers
             string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
             reportList.KhoaPhong = Request.Form["KhoaPhong"];
             reportList.CreatedUser = User.Identity.Name;
-            if (reportList.fileUpload != null && reportList.fileUpload.Length > 0)
+
+            reportList.FileLink = await UploadFile(reportList.fileUpload);
+            var result = await _reportListServices.UpdateReportListAsync(reportList);
+            if (result == "OK")
             {
-                string fileName = $"{getDateS}_{reportList.fileUpload.FileName}";
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-                {
-                    await reportList.fileUpload.CopyToAsync(fileStream);
-                }
-                reportList.FileLink = filePath;
-                var result = await _reportListServices.UpdateReportListAsync(reportList);
-                if (result == "OK")
-                {
-                    TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Lỗi! " + result;
-                }
-                return RedirectToAction("Index");
+                TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
             }
             else
             {
-                var result = await _reportListServices.UpdateReportListAsync(reportList);
-                if (result == "OK")
-                {
-                    TempData["SuccessMsg"] = "Cập nhật thông tin Biểu mẫu: " + reportList.TenBM + " thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Lỗi! " + result;
-                }
-                return RedirectToAction("Index");
+                TempData["ErrorMsg"] = "Lỗi! " + result;
             }
+            return RedirectToAction("Index");
         }
         //4. Tạo chức năng hiển thị phiên bản
         public async Task<IActionResult> Version(string id)
@@ -292,47 +272,25 @@ namespace WebTools.Controllers
                 string getDateS = DateTime.Now.ToString("ddMMyyyy");
                 string IDBieuMau = reportVersion.IDBieuMau;
                 string resault = string.Empty;
-                if (reportVersion.fileUpload != null && reportVersion.fileUpload.Length > 0)
+
+                reportVersion.FileLink = await UploadFile(reportVersion.fileUpload);
+                var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
+                if (result == "OK")
                 {
-                    string fileName = $"{getDateS}_{reportVersion.MaBM}_{reportVersion.PhienBan}_{reportVersion.fileUpload.FileName}";
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                    string filePath = Path.Combine(uploadsFolder, fileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        reportVersion.fileUpload.CopyTo(fileStream);
-                    }
-                    reportVersion.FileLink = filePath;
-                    var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
-                    if (result == "OK")
-                    {
-                        TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
-                    }
-                    else
-                    {
-                        TempData["ErrorMsg"] = "Lỗi! " + result;
-                    }
-                    return RedirectToAction("Index");
+                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
                 }
                 else
                 {
-                    var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
-                    if (result == "OK")
-                    {
-                        TempData["SuccessMsg"] = "Thêm phiên bản " + reportVersion.PhienBan + " cho biểu mẫu " + reportVersion.TenBM + " thành công!";
-                    }
-                    else
-                    {
-                        TempData["ErrorMsg"] = "Lỗi!" + result;
-                    }
-                    return RedirectToAction("Index");
+                    TempData["ErrorMsg"] = "Lỗi! " + result;
                 }
+                return RedirectToAction("Index");
             }
         }
 
         public async Task<IActionResult> DeleteVersion(string IDPhienBan, string IDBieuMau)
         {
             string url = Request.Headers["Referer"].ToString();
-            var result =  await _reportVersionServices.DeleteReportVersionAsync(IDPhienBan);
+            var result = await _reportVersionServices.DeleteReportVersionAsync(IDPhienBan);
             if (result == "DEL")
             {
                 TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
@@ -383,7 +341,7 @@ namespace WebTools.Controllers
                 reportSoft.URD = Request.Form["URD"];
                 reportSoft.ViTriIn = Request.Form["ViTriIn"];
                 reportSoft.CachIn = Request.Form["CachIn"];
-                reportSoft.TrangThaiPM = Request.Form["TrangThaiPM-"+i];
+                reportSoft.TrangThaiPM = Request.Form["TrangThaiPM-" + i];
                 reportSoft.User = User.Identity.Name;
                 if (reportSoft.IDBieuMau != null)
                 {
@@ -407,7 +365,7 @@ namespace WebTools.Controllers
             ReportDetailViewModel model = new ReportDetailViewModel();
             model.ReportDetail = (await _reportDetailServices.GetReportDetailAsync(id)).FirstOrDefault();
             model.ReportDetails = (await _reportDetailServices.GetReportDetailAsync(id)).ToList();
-            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(),"STT","KhoaP");
+            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(), "STT", "KhoaP");
             return PartialView("_DetailPartial", model);
         }
 
