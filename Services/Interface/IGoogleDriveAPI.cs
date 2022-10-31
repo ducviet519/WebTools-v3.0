@@ -8,7 +8,7 @@ namespace WebTools.Services.Interface
 {
     public interface IGoogleDriveAPI
     {
-        string UploadFile(IFormFile fileUpload);
+        string UploadFile(string path);
         void DownloadFile(string blobId, string savePath);
     }
 }

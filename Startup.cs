@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,6 +71,11 @@ namespace WebTools
                             await Task.CompletedTask;
                         }
                     };
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "283368016413-0mc7gob52v5bp6ub7tlhjn5frbocsa5d.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
                 });
             //services.AddAuthorization(options =>
             //{
@@ -128,7 +134,9 @@ namespace WebTools
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+            var options = new RewriteOptions()
+            .AddRedirectToHttps();
+            app.UseRewriter(options);
 
             app.UseEndpoints(endpoints =>
             {

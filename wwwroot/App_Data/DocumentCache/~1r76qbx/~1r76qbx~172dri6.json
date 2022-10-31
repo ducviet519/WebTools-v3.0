@@ -1,0 +1,47 @@
+{
+  "CacheSourceKey": "1r76qbx",
+  "CachePdfKey": "1r76qbx/1r76qbx-15719fv.pdf",
+  "CacheXpzKey": "1r76qbx/1r76qbx-172dri6.xpz",
+  "CacheInfoKey": "1r76qbx/1r76qbx-172dri6.json",
+  "CacheCopyKey": null,
+  "Document": "31102022214910_cxz.xlsx",
+  "DocumentHandlerType": null,
+  "DocumentHandlerParameters": null,
+  "DocumentLocation": "C:\\Users\\Admin\\Desktop\\New folder\\WebTools-v2.0\\wwwroot\\Upload",
+  "DocumentFileName": "31102022214910_cxz.xlsx",
+  "InputOptions": {
+    "$type": "GleamTech.DocumentUltimate.SpreadsheetInputOptions, GleamTech.DocumentUltimate",
+    "OutputSheetRange": "visible",
+    "RenderColumnsFitToPages": 1,
+    "RenderRowsFitToPages": 0,
+    "RenderHeadings": false,
+    "RenderGridlines": false,
+    "RenderTitleColumns": null,
+    "RenderTitleRows": null,
+    "RenderArea": null,
+    "RenderBlackAndWhite": false,
+    "RenderCenterHorizontally": false,
+    "RenderCenterVertically": false,
+    "RenderLeftHeader": null,
+    "RenderCenterHeader": null,
+    "RenderRightHeader": null,
+    "RenderLeftFooter": null,
+    "RenderCenterFooter": null,
+    "RenderRightFooter": null,
+    "Format": "Xlsx",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "1r76qbx",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": []
+}

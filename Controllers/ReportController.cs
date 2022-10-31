@@ -137,11 +137,13 @@ namespace WebTools.Controllers
                 string fileName = $"{getDateS}_{fileUpload.FileName}";
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, fileName);
-                //string fileGoogleID = _googleDriveAPI.UploadFile(fileUpload);
+                               
                 using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {
                     await fileUpload.CopyToAsync(fileStream);
                 }
+
+                string fileGoogleID = _googleDriveAPI.UploadFile(filePath);
                 return FileLink = filePath;
             }
             else
