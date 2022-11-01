@@ -10,7 +10,8 @@ namespace WebTools.Services
 
         public Task<ReportList> GetReportByIDAsync(string id);
         public Task<string> InsertReportListAsync(ReportList reportList);
-
         public Task<string> UpdateReportListAsync(ReportList reportList);
+
+        public Task<List<ReportList>> SearchReportListAsync(string SearchURD = null);
     }
 }

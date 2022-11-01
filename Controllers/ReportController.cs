@@ -60,37 +60,21 @@ namespace WebTools.Controllers
 
         #region Index Page
 
-        public async Task<IActionResult> Index
-            (
-            string sortField,
-            string currentSortField,
-            string currentSortOrder,
-            string SearchString,
-            string SearchTrangThaiSD,
-            string SearchTrangThaiPM,
-            string SearchDate,
-            //DateTime? SearchDate,
-            string currentFilter,
-            int? pageNo
-            )
+        public async Task<IActionResult> Index()
         {
             ReportListViewModel model = new ReportListViewModel();
-            List<ReportList> data = await _reportListServices.GetReportListAsync();
+            model.URDs = new SelectList(await _reportURDServices.GetAll_URDAsync(), "ID", "Des");
+            model.ReportLists = await _reportListServices.GetReportListAsync();
+            return View(model);
+        }
 
-
-
-            if (SearchString != null)
-            {
-                pageNo = 1;
-            }
-            else
-            {
-                SearchString = currentFilter;
-            }
-            ViewData["CurrentSort"] = sortField;
-            ViewBag.CurrentFilter = SearchString;
-
-            //Tìm kếm
+        [HttpPost]
+        public async Task<IActionResult> Index(string SearchString, string SearchTrangThaiSD, string SearchTrangThaiPM, string SearchDate, string SearchURD)
+        {
+            SearchURD = Request.Form["SearchURD"];
+            ReportListViewModel model = new ReportListViewModel();
+            model.URDs = new SelectList(await _reportURDServices.GetAll_URDAsync(), "ID", "Des");
+            List<ReportList> data = await _reportListServices.SearchReportListAsync(SearchURD);
             if (!String.IsNullOrEmpty(SearchString))
             {
                 data = data.Where(s => s.TenBM != null && convertToUnSign(s.TenBM.ToLower()).Contains(convertToUnSign(SearchString.ToLower())) || s.MaBM != null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
@@ -107,13 +91,10 @@ namespace WebTools.Controllers
             {
                 data = data.Where(s => s.NgayBanHanh != null && s.NgayBanHanh.Contains(SearchDate.ToString())).ToList();
             }
-
-            var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
             model.ReportLists = data;
-            int pageSize = 10;
-            model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
             TempData["SearchString"] = SearchString;
             TempData["SearchDate"] = SearchDate;
+            TempData["SearchURD"] = SearchURD;
             return View(model);
         }
         #endregion

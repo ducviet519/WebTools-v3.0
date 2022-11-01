@@ -13,5 +13,6 @@ namespace WebTools.Services
         public Task<string> UpdateReportVersionAsync(ReportVersion reportVersion);
 
         public Task<string> DeleteReportVersionAsync(string IDPhienBan);
+
     }
 }

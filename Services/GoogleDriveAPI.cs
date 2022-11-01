@@ -118,7 +118,7 @@ namespace WebTools.Services
         }
 
         //get all files from Google Drive.
-        public List<GoogleDriveFile> GetDriveFiles()
+        public async Task<List<GoogleDriveFile>> GetDriveFiles()
         {
             DriveService service = GetDriveServiceInstance();
             // Define parameters of request.
@@ -128,7 +128,7 @@ namespace WebTools.Services
             //FileListRequest.Q = "mimeType='application/vnd.google-apps.folder'";
             FileListRequest.Fields = "nextPageToken, files(*)";
             // List files.
-            IList<Google.Apis.Drive.v3.Data.File> files = FileListRequest.Execute().Files;
+            IList<Google.Apis.Drive.v3.Data.File> files = (await FileListRequest.ExecuteAsync()).Files;
             List<GoogleDriveFile> FileList = new List<GoogleDriveFile>();
             // For getting only folders
             // files = files.Where(x => x.MimeType == "application/vnd.google-apps.folder").ToList();

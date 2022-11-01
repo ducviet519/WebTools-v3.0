@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebTools.Models.Entities;
 
 namespace WebTools.Services.Interface
 {
@@ -10,5 +11,6 @@ namespace WebTools.Services.Interface
     {
         string UploadFile(string path);
         void DownloadFile(string blobId, string savePath);
+        Task<List<GoogleDriveFile>> GetDriveFiles();
     }
 }

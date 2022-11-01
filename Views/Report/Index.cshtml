@@ -22,16 +22,16 @@
                 @{
                     if (TempData["SuccessMsg"] != null)
                     {
-                            <script type="text/javascript">
+                        <script type="text/javascript">
                                 window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
-                            </script>
+                        </script>
 
                     }
                     if (TempData["ErrorMsg"] != null)
                     {
-                            <script type="text/javascript">
+                        <script type="text/javascript">
                                 window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
-                            </script>
+                        </script>
                     }
                 }
             </div>
@@ -41,23 +41,19 @@
                 <div class="card">
                     <div class="card-header">
                         <!--Tìm kiếm -->
-                        @using (Html.BeginForm())
-                        {
+                        <form asp-action="Index" asp-controller="Report" id="searchForm" method="post">
                             <div class="row align-items-end">
-                                <div class="col-3 pr-5">
+                                <div class="col-3">
                                     <label>Tên/Mã biểu mẫu:</label>
                                     <input type="text" class="form-control" name="SearchString" id="SearchString" value="@TempData["SearchString"]" />
                                 </div>
-                                <div class="col-auto pl-2 pr-5">
+                                <div class="col-auto pl-2">
                                     <label>Ngày ban hành:</label>
                                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input" data-target="#reservationdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" value="@TempData["SearchDate"]" />
-                                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
+                                        <input type="text" id="SearchDate" name="SearchDate" class="form-control datetimepicker-input SearchDate" data-toggle="datetimepicker" data-target="#SearchDate" value="@TempData["SearchDate"]" autocomplete="off" />
                                     </div>
                                 </div>
-                                <div class="col-auto pl-2 pr-5">
+                                <div class="col-auto pl-2">
                                     <label>Trạng thái:</label>
                                     @Html.DropDownList("SearchTrangThaiSD", new List<SelectListItem>
                                     {   new SelectListItem{Text="Đang sử dụng", Value="Đang sử dụng"},
@@ -65,13 +61,20 @@
                                         new SelectListItem{Text="Đã hủy", Value="Đã hủy"}
                                     }, "Tất cả", new { @class = "form-control" })
                                 </div>
-                                <div class="col-auto pl-2 pr-5">
+                                <div class="col-auto pl-2">
                                     <label>Trạng thái phần mềm:</label>
                                     @Html.DropDownList("SearchTrangThaiPM", new List<SelectListItem>
                                     {   new SelectListItem{Text="Đã hoàn thành", Value="Đã hoàn thành"},
                                         new SelectListItem{Text="Chưa hoàn thành", Value="Chưa hoà"},
                                         new SelectListItem{Text="Chưa có", Value="Chưa có"}
                                     }, "Tất cả", new { @class = "form-control" })
+                                </div>
+                                <div class="col-2 pl-2">
+                                    <label>URD (Quy trình vận hành):</label>
+                                    <div class="col">
+                                        <select class="form-control selectURD" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="SearchURD" id="SearchURD"></select>
+                                        <input type="hidden" id="txtURD" name="txtURD" value="@TempData["SearchURD"]" />
+                                    </div>
                                 </div>
                                 <div class="col-auto"><button type="submit" class="btn btn-primary">Tìm kiếm</button></div>
 
@@ -81,9 +84,8 @@
 
                                     <div class="col-auto"><button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="#addReport" data-url="@Url.Action("AddReport")">Thêm biểu mẫu</button></div>
                                 }
-                                @*}*@
                             </div>
-                        }
+                        </form>
                     </div>
                     <div class="card-body">
                         <div id="ReportPopup"></div>
@@ -111,48 +113,48 @@
                                                 {
                                                     foreach (var item in Model.ReportLists)
                                                     {
-                                                            <tr>
-                                                                <td>@item.STT</td>
-                                                                <td>@item.TenBM</td>
-                                                                <td>@item.MaBM</td>
-                                                                <td>@item.PhienBan</td>
-                                                                <td>@item.NgayBanHanh</td>
-                                                                <td>@item.TrangThai</td>
-                                                                <td>@item.PhanMem</td>
-                                                                <td>@item.TrangThaiPM</td>
-                                                                <td>
-                                                                    <div class="btn-group">
-                                                                        @if (item.FileLink != null)
+                                                        <tr>
+                                                            <td>@item.STT</td>
+                                                            <td>@item.TenBM</td>
+                                                            <td>@item.MaBM</td>
+                                                            <td>@item.PhienBan</td>
+                                                            <td>@item.NgayBanHanh</td>
+                                                            <td>@item.TrangThai</td>
+                                                            <td>@item.PhanMem</td>
+                                                            <td>@item.TrangThaiPM</td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    @if (item.FileLink != null)
                                                                     {
-                                                                            <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.FileLink">File</a>
+                                                                        <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.FileLink">File</a>
                                                                     }
                                                                     else
                                                                     {
-                                                                            <a href="#" target="_blank" class="btn btn-link">&nbsp; &nbsp; &nbsp; &nbsp;</a>
+                                                                        <a href="#" target="_blank" class="btn btn-link">&nbsp; &nbsp; &nbsp; &nbsp;</a>
                                                                     }
 
-                                                                        @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                                                    @if (User.IsInRole("Editer") || User.IsInRole("Manager") || User.IsInRole("Admin"))
                                                                     {
-                                                                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                                                                                Chi tiết
-                                                                            </button>
-                                                                            <div class="dropdown-menu" role="menu">
-                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Versions.View")).Result.Succeeded)
-                                                                                {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>}
+                                                                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                                                            Chi tiết
+                                                                        </button>
+                                                                        <div class="dropdown-menu" role="menu">
+                                                                            @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Versions.View")).Result.Succeeded)
+                                                                            {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportVersion-@item.IDBieuMau" data-url="/Report/Version?id=@item.IDBieuMau">Phiên bản</a>}
 
-                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Softs.View")).Result.Succeeded)
-                                                                                {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>}
+                                                                            @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Softs.View")).Result.Succeeded)
+                                                                            {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportSoft-@item.IDBieuMau" data-url="/Report/Soft?id=@item.IDBieuMau">Phần mềm</a>}
 
-                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Details.View")).Result.Succeeded)
-                                                                                {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>}
+                                                                            @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Details.View")).Result.Succeeded)
+                                                                            {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportDetail-@item.IDBieuMau" data-url="/Report/Detail?id=@item.IDBieuMau">Chi tiết</a>}
 
-                                                                                @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Reports.Edit")).Result.Succeeded)
+                                                                            @if ((AuthorizationService.AuthorizeAsync(User, "Permission.Reports.Edit")).Result.Succeeded)
                                                                             {<a class="dropdown-item" data-toggle="ajax-modal" data-target="#reportEdit-@item.IDBieuMau" data-url="/Report/EditReport?id=@item.IDBieuMau">Sửa biểu mẫu</a>}
-                                                                            </div>
+                                                                        </div>
                                                                     }
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
                                                     }
                                                 }
                                             }
@@ -182,6 +184,99 @@
     <div id="ReportPopup"></div>
 </section>
 
+@section Scripts{
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Setup - add a text input to each footer cell
+        $('#tableReport thead tr')
+            .clone(true)
+            .addClass('filters')
+            .appendTo('#tableReport thead');
+
+        var table = $('#tableReport').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            //"lengthMenu": [
+            //    [10, 25, 50, -1],
+            //    [10, 25, 50, 'All'],
+            //],
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "orderCellsTop": true,
+            "fixedHeader": false,
+            "columnDefs": [{ orderable: false, targets: 8 }],
+            //"order": [[4, 'desc']],
+            "initComplete": function () {
+                var api = this.api();
+
+                // For each column
+                api
+                    .columns()
+                    .eq(0)
+                    .each(function (colIdx) {
+                        // Set the header cell to contain the input element
+                        if (colIdx != 8) {
+                            var cell = $('.filters th').eq(
+                                $(api.column(colIdx).header()).index()
+                            );
+                            var title = $(cell).text();
+                            $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+                        }
+                        // On every keypress in this input
+                        $(
+                            'input',
+                            $('.filters th').eq($(api.column(colIdx).header()).index())
+                        )
+                            .off('keyup change')
+                            .on('change', function (e) {
+                                // Get the search value
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                                var cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search(
+                                        this.value != ''
+                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                            : '',
+                                        this.value != '',
+                                        this.value == ''
+                                    )
+                                    .draw();
+                            })
+                            .on('keyup', function (e) {
+                                e.stopPropagation();
+
+                                $(this).trigger('change');
+                                $(this)
+                                    .focus()[0]
+                                    .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
+            },
+            "columnDefs": [
+                { "searchable": false, "targets": 8 }
+            ],
+        });
+    });
+    $(function () {
+        $('#SearchDate').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
+    })
+    $(function () {
+        var string = $('#txtURD').val();
+        var array = string.split(",").map(Number);
+        //Dropdown
+        $('.selectURD').select2()
+        $('#SearchURD').val(array);
+        $('#SearchURD').trigger('change');
+    });
+</script>
+ }
 
 
 

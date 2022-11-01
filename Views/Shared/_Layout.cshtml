@@ -62,6 +62,14 @@
                                     <li><a asp-area="" asp-controller="Permission" asp-action="ModuleAction" class="dropdown-item">ModuleActions</a></li>
                                 </ul>
                             </li>
+                            <li class="nav-item dropdown dropdown-hover">
+                                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Google API</a>
+                                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                    <li><a asp-area="" asp-controller="GoogleAPI" asp-action="GoogleFiles" class="dropdown-item">Danh sách file Goolge Driver </a></li>
+                                    <li><a asp-area="" asp-controller="GoogleAPI" asp-action="UploadFileGG" class="dropdown-item">Upload File Google Drive</a></li>
+                                </ul>
+                            </li>
+
                         }
 
                     </ul>
@@ -119,8 +127,8 @@
         <script src="/lib/chart.js/Chart.min.js"></script>
         <!-- AdminLTE App -->
         <script src="~/lib/admin-lte/js/adminlte.min.js"></script>
-        @await RenderSectionAsync("Scripts", required: false)
         <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
     </div>
 </body>
 </html>

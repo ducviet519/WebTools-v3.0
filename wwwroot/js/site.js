@@ -2,29 +2,49 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-$(document).ready(function () {
+function searchDataTable(id, columnData, url, pageLength, disableColumn) {
+
+    tableId = '#' + id;
+    var array = [];
+    $.each(disableColumn.split(','), function (idx, val) {
+        array.push(parseInt(val));
+    });
+    if (disableColumn == '') { disableColumn = 0; }
+    var table = $(tableId).DataTable();
+    if ($.fn.dataTable.isDataTable(tableId)) {
+        table.destroy();
+        $(tableId).find('tbody').empty();
+    }
+
     // Setup - add a text input to each footer cell
-    $('#tableReport thead tr')
+    $('#' + id + ' thead tr')
         .clone(true)
         .addClass('filters')
-        .appendTo('#tableReport thead');
+        .appendTo('#' + id + ' thead');
 
-    var table = $('#tableReport').DataTable({
+    var table = $(tableId).DataTable({
         "paging": true,
         "lengthChange": false,
-        //"lengthMenu": [
-        //    [10, 25, 50, -1],
-        //    [10, 25, 50, 'All'],
-        //],
+        "pageLength": pageLength,
         "searching": true,
+        "processing": true,
         "ordering": true,
         "info": true,
-        "autoWidth": false,
+        "autoWidth": true,
         "responsive": true,
-        "orderCellsTop": true,
-        "fixedHeader": false,
-        "columnDefs": [{ orderable: false, targets: 8 }],
-        //"order": [[4, 'desc']],
+        "order": [[0, 'asc']],
+        "columnDefs": [
+            { orderable: false, targets: array },
+            { className: "text-wrap", targets: "_all" },
+            { defaultContent: '', targets: "_all" },
+            { searchable: false, targets: 8 },
+        ],
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": columnData,
         "initComplete": function () {
             var api = this.api();
 
@@ -75,11 +95,9 @@ $(document).ready(function () {
                         });
                 });
         },
-        "columnDefs": [
-            { "searchable": false, "targets": 8 }
-        ],
     });
-});
+}
+
 
 //PopUp cho <a>
 $(document).ready(function () {
@@ -164,13 +182,6 @@ $(function () {
         "hideMethod": "fadeOut"
     }
 });
-
-
-//$(function () {
-//    $('#toggle-event').change(function () {
-//        $('#Status').attr("value", $(this).prop('checked'))
-//    })
-//});
 
 
 

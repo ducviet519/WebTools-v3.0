@@ -112,6 +112,33 @@ namespace WebTools.Services
             }
         }
 
+        public async Task<List<ReportList>> SearchReportListAsync(string SearchURD = null)
+        {
+            List<ReportList> reportLists = new List<ReportList>();
+
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    reportLists = (await dbConnection.QueryAsync<ReportList>("sp_Report_List",new {
+                        //search = SearchString,
+                        //NgayBH = SearchDate,
+                        //TrangThaiSD = SearchTrangThaiSD,
+                        //TrangThaiPM = SearchTrangThaiPM,
+                        URD = SearchURD
+                    } , commandType: CommandType.StoredProcedure)).ToList();
+                    dbConnection.Close();
+                }
+                return reportLists;
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = ex.Message;
+                return reportLists;
+            }
+        }
+
         public async Task<string> UpdateReportListAsync(ReportList reportList)
         {
             string result = "";
