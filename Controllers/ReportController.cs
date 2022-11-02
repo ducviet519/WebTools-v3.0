@@ -124,7 +124,7 @@ namespace WebTools.Controllers
                     await fileUpload.CopyToAsync(fileStream);
                 }
 
-                string fileGoogleID = _googleDriveAPI.UploadFile(filePath);
+                //string fileGoogleID = _googleDriveAPI.UploadFile(filePath);
                 return FileLink = filePath;
             }
             else
@@ -166,7 +166,8 @@ namespace WebTools.Controllers
         }
         #endregion
 
-        //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
+
+        #region Biểu mẫu
         [HttpGet]
         public async Task<IActionResult> AddReport()
         {
@@ -232,6 +233,9 @@ namespace WebTools.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Phiên bản
         //4. Tạo chức năng hiển thị phiên bản
         public async Task<IActionResult> Version(string id)
         {
@@ -242,12 +246,11 @@ namespace WebTools.Controllers
             return PartialView("_VesionPartial", model);
         }
 
-        //5. Tạo chức năng Lưu phiên bản
         [HttpPost]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> AddVersion(ReportVersion reportVersion)
         {
-            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => !String.IsNullOrEmpty(v.PhienBan) &&v.PhienBan.Contains(reportVersion.PhienBan));
+            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => !String.IsNullOrEmpty(v.PhienBan) && v.PhienBan.Contains(reportVersion.PhienBan));
             if (data.Any()) { TempData["ErrorMsg"] = $"Lỗi! Biểu mẫu đã tồn tại phiên bản: {reportVersion.PhienBan} xin vui lòng kiểm tra lại"; return RedirectToAction("Index"); }
             else
             {
@@ -270,10 +273,11 @@ namespace WebTools.Controllers
             }
         }
 
-        public async Task<IActionResult> DeleteVersion(string IDPhienBan, string IDBieuMau)
+        [HttpPost]
+        public async Task<IActionResult> DeleteVersion(string id)
         {
             string url = Request.Headers["Referer"].ToString();
-            var result = await _reportVersionServices.DeleteReportVersionAsync(IDPhienBan);
+            var result = await _reportVersionServices.DeleteReportVersionAsync(id);
             if (result == "DEL")
             {
                 TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
@@ -285,7 +289,28 @@ namespace WebTools.Controllers
                 //return Json(new { message = "Lỗi! Phiên bản chưa được xóa" });
             }
             return RedirectToAction("Index");
+        } 
+        
+        [HttpGet]
+        public async Task<JsonResult> GetVersionsJson(string id)
+        {
+            var data = (await _reportVersionServices.GetReportVersionAsync(id)).ToList();
+            return Json(new { data });
         }
+        
+        public async Task<JsonResult> DeleteVersionsJson(string id)
+        {
+            var result = await _reportVersionServices.DeleteReportVersionAsync(id);
+            if (result == "DEL")
+            {
+                return Json(new {message = "Xóa phiên bản thành công!" });
+            }
+            else
+            {
+                return Json(new { message = "Lỗi! Phiên bản chưa được xóa" });
+            }
+        }
+        #endregion
 
         //6. Tạo cửa sổ Phần mềm
         public async Task<IActionResult> Soft(string id)
@@ -388,7 +413,7 @@ namespace WebTools.Controllers
             var data = (await _reportListServices.GetReportListAsync()).ToList();
             if (!String.IsNullOrEmpty(link))
             {
-                data = data.Where(s => s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
+                data = data.Where(s => !String.IsNullOrEmpty(s.IDPhienBan) && s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
             }
             ReportList reportList = data.FirstOrDefault();
 
@@ -410,7 +435,7 @@ namespace WebTools.Controllers
             var data = (await _reportListServices.GetReportListAsync()).ToList();
             if (!String.IsNullOrEmpty(link))
             {
-                data = data.Where(s => s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
+                data = data.Where(s => !String.IsNullOrEmpty(s.IDPhienBan) && s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
             }
             ReportList reportList = data.FirstOrDefault();
 

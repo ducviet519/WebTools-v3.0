@@ -83,7 +83,7 @@
         var tenBM = this.getElementById("TenBM");
         $.validator.setDefaults({
             submitHandler: function (form) {
-                form.submit();
+                form.submit();                
             }
         });
         $('#reportForm').validate({
@@ -163,13 +163,8 @@
     //});
 
     $(function () {
-        //Dropdown
         $('.selectDepts').select2()
-
-        //Date picker
         $('#reportdate').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
-
-        //File upload show name file
         bsCustomFileInput.init()
     });
 </script>

@@ -3,7 +3,19 @@
 @{
     Layout = null;
 }
+<style>
+    .dataTables_filter {
+        display: none;
+    }
 
+    .dataTables_info {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        display: none;
+    }
+</style>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addVersionLabel" aria-hidden="true" id="VersionPopup">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -14,7 +26,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddVersion" id="myForm">
+                <form method="post" enctype="multipart/form-data" asp-area="" asp-controller="Report" asp-action="AddVersion" id="addVersionForm">
                     @Html.AntiForgeryToken()
                     <input type="hidden" id="IDBieuMau" name="IDBieuMau" value="@Model.VersionList.IDBieuMau" />
                     <div class="row mb-3">
@@ -36,7 +48,7 @@
                         </div>
                     </div>
                     <!--Bảng -->
-                    <table class="table table-bordered" id="versionTable">
+                    <table class="table table-bordered" id="versionTable" width="100%">
                         <thead class="thead">
                             <tr>
                                 <th>STT</th>
@@ -48,38 +60,7 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @{
-                                if (Model.VersionLists != null && Model.VersionLists.Count > 0)
-                                {
-                                    foreach (var item in Model.VersionLists)
-                                    {
-                                            <tr>
-                                                <td>@item.STT</td>
-                                                <td>@item.PhienBan</td>
-                                                <td>@item.NgayBanHanh</td>
-                                                <td>@item.TrangThai</td>
-                                                <td>@item.GhiChu</td>
-                                                @if (item.FileLink != null)
-                                            {
-                                                    <td><a href="/Report/DocumentView?link=@item.IDPhienBan" target="_blank">File</a></td>
-                                            }
-                                            else
-                                            {
-                                                    <td></td>
-                                            }
 
-                                            @if (User.IsInRole("Manager") || User.IsInRole("Admin")){
-                                            <td align="center">
-                                                <a onclick="DeleteVersion('@item.IDPhienBan', '@item.IDBieuMau')" style="cursor:pointer;" class="fa fa-trash" href="/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau"></a>
-                                                @*/Report/DeleteVersion?IDPhienBan=@item.IDPhienBan&IDBieuMau=@item.IDBieuMau*@
-                                            </td>
-                                            }
-                                            </tr>                                       
-                                    }
-                                }
-                            }
-                        </tbody>
                     </table>
                     <div class="row mb-3">
                         <div class="col-2"><label for="fileUpload">File:</label></div>
@@ -90,26 +71,22 @@
                             </div>
                         </div>
                         <div class="col text-right"><label for="PhienBanSD">Phiên bản:</label></div>
-                        <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan" required/></div>
+                        <div class="col"><input type="text" class="form-control" name="PhienBan" id="PhienBan" value="@Model.VersionList.PhienBan" required /></div>
                         <div class="col mr-2 text-right"><label for="PhienBanSD">Số PB:&nbsp;<span style="color:dodgerblue; font-weight:bold;">@Model.VersionList.SoPB</span></label></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-2"><label for="GhiChu">Ghi chú:</label></div>
                         <div class="col"><input type="text" class="form-control" name="GhiChu" id="GhiChu" value="@Model.VersionList.GhiChu" /></div>
-                    </div>  
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                         @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
                         {
-                            <button type="submit" class="btn btn-primary" data-save="modalFile">Lưu</button>
+                            <button type="button" class="btn btn-primary" data-save="modalFile">Lưu</button>
                         }
-                        </div>
+                    </div>
                 </form>
             </div>
-            @*<div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" data-save="modalFile">Lưu</button>
-            </div>*@
         </div>
     </div>
 </div>
@@ -119,71 +96,85 @@
         //Date picker
         $('#versiondate').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
     })
-
     //File upload show name file
     $(function () {
         bsCustomFileInput.init()
     })
 
-
-
-    //$(function () {
-    //    $(this).on('click', '[data-save="modalFile"]', function (event) {
-    //        event.preventDefault();
-    //        var actionUrl = $("#myForm").attr('action');
-    //        var methodType = $("#myForm").attr('method');
-
-    //        var formData = new FormData();
-    //        formData.append("IDBieuMau", $("#IDBieuMau").val());
-    //        formData.append("TenBM", $("#TenBM").val());
-    //        formData.append("MaBM", $("#MaBM").val());
-    //        formData.append("NgayBanHanh", $("#NgayBanHanh").val());
-    //        formData.append("fileUpload", $("#fileUpload")[0].files[0]);
-    //        formData.append("PhienBan", $("#PhienBan").val());
-    //        formData.append("GhiChu", $("#GhiChu").val());
-    //        $.ajax({
-    //            type: methodType,
-    //            url: actionUrl,
-    //            data: formData,
-    //            processData: false,
-    //            contentType: false,
-
-    //            success: function (data) {
-    //                console.log(data);
-    //            },
-    //            error: function (data) {
-    //                console.log(data);
-    //            }
-    //        }).done(function (data) {
-    //            $(this).find('.modal').modal('hide');
-    //            location.reload();              
-    //        })
-    //    });
-    //});
-
-    function DeleteVersion(IDPhienBan, IDBieuMau) {
-        let response = confirm("Bạn có chắc chắn muốn xóa phiên bản này?");
-        @*   if (response) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("DeleteVersion", "Report")',
-                data: {
-                    IDPhienBan: IDPhienBan,
-                    IDBieuMau: IDBieuMau
-                },
-                success: function (response) {
-                    if (response.message == "Del") {
-                        window.location.reload();
+    $(function () {
+        var idBieuMau = $('#IDBieuMau').val();
+        var columnData = [
+            { "data": "stt" },
+            { "data": "phienBan" },
+            { "data": "ngayBanHanh" },
+            { "data": "trangThai" },
+            { "data": "ghiChu" },
+            {
+                "data": { idPhienBan: "idPhienBan", fileLink: "fileLink" },
+                "render": function (data, row) {
+                    if (data.fileLink == null || data.fileLink == "") {
+                        return "&nbsp;";
                     }
                     else {
-                        alert(response.message);
+                        return "<a href='/Report/DocumentView?link=" + data.idPhienBan + "' target='_blank'>File</a>";
                     }
-                },
-                complete: function () { },
-                failure: function (jqXHR, textStatus, errorThrown) {
-                    alert("Lỗi!");
                 }
-            })
-        }*@
-    }
+            },
+            {
+                "data": { idPhienBan: "idPhienBan", idBieuMau: "idBieuMau" },
+                "render": function (data, row) { return '<a type="button" class="btn btn-link btn-sm" data-toggle="delete" data-target="#deleteRow-' + data.idPhienBan + '" data-mode-phienban="' + data.idPhienBan + '" data-mode-bieumau="' + data.idBieuMau + '">Xóa</a>'; }
+            },
+        ]
+        var table = searchDataTable("#versionTable", columnData, "/Report/GetVersionsJson?id=" + idBieuMau, "");
+
+        $('body').on('click', 'a[data-toggle="delete"]', function (event) {
+            let response = confirm("Bạn có chắc chắn muốn xóa phiên bản này?");
+            var idPhienBan = $(this).data("mode-phienban");
+            var idBieuMau = $(this).data("mode-bieumau");
+            if (response) {
+                $.ajax({
+                    url: '/Report/DeleteVersionsJson?id=' + idPhienBan,
+                    type: "POST",
+                    dataType: 'json; charset=utf-8',
+                    success: function (data) {
+                    },
+                    complete: function (message) {
+                        $(this).callToast("success", "Thành công!", "Đã xóa phiên bản thành công.");
+                        searchDataTable("#versionTable", columnData, "/Report/GetVersionsJson?id=" + idBieuMau, "");
+                    }
+                });
+            }
+        });
+        $('body').on('click', 'button[data-save="modalFile"]', function (event) {
+            event.preventDefault();
+            var exists = !! ~document.getElementById('versionTable').innerHTML.indexOf(document.getElementById('PhienBan').value);
+            if (exists) {
+                $(this).callToast("info", "Thông báo!", "Phiên bản đã tồn tại. Hãy sử dụng một phiên bản khác");
+            }
+            else {
+                var form = $(this).parents('.modal').find('form');
+                var actionUrl = form.attr('action');
+                var methodType = form.attr('method');
+
+                var formData = new FormData(document.getElementById("addVersionForm"));
+
+                $.ajax({
+                    type: methodType,
+                    url: actionUrl,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $(this).callToast("success", "Thành công!", "Đã thêm phiên bản mới.");
+                    },
+                    error: function (xhr, desc, err) {
+                        $(this).callToast("error", "Lỗi!", "Phiên bản đã tồn tại. Vui lòng chọn phiên bản khác");
+                    }
+                }).done(function (data) {
+                    searchDataTable("#versionTable", columnData, "/Report/GetVersionsJson?id=" + idBieuMau, "");
+                })
+            }
+        });
+    });
+
 </script>

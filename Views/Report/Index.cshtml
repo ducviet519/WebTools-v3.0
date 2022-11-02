@@ -275,6 +275,17 @@
         $('#SearchURD').val(array);
         $('#SearchURD').trigger('change');
     });
+
+    $(document).ready(function () {
+        $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
+            var url = $(this).data('url');
+            $(this).callModal(url);
+        });
+        $('body').on('click', 'button[data-toggle="ajax-modal"]', function (event) {
+            var url = $(this).data('url');
+            $(this).callModal(url);
+        });
+    });
 </script>
  }
 
