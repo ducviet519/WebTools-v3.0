@@ -74,8 +74,8 @@ namespace WebTools
                 })
                 .AddGoogle(options =>
                 {
-                    options.ClientId = "283368016413-0mc7gob52v5bp6ub7tlhjn5frbocsa5d.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
+                    options.ClientId = "262393147887-ed0pdsq9a2g01t7jde3kjiq71f0m0ttm.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
                 });
             //services.AddAuthorization(options =>
             //{

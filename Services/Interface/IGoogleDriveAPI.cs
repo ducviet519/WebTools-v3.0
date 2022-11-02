@@ -12,5 +12,7 @@ namespace WebTools.Services.Interface
         string UploadFile(string path);
         void DownloadFile(string blobId, string savePath);
         Task<List<GoogleDriveFile>> GetDriveFiles();
+
+        Task<List<GoogleDriveFile>> SearchDriveFiles(string searchString);
     }
 }

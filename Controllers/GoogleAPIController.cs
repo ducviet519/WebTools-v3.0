@@ -40,6 +40,22 @@ namespace WebTools.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> SearchGoogleFiles()
+        {
+            GoogleFilesViewModel model = new GoogleFilesViewModel();
+            model.GoogleDriveList = await _googleDriveAPI.GetDriveFiles();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SearchGoogleFiles(string searchString)
+        {
+            GoogleFilesViewModel model = new GoogleFilesViewModel();
+            model.GoogleDriveList = (await _googleDriveAPI.SearchDriveFiles(searchString)).ToList();
+
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult UploadFileGG()
         {
             return View();
