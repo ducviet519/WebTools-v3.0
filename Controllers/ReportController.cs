@@ -247,7 +247,7 @@ namespace WebTools.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> AddVersion(ReportVersion reportVersion)
         {
-            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => v.PhienBan.Contains(reportVersion.PhienBan));
+            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => !String.IsNullOrEmpty(v.PhienBan) &&v.PhienBan.Contains(reportVersion.PhienBan));
             if (data.Any()) { TempData["ErrorMsg"] = $"Lỗi! Biểu mẫu đã tồn tại phiên bản: {reportVersion.PhienBan} xin vui lòng kiểm tra lại"; return RedirectToAction("Index"); }
             else
             {
@@ -383,11 +383,17 @@ namespace WebTools.Controllers
         }
 
         //Document View
-        public IActionResult DocumentView(string link)
+        public async Task<IActionResult> DocumentView(string link)
         {
-            //DocumentViewModel model = new DocumentViewModel();
-            //model.FileLink = $@"{link}";
-            var documentLink = $@"{link}";
+            var data = (await _reportListServices.GetReportListAsync()).ToList();
+            if (!String.IsNullOrEmpty(link))
+            {
+                data = data.Where(s => s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
+            }
+            ReportList reportList = data.FirstOrDefault();
+
+
+            var documentLink = $@"{reportList.FileLink}";
             var documentViewer = new DocumentViewer
             {
                 Width = 1200,
@@ -399,11 +405,16 @@ namespace WebTools.Controllers
             return PartialView("_DocumentView", documentViewer);
         }
         //Document View
-        public IActionResult PopUpDocumentView(string link)
+        public async Task<IActionResult> PopUpDocumentView(string link)
         {
-            //DocumentViewModel model = new DocumentViewModel();
-            //model.FileLink = $@"{link}";
-            var documentLink = $@"{link}";
+            var data = (await _reportListServices.GetReportListAsync()).ToList();
+            if (!String.IsNullOrEmpty(link))
+            {
+                data = data.Where(s => s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
+            }
+            ReportList reportList = data.FirstOrDefault();
+
+            var documentLink = $@"{reportList.FileLink}";
             var documentViewer = new DocumentViewer
             {
                 Width = 1100,

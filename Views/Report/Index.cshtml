@@ -72,7 +72,7 @@
                                 <div class="col-2 pl-2">
                                     <label>URD (Quy trình vận hành):</label>
                                     <div class="col">
-                                        <select class="form-control selectURD" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="SearchURD" id="SearchURD"></select>
+                                        <select class="form-control selectURD2" multiple="multiple" data-placeholder="Chọn" style="width: 100%;" asp-items="@Model.URDs" name="SearchURD" id="SearchURD"></select>
                                         <input type="hidden" id="txtURD" name="txtURD" value="@TempData["SearchURD"]" />
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@
                                                                 <div class="btn-group">
                                                                     @if (item.FileLink != null)
                                                                     {
-                                                                        <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.FileLink">File</a>
+                                                                        <a class="btn btn-link" data-toggle="ajax-modal" data-target="#documentView-@item.IDBieuMau" data-url="/Report/PopUpDocumentView?link=@item.IDPhienBan">File</a>
                                                                     }
                                                                     else
                                                                     {
@@ -271,7 +271,7 @@
         var string = $('#txtURD').val();
         var array = string.split(",").map(Number);
         //Dropdown
-        $('.selectURD').select2()
+        $('.selectURD2').select2()
         $('#SearchURD').val(array);
         $('#SearchURD').trigger('change');
     });

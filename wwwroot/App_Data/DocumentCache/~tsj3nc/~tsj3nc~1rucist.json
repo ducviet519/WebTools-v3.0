@@ -1,0 +1,29 @@
+{
+  "CacheSourceKey": "tsj3nc",
+  "CachePdfKey": "tsj3nc/tsj3nc-npq31v.pdf",
+  "CacheXpzKey": "tsj3nc/tsj3nc-1rucist.xpz",
+  "CacheInfoKey": "tsj3nc/tsj3nc-1rucist.json",
+  "CacheCopyKey": null,
+  "Document": "02112022084757_DAPSA_ENG.pdf",
+  "DocumentHandlerType": null,
+  "DocumentHandlerParameters": null,
+  "DocumentLocation": "C:\\Users\\vietld\\Desktop\\P\\WebTools-v2.0\\wwwroot\\Upload",
+  "DocumentFileName": "02112022084757_DAPSA_ENG.pdf",
+  "InputOptions": {
+    "Format": "Pdf",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "tsj3nc",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": null
+}

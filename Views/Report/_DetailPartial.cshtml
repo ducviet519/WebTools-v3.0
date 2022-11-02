@@ -29,7 +29,7 @@
                     <div class="row mb-3">
                         <div class="col-2"><label for="TenBM">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-10">
-                            <select asp-for="@Model.ReportDetail.KhoaPhong" asp-items="@Model.Depts" class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportDetail.KhoaPhong">
+                            <select asp-for="@Model.ReportDetail.KhoaPhong" asp-items="@Model.Depts" class="selectDepts2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportDetail.KhoaPhong">
                             </select>
                             <input type="hidden" id="txtKhoaPhong" name="txtKhoaPhong" value="@Model.ReportDetail.KhoaPhong" />
                         </div>
@@ -82,7 +82,7 @@
                                             <td>@item.TrangThaiPM</td>
                                             @if (item.FileLink != null)
                                             {
-                                                <td><a href="/Report/DocumentView?link=@item.FileLink" target="_blank">File</a></td>
+                                                <td><a href="/Report/DocumentView?link=@item.IDPhienBan" target="_blank">File</a></td>
                                             }
                                             else
                                             {
@@ -117,7 +117,7 @@
         var string = $('#txtKhoaPhong').val();
         var array = string.split(",").map(Number);
         //Dropdown
-        $('.select2').select2()
+        $('.selectDepts2').select2()
         $('#KhoaPhong').val(array);
         $('#KhoaPhong').trigger('change');
     });

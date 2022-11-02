@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <a href="/Report/DocumentView?link=@Model.ReportList.FileLink" target="_blank"><span>File cũ</span></a>
+                            <a href="/Report/DocumentView?link=@Model.ReportList.IDPhienBan" target="_blank"><span>File cũ</span></a>
                             <input type="hidden" id="FileLink" name="FileLink" value="@Model.ReportList.FileLink" />
                         </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
@@ -56,7 +56,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-9">
-                            <select asp-for="@Model.ReportList.KhoaPhong" asp-items="@Model.Depts" class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportList.KhoaPhong">
+                            <select asp-for="@Model.ReportList.KhoaPhong" asp-items="@Model.Depts" class="selectDepts3" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportList.KhoaPhong">
                             </select>
                             <input type="hidden" id="txtKhoaPhong" name="txtKhoaPhong" value="@Model.ReportList.KhoaPhong" />
                         </div>
@@ -169,8 +169,6 @@
     //});
 
     $(function () {
-        //Dropdown
-        $('.select2').select2()
 
         //Date picker
         $('#reportdate').datetimepicker({
@@ -188,7 +186,7 @@
         var string = $('#txtKhoaPhong').val();
         var array = string.split(",").map(Number);
         //Dropdown
-        $('.select2').select2()
+        $('.selectDepts3').select2()
         $('#KhoaPhong').val(array);
         $('#KhoaPhong').trigger('change');
     });
