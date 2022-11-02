@@ -28,7 +28,7 @@
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
                             <div class="input-group date" id="versiondate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#versiondate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask required value="@Model.VersionList.NgayBanHanhNew" />
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#versiondate" required value="@Model.VersionList.NgayBanHanhNew" />
                                 <div class="input-group-append" data-target="#versiondate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -117,13 +117,7 @@
 <script>
     $(function () {
         //Date picker
-        $('#versiondate').datetimepicker({
-            format: 'DD/MM/YYYY'
-        })
-
-        //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-        $('[data-mask]').inputmask()
+        $('#versiondate').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
     })
 
     //File upload show name file
