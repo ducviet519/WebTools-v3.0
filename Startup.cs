@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTools.Authorization;
 using WebTools.Context;
+using WebTools.Models.Entities;
 using WebTools.Services;
 using WebTools.Services.Interface;
 
@@ -100,7 +101,10 @@ namespace WebTools
             services.AddScoped<IModuleActionServices, ModuleActionServices>();
             services.AddScoped<IGoogleDriveAPI, GoogleDriveAPI>();
             services.AddScoped<IBaoHiemTuNguyenServices, BaoHiemTuNguyenServices>();
+            services.AddTransient<IMailService, Services.MailService>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             //Add GleamTech to the ASP.NET Core services container.
             //----------------------
             services.AddGleamTech();

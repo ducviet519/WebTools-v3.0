@@ -1,0 +1,33 @@
+{
+  "CacheSourceKey": "12eqlt5",
+  "CachePdfKey": "12eqlt5/12eqlt5-4z1dcu.pdf",
+  "CacheXpzKey": "12eqlt5/12eqlt5-ll17ad.xpz",
+  "CacheInfoKey": "12eqlt5/12eqlt5-ll17ad.json",
+  "CacheCopyKey": null,
+  "Document": "03112022140948_2021.12.28 QA.TA_URD_Hệ thống v1.2.docx",
+  "DocumentHandlerType": null,
+  "DocumentHandlerParameters": null,
+  "DocumentLocation": "C:\\Users\\vietld\\Desktop\\P\\WebTools-v2.0\\wwwroot\\Upload",
+  "DocumentFileName": "03112022140948_2021.12.28 QA.TA_URD_Hệ thống v1.2.docx",
+  "InputOptions": {
+    "$type": "GleamTech.DocumentUltimate.WordProcessingInputOptions, GleamTech.DocumentUltimate",
+    "FieldFileName": null,
+    "UpdateFields": true,
+    "Encoding": null,
+    "Format": "Docx",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "12eqlt5",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": []
+}

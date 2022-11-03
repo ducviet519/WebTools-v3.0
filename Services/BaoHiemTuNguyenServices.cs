@@ -53,7 +53,7 @@ namespace WebTools.Services
             }
         }
 
-        public async Task<List<DanhSachKhachHangBHTN>> SearchKhanhHangThanhToanBHTN(string mabn, string loai, string ngayBD = "", string ngayKT = "")
+        public async Task<List<DanhSachKhachHangBHTN>> SearchKhanhHangThanhToanBHTN(string mabn, string loai = "", string ngayBD = "", string ngayKT = "")
         {
             if (!String.IsNullOrEmpty(ngayBD)){
                 ngayBD = DateTime.Parse(ngayBD, new CultureInfo("vi-VN", true)).ToString("yyyyMMdd");
@@ -73,7 +73,7 @@ namespace WebTools.Services
                         NgayBD = ngayBD,
                         NgayKT = ngayKT,
                         mabn = mabn,
-                        Loai = loai,
+                        //Loai = loai,
                     }, commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();
                 }

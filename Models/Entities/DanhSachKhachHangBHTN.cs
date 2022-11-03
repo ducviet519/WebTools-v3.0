@@ -13,6 +13,6 @@ namespace WebTools.Models.Entities
         public string ngayvao { get; set; }
         public string ngaythutien { get; set; }
         public string sobienlai { get; set; }
-        public int loainv { get; set; }
+        public string loainv { get; set; }
     }
 }

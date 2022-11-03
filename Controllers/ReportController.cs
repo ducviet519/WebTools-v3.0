@@ -312,6 +312,7 @@ namespace WebTools.Controllers
         }
         #endregion
 
+        #region Phần mềm
         //6. Tạo cửa sổ Phần mềm
         public async Task<IActionResult> Soft(string id)
         {
@@ -366,7 +367,9 @@ namespace WebTools.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Xem Chi tiết
         //8. Tạo giao diện Chi tiết
         public async Task<IActionResult> Detail(string id)
         {
@@ -405,7 +408,8 @@ namespace WebTools.Controllers
 
             }
             return RedirectToAction("Index");
-        }
+        } 
+        #endregion
 
         //Document View
         public async Task<IActionResult> DocumentView(string link)
@@ -424,7 +428,8 @@ namespace WebTools.Controllers
                 Width = 1200,
                 Height = 600,
                 Resizable = false,
-                Document = documentLink
+                Document = documentLink,                  
+                
             };
 
             return PartialView("_DocumentView", documentViewer);
@@ -445,7 +450,8 @@ namespace WebTools.Controllers
                 Width = 1100,
                 Height = 600,
                 Resizable = false,
-                Document = documentLink
+                Document = documentLink,
+
             };
 
             return PartialView("_DocumentViewPartial", documentViewer);

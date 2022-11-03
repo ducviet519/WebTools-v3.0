@@ -10,7 +10,7 @@ namespace WebTools.Services.Interface
     {
         Task<List<DanhSachKhachHangBHTN>> GetAllKhanhHangThanhToanBHTN();
 
-        Task<List<DanhSachKhachHangBHTN>> SearchKhanhHangThanhToanBHTN(string mabn, string loai, string ngayBD = "", string ngayKT = "");
+        Task<List<DanhSachKhachHangBHTN>> SearchKhanhHangThanhToanBHTN(string mabn, string loai = "", string ngayBD = "", string ngayKT = "");
 
     }
 }
