@@ -73,7 +73,7 @@ namespace WebTools.Services
                         NgayBD = ngayBD,
                         NgayKT = ngayKT,
                         mabn = mabn,
-                        //Loai = loai,
+                        Loai = loai,
                     }, commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();
                 }
