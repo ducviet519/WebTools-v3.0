@@ -55,28 +55,115 @@ function searchDataTable(id, columnData, url, disableColumn) {
     return table;
 }
 
-    //ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
-    //    event.preventDefault();
-    //    var form = $(this).parents('.modal').find('form');
-    //    var actionUrl = form.attr('action');
-    //    var methodType = form.attr('method');
+function searchDataTableWithInput(id, columnData, url, pageLength, disableColumn) {
+    var array = [];
+    $.each(disableColumn.split(','), function (idx, val) {
+        array.push(parseInt(val));
+    });
+    if (disableColumn == '') { disableColumn = 0; }
+    var table = $(id).DataTable();
+    if ($.fn.dataTable.isDataTable(id)) {
+        table.destroy();
+        $(id).find('thead .filters').remove();
+        $(id).find('tbody').empty();
+    }
 
-    //    console.log(form.serialize());
-    //    $.ajax({
-    //        type: methodType,
-    //        url: actionUrl,
-    //        data: form.serialize(),
-    //        success: function (data) {
-    //            alert("Thành công!");
-    //        },
-    //        error: function (xhr, desc, err) {
-    //            alert("Lỗi!");
-    //        }
-    //    }).done(function (data) {
-    //        ReportPopupElement.find('.modal').modal('hide');
-    //        location.reload();
-    //    })
-    //});
+    $(id +' thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo(id +' thead');
+
+    $(id).DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "pageLength": pageLength,
+        "searching": true,
+        "processing": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "responsive": false,
+        "order": [[0, 'asc']],
+        "columnDefs": [
+            { orderable: false, targets: array },
+            { className: "text-wrap", targets: "_all" },
+            { defaultContent: '', targets: "_all" },
+        ],
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": columnData,
+        "initComplete": function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    if (colIdx != 7) {
+                        var cell = $('.filters th').eq(
+                            $(api.column(colIdx).header()).index()
+                        );
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" class="form-control" placeholder="' + title + '" />');
+                    }
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+        "language": {
+            "sProcessing": "Đang tải dữ liệu...",
+            "sLengthMenu": "Xem _MENU_ mục",
+            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+            "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+            "sInfoPostFix": "",
+            "sSearch": "Tìm:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sPrevious": "Trước",
+                "sNext": "Tiếp",
+                "sLast": "Cuối"
+            }
+        },
+    });
+}
 
 $(function () {
     toastr.options = {
