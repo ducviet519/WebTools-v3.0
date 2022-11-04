@@ -127,7 +127,8 @@
         ]
         var table = searchDataTable("#versionTable", columnData, "/Report/GetVersionsJson?id=" + idBieuMau, "");
 
-        $('body').on('click', 'a[data-toggle="delete"]', function (event) {
+        $('body .modal-body').on('click', 'a[data-toggle="delete"]', function (event) {
+            event.preventDefault();
             let response = confirm("Bạn có chắc chắn muốn xóa phiên bản này?");
             var idPhienBan = $(this).data("mode-phienban");
             var idBieuMau = $(this).data("mode-bieumau");
@@ -146,7 +147,7 @@
                 });
             }
         });
-        $('body').on('click', 'button[data-save="modalFile"]', function (event) {
+        $('body .modal-body').on('click', 'button[data-save="modalFile"]', function (event) {
             event.preventDefault();
             var exists = !! ~document.getElementById('versionTable').innerHTML.indexOf(document.getElementById('PhienBan').value);
             if (exists) {

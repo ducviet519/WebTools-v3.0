@@ -12,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using WebTools.Context;
 using WebTools.Models;
 using WebTools.Services;
 using WebTools.Services.Interface;
@@ -33,6 +32,7 @@ namespace WebTools.Controllers
         private readonly IDepts _depts;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IGoogleDriveAPI _googleDriveAPI;
+        private readonly IUploadFileServices _uploadFileServices;
 
         public ReportController(
             IConfiguration configuration,
@@ -43,6 +43,7 @@ namespace WebTools.Controllers
             IReportURDServices reportURDServices,
             IDepts depts,
             IWebHostEnvironment webHostEnvironment,
+            IUploadFileServices uploadFileServices,
             IGoogleDriveAPI googleDriveAPI
             )
         {
@@ -54,6 +55,7 @@ namespace WebTools.Controllers
             _reportURDServices = reportURDServices;
             _depts = depts;
             _webHostEnvironment = webHostEnvironment;
+            _uploadFileServices = uploadFileServices;
             _googleDriveAPI = googleDriveAPI;
         }
         #endregion
@@ -118,7 +120,7 @@ namespace WebTools.Controllers
                 string fileName = $"{getDateS}_{fileUpload.FileName}";
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
                 string filePath = Path.Combine(uploadsFolder, fileName);
-                               
+
                 using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {
                     await fileUpload.CopyToAsync(fileStream);
@@ -208,7 +210,7 @@ namespace WebTools.Controllers
             {
                 reportList.KhoaPhong = Request.Form["KhoaPhong"];
                 reportList.CreatedUser = User.Identity.Name;
-                reportList.FileLink = await UploadFile(reportList.fileUpload);
+                reportList.FileLink = await _uploadFileServices.UploadFileAsync(reportList.fileUpload);
                 var result = await _reportListServices.InsertReportListAsync(reportList);
                 if (result == "OK")
                 {
@@ -238,7 +240,7 @@ namespace WebTools.Controllers
             reportList.KhoaPhong = Request.Form["KhoaPhong"];
             reportList.CreatedUser = User.Identity.Name;
 
-            reportList.FileLink = await UploadFile(reportList.fileUpload);
+            reportList.FileLink = await _uploadFileServices.UploadFileAsync(reportList.fileUpload);
             var result = await _reportListServices.UpdateReportListAsync(reportList);
             if (result == "OK")
             {
@@ -267,44 +269,39 @@ namespace WebTools.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> AddVersion(ReportVersion reportVersion)
         {
-            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => !String.IsNullOrEmpty(v.PhienBan) && v.PhienBan.Contains(reportVersion.PhienBan));
-            if (data.Any()) { TempData["ErrorMsg"] = $"Lỗi! Biểu mẫu đã tồn tại phiên bản: {reportVersion.PhienBan} xin vui lòng kiểm tra lại"; return RedirectToAction("Index"); }
+            reportVersion.CreatedUser = User.Identity.Name;
+            string getDateS = DateTime.Now.ToString("ddMMyyyy");
+            string IDBieuMau = reportVersion.IDBieuMau;
+            string resault = string.Empty;
+
+            reportVersion.FileLink = await _uploadFileServices.UploadFileAsync(reportVersion.fileUpload);
+            var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
+            if (result == "OK")
+            {
+                TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
+            }
             else
             {
-                reportVersion.CreatedUser = User.Identity.Name;
-                string getDateS = DateTime.Now.ToString("ddMMyyyy");
-                string IDBieuMau = reportVersion.IDBieuMau;
-                string resault = string.Empty;
-
-                reportVersion.FileLink = await UploadFile(reportVersion.fileUpload);
-                var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
-                if (result == "OK")
-                {
-                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Lỗi! " + result;
-                }
-                return RedirectToAction("Index");
+                TempData["ErrorMsg"] = "Lỗi! " + result;
             }
+            return RedirectToAction("Index");
         }
-       
-        
+
+
         [HttpGet]
         public async Task<JsonResult> GetVersionsJson(string id)
         {
             var data = (await _reportVersionServices.GetReportVersionAsync(id)).ToList();
             return Json(new { data });
         }
-        
+
         public async Task<JsonResult> DeleteVersionsJson(string id, string link)
         {
             var result = await _reportVersionServices.DeleteReportVersionAsync(id);
             if (result == "DEL")
             {
-                string resultDelete = DeleteFile(link);
-                return Json(new {message = "Xóa phiên bản thành công!" });
+                string resultDelete = _uploadFileServices.DeleteFile(link);
+                return Json(new { message = "Xóa phiên bản thành công!" });
             }
             else
             {
@@ -409,7 +406,7 @@ namespace WebTools.Controllers
 
             }
             return RedirectToAction("Index");
-        } 
+        }
         #endregion
 
         //Document View
@@ -421,19 +418,26 @@ namespace WebTools.Controllers
                 data = data.Where(s => !String.IsNullOrEmpty(s.IDPhienBan) && s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
             }
             ReportList reportList = data.FirstOrDefault();
-
-
-            var documentLink = $@"{reportList.FileLink}";
-            var documentViewer = new DocumentViewer
+            var documentLink = "";
+            DocumentViewModel model = new DocumentViewModel();
+            if (!String.IsNullOrEmpty(reportList.FileLink))
+            {
+                documentLink = $@"{reportList.FileLink}";
+                string name = Path.GetFileName(reportList.FileLink);
+                model.FileName = name.Substring(15, name.Length - 15);
+                model.Extension = Path.GetExtension(reportList.FileLink);
+                model.FileLink = documentLink;
+            }
+            model.DocumentViewer = new DocumentViewer
             {
                 Width = 1200,
                 Height = 600,
                 Resizable = false,
-                Document = documentLink,                  
-                
+                Document = documentLink,
+
             };
 
-            return PartialView("_DocumentView", documentViewer);
+            return PartialView("_DocumentView", model);
         }
         //Document View
         public async Task<IActionResult> PopUpDocumentView(string link)
@@ -444,9 +448,17 @@ namespace WebTools.Controllers
                 data = data.Where(s => !String.IsNullOrEmpty(s.IDPhienBan) && s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
             }
             ReportList reportList = data.FirstOrDefault();
-
-            var documentLink = $@"{reportList.FileLink}";
-            var documentViewer = new DocumentViewer
+            var documentLink = "";
+            DocumentViewModel model = new DocumentViewModel();
+            if (!String.IsNullOrEmpty(reportList.FileLink))
+            {
+                documentLink = $@"{reportList.FileLink}";
+                string name = Path.GetFileName(reportList.FileLink);
+                model.FileName = name.Substring(15, name.Length - 15);
+                model.Extension = Path.GetExtension(reportList.FileLink);
+                model.FileLink = documentLink;
+            }
+            model.DocumentViewer = new DocumentViewer
             {
                 Width = 1100,
                 Height = 600,
@@ -455,7 +467,7 @@ namespace WebTools.Controllers
 
             };
 
-            return PartialView("_DocumentViewPartial", documentViewer);
+            return PartialView("_DocumentViewPartial", model);
         }
     }
 }
