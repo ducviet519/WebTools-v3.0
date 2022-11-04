@@ -130,6 +130,23 @@ namespace WebTools.Controllers
             else
                 return FileLink = "";
         }
+        public string DeleteFile(string filePath)
+        {
+            string result = "";
+            FileInfo file = new FileInfo(filePath);
+            if (file.Exists)
+            {
+                file.Delete();
+                result = "Đã xóa file thành công";
+                return result;
+            }
+            else
+            {
+                result = "Lỗi! Xóa file không thành công";
+                return result;
+            }
+
+        }
         #endregion
 
         #region Sắp xếp
@@ -272,24 +289,7 @@ namespace WebTools.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteVersion(string id)
-        {
-            string url = Request.Headers["Referer"].ToString();
-            var result = await _reportVersionServices.DeleteReportVersionAsync(id);
-            if (result == "DEL")
-            {
-                TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
-                //return Json(new {message = "Del" });
-            }
-            else
-            {
-                TempData["ErrorMsg"] = "Lỗi!" + result;
-                //return Json(new { message = "Lỗi! Phiên bản chưa được xóa" });
-            }
-            return RedirectToAction("Index");
-        } 
+       
         
         [HttpGet]
         public async Task<JsonResult> GetVersionsJson(string id)
@@ -298,11 +298,12 @@ namespace WebTools.Controllers
             return Json(new { data });
         }
         
-        public async Task<JsonResult> DeleteVersionsJson(string id)
+        public async Task<JsonResult> DeleteVersionsJson(string id, string link)
         {
             var result = await _reportVersionServices.DeleteReportVersionAsync(id);
             if (result == "DEL")
             {
+                string resultDelete = DeleteFile(link);
                 return Json(new {message = "Xóa phiên bản thành công!" });
             }
             else

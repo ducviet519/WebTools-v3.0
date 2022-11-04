@@ -26,6 +26,7 @@ namespace WebTools.Services
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
             email.Subject = mailRequest.Subject;
+            mailRequest.Body += $"<a href='{mailRequest.ItemShare}'>File đính kèm</a>";
             var builder = new BodyBuilder();
             if (mailRequest.Attachments != null)
             {

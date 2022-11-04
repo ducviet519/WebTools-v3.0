@@ -18,7 +18,7 @@ namespace WebTools.Controllers
 
         public IActionResult SendMail()
         {
-            return View();
+            return PartialView("_SendMail");
         }
 
         [HttpPost]
