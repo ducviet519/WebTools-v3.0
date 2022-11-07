@@ -21,16 +21,16 @@
                 @{
                     if (TempData["SuccessMsg"] != null)
                     {
-                    <script type="text/javascript">
+                        <script type="text/javascript">
                             window.onload = function () { toastr["success"]('@TempData["SuccessMsg"]');}
-                    </script>
+                        </script>
 
                     }
                     if (TempData["ErrorMsg"] != null)
                     {
-                    <script type="text/javascript">
+                        <script type="text/javascript">
                             window.onload = function () { toastr["error"]('@TempData["ErrorMsg"]');}
-                    </script>
+                        </script>
                     }
                 }
             </div>
@@ -69,42 +69,42 @@
                                                         {
                                                             foreach (var item in Model.UsersList)
                                                             {
-                                                        <tr>
-                                                            <td>@item.UserID</td>
-                                                            <td>@item.DisplayName</td>
-                                                            <td>@item.UserName</td>
-                                                            <td>@item.Email</td>
-                                                            <td>
-                                                                @if (item.Status == true)
+                                                                <tr>
+                                                                    <td>@item.UserID</td>
+                                                                    <td>@item.DisplayName</td>
+                                                                    <td>@item.UserName</td>
+                                                                    <td>@item.Email</td>
+                                                                    <td>
+                                                                        @if (item.Status == true)
                                                                         {
-                                                                <span class="badge bg-success">Đang sử dụng</span>
+                                                                            <span class="badge bg-success">Đang sử dụng</span>
                                                                         }
                                                                         else if (item.Status == false)
                                                                         {
-                                                                <span class="badge bg-danger">Ngưng sử dụng</span>
+                                                                            <span class="badge bg-danger">Ngưng sử dụng</span>
                                                                         }
-                                                            </td>
-                                                            <td>
-                                                                @foreach (var roles in Model.RolesList)
+                                                                    </td>
+                                                                    <td>
+                                                                        @foreach (var roles in Model.RolesList)
                                                                         {
                                                                             if (roles.RoleID == item.RoleID)
                                                                             {
-                                                                <span class="badge bg-primary">@roles.RoleName</span>
+                                                                                <span class="badge bg-primary">@roles.RoleName</span>
                                                                             }
                                                                         }
-                                                            </td>
-                                                            <td>
-                                                                <div class="btn-group">
-                                                                    <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown">
-                                                                        Action
-                                                                    </button>
-                                                                    <div class="dropdown-menu" role="menu">
-                                                                        @*<a class="dropdown-item" data-toggle="ajax-modal" data-target="#editUsers-@item.UserID" data-url="/Permission/EditUsers?id=@item.UserID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a>*@
-                                                                        <a class="dropdown-item" data-toggle="ajax-modal" data-target="#userRoles-@item.UserID" data-url="/Permission/UserRoles?id=@item.UserID"><i class="fa fa-share-alt"></i> &nbsp Manager Roles</a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="btn-group">
+                                                                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown">
+                                                                                Action
+                                                                            </button>
+                                                                            <div class="dropdown-menu" role="menu">
+                                                                                @*<a class="dropdown-item" data-toggle="ajax-modal" data-target="#editUsers-@item.UserID" data-url="/Permission/EditUsers?id=@item.UserID"><i class="fa fa-pencil-alt"></i> &nbspSửa</a>*@
+                                                                                <a class="dropdown-item" data-toggle="ajax-modal" data-target="#userRoles-@item.UserID" data-url="/Permission/UserRoles?id=@item.UserID"><i class="fa fa-share-alt"></i> &nbsp Manager Roles</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
                                                             }
                                                         }
                                                     }
@@ -125,3 +125,17 @@
     </div>
     <div id="ReportPopup"></div>
 </section>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
+                var url = $(this).data('url');
+                $(this).callModal(url);
+            });
+            $('body').on('click', 'button[data-toggle="ajax-modal"]', function (event) {
+                var url = $(this).data('url');
+                $(this).callModal(url);
+            });
+        });
+    </script>
+}
