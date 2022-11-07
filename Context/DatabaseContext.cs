@@ -9,12 +9,5 @@ namespace WebTools.Context
         {
 
         }
-
-        public virtual DbSet<ReportList> Reports { get; set; }
-        public virtual DbSet<ReportVersion> Versions { get; set; }
-        public virtual DbSet<ReportSoft> Softs { get; set; }
-        public virtual DbSet<ReportDetail> Details { get; set; }
-        public virtual DbSet<ReportURD> URDs { get; set; }
-
     }
 }

@@ -36,16 +36,17 @@ namespace WebTools
 
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.LoginPath = "/User/Login";
                     options.AccessDeniedPath = "/User/Denied";
                     options.Events = new CookieAuthenticationEvents()
                     {
                         OnSigningIn = async context =>
-                        {                           
+                        {
                             var principal = context.Principal;
                             if (principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "")
-                            {                                
+                            {
                                 var claimsIdentity = principal.Identity as ClaimsIdentity;
                                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
                             }
@@ -60,28 +61,15 @@ namespace WebTools
                             await Task.CompletedTask;
                         }
                     };
-                })
-                .AddGoogle(options =>
-                {
-                    options.ClientId = "262393147887-ed0pdsq9a2g01t7jde3kjiq71f0m0ttm.apps.googleusercontent.com";
-                    options.ClientSecret = "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";
-                });           
-            services.AddScoped<IReportListServices, ReportListServices>();
-            services.AddScoped<IReportVersionServices, ReportVersionServices>();
-            services.AddScoped<IReportSoftServices, ReportSoftServices>();
-            services.AddScoped<IReportDetailServices, ReportDetailServices>();
-            services.AddScoped<IReportURDServices, ReportURDServices>();
-            services.AddScoped<IDepts, DeptsServices>();
+                });
+          
             services.AddScoped<IRolesServices, RolesServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IModuleControllerServices, ModuleControllerServices>();
             services.AddScoped<IModuleActionServices, ModuleActionServices>();
-            services.AddScoped<IGoogleDriveAPI, GoogleDriveAPI>();
             services.AddScoped<IBaoHiemTuNguyenServices, BaoHiemTuNguyenServices>();
-            services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUploadFileServices, UploadFileServices>();
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));           
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));         
             services.AddGleamTech();
         }
 
