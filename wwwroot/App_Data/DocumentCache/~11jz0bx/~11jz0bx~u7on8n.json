@@ -1,0 +1,33 @@
+{
+  "CacheSourceKey": "11jz0bx",
+  "CachePdfKey": "11jz0bx/11jz0bx-4z1dcu.pdf",
+  "CacheXpzKey": "11jz0bx/11jz0bx-u7on8n.xpz",
+  "CacheInfoKey": "11jz0bx/11jz0bx-u7on8n.json",
+  "CacheCopyKey": null,
+  "Document": "04112022133413_2021.12.28 QA.TA_URD_Hệ thống v1.2.docx",
+  "DocumentHandlerType": null,
+  "DocumentHandlerParameters": null,
+  "DocumentLocation": "D:\\VanBan\\My Drive",
+  "DocumentFileName": "04112022133413_2021.12.28 QA.TA_URD_Hệ thống v1.2.docx",
+  "InputOptions": {
+    "$type": "GleamTech.DocumentUltimate.WordProcessingInputOptions, GleamTech.DocumentUltimate",
+    "FieldFileName": null,
+    "UpdateFields": true,
+    "Encoding": null,
+    "Format": "Docx",
+    "Password": null
+  },
+  "PdfOutputOptions": {
+    "Watermarks": [],
+    "FastWebViewEnabled": false,
+    "Password": null,
+    "Attachments": [],
+    "Format": "Pdf"
+  },
+  "XpzOutputOptions": {
+    "Password": "11jz0bx",
+    "HighQualityEnabled": false,
+    "Format": "Xpz"
+  },
+  "Attachments": null
+}

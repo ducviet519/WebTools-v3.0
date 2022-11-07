@@ -27,7 +27,7 @@
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
                             <div class="input-group date" id="reportdate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" value="@Model.ReportList.NgayBanHanh" required />
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" autocomplete="off" value="@Model.ReportList.NgayBanHanh" required />
                                 <div class="input-group-append" data-target="#reportdate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <a href="/Report/DocumentView?link=@Model.ReportList.FileLink" target="_blank"><span>File cũ</span></a>
+                            <a href="/Report/DocumentView?link=@Model.ReportList.IDPhienBan" target="_blank"><span>File cũ</span></a>
                             <input type="hidden" id="FileLink" name="FileLink" value="@Model.ReportList.FileLink" />
                         </div>
                         <div class="col-2 text-right"><label for="PhienBan">Phiên bản</label></div>
@@ -56,7 +56,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-9">
-                            <select asp-for="@Model.ReportList.KhoaPhong" asp-items="@Model.Depts" class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportList.KhoaPhong">
+                            <select asp-for="@Model.ReportList.KhoaPhong" asp-items="@Model.Depts" class="selectDepts3" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" name="KhoaPhong" id="KhoaPhong" data-content="@Model.ReportList.KhoaPhong">
                             </select>
                             <input type="hidden" id="txtKhoaPhong" name="txtKhoaPhong" value="@Model.ReportList.KhoaPhong" />
                         </div>
@@ -169,18 +169,9 @@
     //});
 
     $(function () {
-        //Dropdown
-        $('.select2').select2()
 
         //Date picker
-        $('#reportdate').datetimepicker({
-            format: 'DD/MM/YYYY'
-        })
-
-        //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-        $('[data-mask]').inputmask()
-
+        $('#reportdate').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
         //File upload show name file
         bsCustomFileInput.init()
     });
@@ -188,7 +179,7 @@
         var string = $('#txtKhoaPhong').val();
         var array = string.split(",").map(Number);
         //Dropdown
-        $('.select2').select2()
+        $('.selectDepts3').select2()
         $('#KhoaPhong').val(array);
         $('#KhoaPhong').trigger('change');
     });

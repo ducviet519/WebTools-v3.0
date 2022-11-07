@@ -1,15 +1,15 @@
 ﻿@using GleamTech.AspNet.Core
 @using GleamTech.DocumentUltimate.AspNet.UI
-@model DocumentViewer
+@model WebTools.Models.DocumentViewModel
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Document View</title>
-    @this.RenderHead(Model)
+    <title>@Model.FileName</title>
+    @this.RenderHead(Model.DocumentViewer)
 </head>
 <body style="margin: 20px;">
-    @this.RenderBody(Model)
+    @this.RenderBody(Model.DocumentViewer)
     @DateTime.Now.ToString("T")
 </body>
 </html>

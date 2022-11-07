@@ -2,29 +2,99 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-$(document).ready(function () {
-    // Setup - add a text input to each footer cell
-    $('#tableReport thead tr')
-        .clone(true)
-        .addClass('filters')
-        .appendTo('#tableReport thead');
-
-    var table = $('#tableReport').DataTable({
+function searchDataTable(id, columnData, url, disableColumn) {
+    var array = [];
+    $.each(disableColumn.split(','), function (idx, val) {
+        array.push(parseInt(val));
+    });
+    if (disableColumn == '') { disableColumn = 0; }
+    var table = $(id).DataTable();
+    if ($.fn.dataTable.isDataTable(id)) {
+        table.destroy();
+        $(id).find('tbody').empty();
+    }
+    var table = $(id).DataTable({
         "paging": true,
         "lengthChange": false,
-        //"lengthMenu": [
-        //    [10, 25, 50, -1],
-        //    [10, 25, 50, 'All'],
-        //],
         "searching": true,
+        "processing": true,
         "ordering": true,
         "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "orderCellsTop": true,
-        "fixedHeader": false,
-        "columnDefs": [{ orderable: false, targets: 8 }],
-        //"order": [[4, 'desc']],
+        "autoWidth": true,
+        "responsive": false,
+        "order": [[0, 'asc']],
+        "columnDefs": [
+            { orderable: false, targets: array },
+            { className: "text-wrap", targets: "_all" },
+            { defaultContent: '', targets: "_all" },
+        ],
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": columnData,
+        "language": {
+            "sProcessing": "Đang tải dữ liệu...",
+            "sLengthMenu": "Xem _MENU_ mục",
+            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+            "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+            "sInfoPostFix": "",
+            "sSearch": "Tìm:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sPrevious": "Trước",
+                "sNext": "Tiếp",
+                "sLast": "Cuối"
+            }
+        },
+    });
+    return table;
+}
+
+function searchDataTableWithInput(id, columnData, url, pageLength, disableColumn) {
+    var array = [];
+    $.each(disableColumn.split(','), function (idx, val) {
+        array.push(parseInt(val));
+    });
+    if (disableColumn == '') { disableColumn = 0; }
+    var table = $(id).DataTable();
+    if ($.fn.dataTable.isDataTable(id)) {
+        table.destroy();
+        $(id).find('thead .filters').remove();
+        $(id).find('tbody').empty();
+    }
+
+    $(id +' thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo(id +' thead');
+
+    $(id).DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "pageLength": pageLength,
+        "searching": true,
+        "processing": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "responsive": false,
+        "order": [[0, 'asc']],
+        "columnDefs": [
+            { orderable: false, targets: array },
+            { className: "text-wrap", targets: "_all" },
+            { defaultContent: '', targets: "_all" },
+        ],
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": columnData,
         "initComplete": function () {
             var api = this.api();
 
@@ -34,7 +104,7 @@ $(document).ready(function () {
                 .eq(0)
                 .each(function (colIdx) {
                     // Set the header cell to contain the input element
-                    if (colIdx != 8) {
+                    if (colIdx != 7) {
                         var cell = $('.filters th').eq(
                             $(api.column(colIdx).header()).index()
                         );
@@ -75,75 +145,25 @@ $(document).ready(function () {
                         });
                 });
         },
-        "columnDefs": [
-            { "searchable": false, "targets": 8 }
-        ],
+        "language": {
+            "sProcessing": "Đang tải dữ liệu...",
+            "sLengthMenu": "Xem _MENU_ mục",
+            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+            "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+            "sInfoPostFix": "",
+            "sSearch": "Tìm:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sPrevious": "Trước",
+                "sNext": "Tiếp",
+                "sLast": "Cuối"
+            }
+        },
     });
-});
-
-//PopUp cho <a>
-$(document).ready(function () {
-
-    var ReportPopupElement = $('#ReportPopup');
-
-    $('button[data-toggle="ajax-modal"]').click(function (event) {
-        $("body").find(".modal-backdrop").remove();
-        var url = $(this).data('url');
-        $.get(url).done(function (data) {
-            ReportPopupElement.html(data);
-            ReportPopupElement.find('.modal').modal('show');
-        });
-    });
-
-    $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
-        $("body").find(".modal-backdrop").remove();
-        var url = $(this).data('url');
-        $.get(url).done(function (data) {
-            ReportPopupElement.html(data);
-            ReportPopupElement.find('.modal').modal('show');
-        });
-    });
-
-    //ReportPopupElement.on('click', '[data-save="modal"]', function (event) {
-    //    event.preventDefault();
-    //    var form = $(this).parents('.modal').find('form');
-    //    var actionUrl = form.attr('action');
-    //    var methodType = form.attr('method');
-
-    //    console.log(form.serialize());
-    //    $.ajax({
-    //        type: methodType,
-    //        url: actionUrl,
-    //        data: form.serialize(),
-    //        success: function (data) {
-    //            alert("Thành công!");
-    //        },
-    //        error: function (xhr, desc, err) {
-    //            alert("Lỗi!");
-    //        }
-    //    }).done(function (data) {
-    //        ReportPopupElement.find('.modal').modal('hide');
-    //        location.reload();
-    //    })
-    //});
-});
-
-$(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
-    //Datemask dd/mm/yyyy
-    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-    $('[data-mask]').inputmask()
-
-    //Date picker
-    $('#reservationdate').datetimepicker({
-        format: 'DD/MM/YYYY'
-    })
-
-    //File upload show name file
-    bsCustomFileInput.init()
-});
+}
 
 $(function () {
     toastr.options = {
@@ -165,12 +185,116 @@ $(function () {
     }
 });
 
+$.fn.clearData = function ($form) {
+    $form.find('input:text, input:password, input:file, select, textarea').val('');
+    $form.find('input:radio, input:checkbox')
+        .removeAttr('checked').removeAttr('selected');
+}
 
-//$(function () {
-//    $('#toggle-event').change(function () {
-//        $('#Status').attr("value", $(this).prop('checked'))
-//    })
-//});
+$.fn.callModal = function (url) {
+
+    var ReportPopupElement = $('#ReportPopup');
+    $.ajax({
+        url: url,
+        dataType: 'html',
+        success: function (data) {
+            $("body").find(".modal-backdrop").remove();
+            ReportPopupElement.html(data);
+            ReportPopupElement.find('.modal').modal('show');
+        }, error: function (xhr, status) {
+            switch (status) {
+                case 404:
+                    $(this).callToast("error", 'Lỗi!', 'Đường dẫn không đúng hoặc tính năng không tồn tại!');
+                    break;
+                case 500:
+                    $(this).callToast("error", 'Lỗi!', 'Không kết nối được tới Server!');
+                    break;
+                case 0:
+                    $(this).callToast("error", 'Lỗi!', 'Hệ thống không phản hồi!');
+                    break;
+                default:
+                    $(this).callToast("error", 'Lỗi!', 'Sự cố không xác định! Lỗi: ' + status);
+            }
+        }
+    });
+}
+
+$.fn.callToast = function (status, title, msg) {
+    toastr.options = {
+        "closeButton": false,
+        "debug": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    if (status == "success") {
+        toastr.success(msg, title)
+    }
+    else if (status == "info") {
+        toastr.info(msg, title)
+    }
+    else if (status == "warning") {
+        toastr.warning(msg, title)
+    }
+    else if (status == "error") {
+        toastr.error(msg, title)
+    }
+}
+
+$.fn.callDataTable = function (disableColumn, pageLength) {
+    var array = [];
+    $.each(disableColumn.split(','), function (idx, val) {
+        array.push(parseInt(val));
+    });
+    if (disableColumn == '') { disableColumn = 0; }
+
+    var table = $(this).DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "pageLength": pageLength,
+        "searching": true,
+        "processing": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "responsive": true,
+        "order": [[0, 'asc']],
+        "columnDefs": [
+            { orderable: false, targets: array },
+            { className: "text-wrap", targets: "_all" },
+            { defaultContent: '', targets: "_all" },
+        ],
+        "language": {
+            "sProcessing": "Đang tải dữ liệu...",
+            "sLengthMenu": "Xem _MENU_ mục",
+            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+            "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+            "sInfoPostFix": "",
+            "sSearch": "Tìm:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sPrevious": "Trước",
+                "sNext": "Tiếp",
+                "sLast": "Cuối"
+            }
+        },
+    });
+    return table;
+}
+
 
 
 

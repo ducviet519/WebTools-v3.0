@@ -12,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using WebTools.Context;
 using WebTools.Models;
 using WebTools.Services;
 using WebTools.Services.Interface;
@@ -33,6 +32,7 @@ namespace WebTools.Controllers
         private readonly IDepts _depts;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IGoogleDriveAPI _googleDriveAPI;
+        private readonly IUploadFileServices _uploadFileServices;
 
         public ReportController(
             IConfiguration configuration,
@@ -43,6 +43,7 @@ namespace WebTools.Controllers
             IReportURDServices reportURDServices,
             IDepts depts,
             IWebHostEnvironment webHostEnvironment,
+            IUploadFileServices uploadFileServices,
             IGoogleDriveAPI googleDriveAPI
             )
         {
@@ -54,43 +55,28 @@ namespace WebTools.Controllers
             _reportURDServices = reportURDServices;
             _depts = depts;
             _webHostEnvironment = webHostEnvironment;
+            _uploadFileServices = uploadFileServices;
             _googleDriveAPI = googleDriveAPI;
         }
         #endregion
 
         #region Index Page
 
-        public async Task<IActionResult> Index
-            (
-            string sortField,
-            string currentSortField,
-            string currentSortOrder,
-            string SearchString,
-            string SearchTrangThaiSD,
-            string SearchTrangThaiPM,
-            string SearchDate,
-            //DateTime? SearchDate,
-            string currentFilter,
-            int? pageNo
-            )
+        public async Task<IActionResult> Index()
         {
             ReportListViewModel model = new ReportListViewModel();
-            List<ReportList> data = await _reportListServices.GetReportListAsync();
+            model.URDs = new SelectList(await _reportURDServices.GetAll_URDAsync(), "ID", "Des");
+            model.ReportLists = await _reportListServices.GetReportListAsync();
+            return View(model);
+        }
 
-
-
-            if (SearchString != null)
-            {
-                pageNo = 1;
-            }
-            else
-            {
-                SearchString = currentFilter;
-            }
-            ViewData["CurrentSort"] = sortField;
-            ViewBag.CurrentFilter = SearchString;
-
-            //Tìm kếm
+        [HttpPost]
+        public async Task<IActionResult> Index(string SearchString, string SearchTrangThaiSD, string SearchTrangThaiPM, string SearchDate, string SearchURD)
+        {
+            SearchURD = Request.Form["SearchURD"];
+            ReportListViewModel model = new ReportListViewModel();
+            model.URDs = new SelectList(await _reportURDServices.GetAll_URDAsync(), "ID", "Des");
+            List<ReportList> data = await _reportListServices.SearchReportListAsync(SearchURD);
             if (!String.IsNullOrEmpty(SearchString))
             {
                 data = data.Where(s => s.TenBM != null && convertToUnSign(s.TenBM.ToLower()).Contains(convertToUnSign(SearchString.ToLower())) || s.MaBM != null && s.MaBM.ToUpper().Contains(SearchString.ToUpper())).ToList();
@@ -107,13 +93,10 @@ namespace WebTools.Controllers
             {
                 data = data.Where(s => s.NgayBanHanh != null && s.NgayBanHanh.Contains(SearchDate.ToString())).ToList();
             }
-
-            var a = this.SortData(data, sortField, currentSortField, currentSortOrder);
             model.ReportLists = data;
-            int pageSize = 10;
-            model.PagingLists = PagingList<ReportList>.CreateAsync(a.AsQueryable<ReportList>(), pageNo ?? 1, pageSize);
             TempData["SearchString"] = SearchString;
             TempData["SearchDate"] = SearchDate;
+            TempData["SearchURD"] = SearchURD;
             return View(model);
         }
         #endregion
@@ -127,63 +110,7 @@ namespace WebTools.Controllers
         }
         #endregion
 
-        #region UploadFile
-        public async Task<string> UploadFile(IFormFile fileUpload)
-        {
-            string FileLink = "";
-            if (fileUpload != null && fileUpload.Length > 0)
-            {
-                string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
-                string fileName = $"{getDateS}_{fileUpload.FileName}";
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-                string filePath = Path.Combine(uploadsFolder, fileName);
-                //string fileGoogleID = _googleDriveAPI.UploadFile(fileUpload);
-                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-                {
-                    await fileUpload.CopyToAsync(fileStream);
-                }
-                return FileLink = filePath;
-            }
-            else
-                return FileLink = "";
-        }
-        #endregion
-
-        #region Sắp xếp
-        private List<ReportList> SortData(List<ReportList> model, string sortField, string currentSortField, string currentSortOrder)
-        {
-            if (string.IsNullOrEmpty(sortField))
-            {
-                ViewBag.SortField = "STT";
-                ViewBag.SortOrder = "Asc";
-            }
-            else
-            {
-                if (currentSortField.ToLower() == sortField.ToLower())
-                {
-                    ViewBag.SortOrder = currentSortOrder == "Asc" ? "Desc" : "Asc";
-                }
-                else
-                {
-                    ViewBag.SortOrder = "Asc";
-                }
-                ViewBag.SortField = sortField;
-            }
-
-            var propertyInfo = typeof(ReportList).GetProperty(ViewBag.SortField);
-            if (ViewBag.SortOrder == "Asc")
-            {
-                model = model.OrderBy(s => propertyInfo.GetValue(s, null)).ToList();
-            }
-            else
-            {
-                model = model.OrderByDescending(s => propertyInfo.GetValue(s, null)).ToList();
-            }
-            return model;
-        }
-        #endregion
-
-        //3. Tạo chức năng Lưu ở giao diện Thêm biểu mẫu
+        #region Biểu mẫu
         [HttpGet]
         public async Task<IActionResult> AddReport()
         {
@@ -207,7 +134,7 @@ namespace WebTools.Controllers
             {
                 reportList.KhoaPhong = Request.Form["KhoaPhong"];
                 reportList.CreatedUser = User.Identity.Name;
-                reportList.FileLink = await UploadFile(reportList.fileUpload);
+                reportList.FileLink = await _uploadFileServices.UploadFileAsync(reportList.fileUpload);
                 var result = await _reportListServices.InsertReportListAsync(reportList);
                 if (result == "OK")
                 {
@@ -237,7 +164,7 @@ namespace WebTools.Controllers
             reportList.KhoaPhong = Request.Form["KhoaPhong"];
             reportList.CreatedUser = User.Identity.Name;
 
-            reportList.FileLink = await UploadFile(reportList.fileUpload);
+            reportList.FileLink = await _uploadFileServices.UploadFileAsync(reportList.fileUpload);
             var result = await _reportListServices.UpdateReportListAsync(reportList);
             if (result == "OK")
             {
@@ -249,6 +176,9 @@ namespace WebTools.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Phiên bản
         //4. Tạo chức năng hiển thị phiên bản
         public async Task<IActionResult> Version(string id)
         {
@@ -259,51 +189,52 @@ namespace WebTools.Controllers
             return PartialView("_VesionPartial", model);
         }
 
-        //5. Tạo chức năng Lưu phiên bản
         [HttpPost]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> AddVersion(ReportVersion reportVersion)
         {
-            var data = (await _reportVersionServices.GetReportVersionAsync(reportVersion.IDBieuMau)).Where(v => v.PhienBan.Contains(reportVersion.PhienBan));
-            if (data.Any()) { TempData["ErrorMsg"] = $"Lỗi! Biểu mẫu đã tồn tại phiên bản: {reportVersion.PhienBan} xin vui lòng kiểm tra lại"; return RedirectToAction("Index"); }
-            else
-            {
-                reportVersion.CreatedUser = User.Identity.Name;
-                string getDateS = DateTime.Now.ToString("ddMMyyyy");
-                string IDBieuMau = reportVersion.IDBieuMau;
-                string resault = string.Empty;
+            reportVersion.CreatedUser = User.Identity.Name;
+            string getDateS = DateTime.Now.ToString("ddMMyyyy");
+            string IDBieuMau = reportVersion.IDBieuMau;
+            string resault = string.Empty;
 
-                reportVersion.FileLink = await UploadFile(reportVersion.fileUpload);
-                var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
-                if (result == "OK")
-                {
-                    TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
-                }
-                else
-                {
-                    TempData["ErrorMsg"] = "Lỗi! " + result;
-                }
-                return RedirectToAction("Index");
-            }
-        }
-
-        public async Task<IActionResult> DeleteVersion(string IDPhienBan, string IDBieuMau)
-        {
-            string url = Request.Headers["Referer"].ToString();
-            var result = await _reportVersionServices.DeleteReportVersionAsync(IDPhienBan);
-            if (result == "DEL")
+            reportVersion.FileLink = await _uploadFileServices.UploadFileAsync(reportVersion.fileUpload);
+            var result = await _reportVersionServices.InsertReportVersionAsync(reportVersion);
+            if (result == "OK")
             {
-                TempData["SuccessMsg"] = "Xóa phiên bản thành công!";
-                //return Json(new {message = "Del" });
+                TempData["SuccessMsg"] = "Thêm phiên bản thành công!";
             }
             else
             {
-                TempData["ErrorMsg"] = "Lỗi!" + result;
-                //return Json(new { message = "Lỗi! Phiên bản chưa được xóa" });
+                TempData["ErrorMsg"] = "Lỗi! " + result;
             }
             return RedirectToAction("Index");
         }
 
+
+        [HttpGet]
+        public async Task<JsonResult> GetVersionsJson(string id)
+        {
+            var data = (await _reportVersionServices.GetReportVersionAsync(id)).ToList();
+            return Json(new { data });
+        }
+
+        public async Task<JsonResult> DeleteVersionsJson(string id, string link)
+        {
+            var result = await _reportVersionServices.DeleteReportVersionAsync(id);
+            if (result == "DEL")
+            {
+                string resultDelete = _uploadFileServices.DeleteFile(link);
+                return Json(new { message = "Xóa phiên bản thành công!" });
+            }
+            else
+            {
+                return Json(new { message = "Lỗi! Phiên bản chưa được xóa" });
+            }
+        }
+        #endregion
+
+        #region Phần mềm
         //6. Tạo cửa sổ Phần mềm
         public async Task<IActionResult> Soft(string id)
         {
@@ -358,7 +289,9 @@ namespace WebTools.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Xem Chi tiết
         //8. Tạo giao diện Chi tiết
         public async Task<IActionResult> Detail(string id)
         {
@@ -398,38 +331,67 @@ namespace WebTools.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
         //Document View
-        public IActionResult DocumentView(string link)
+        public async Task<IActionResult> DocumentView(string link)
         {
-            //DocumentViewModel model = new DocumentViewModel();
-            //model.FileLink = $@"{link}";
-            var documentLink = $@"{link}";
-            var documentViewer = new DocumentViewer
+            var data = (await _reportListServices.GetReportListAsync()).ToList();
+            if (!String.IsNullOrEmpty(link))
+            {
+                data = data.Where(s => !String.IsNullOrEmpty(s.IDPhienBan) && s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
+            }
+            ReportList reportList = data.FirstOrDefault();
+            var documentLink = "";
+            DocumentViewModel model = new DocumentViewModel();
+            if (!String.IsNullOrEmpty(reportList.FileLink))
+            {
+                documentLink = $@"{reportList.FileLink}";
+                string name = Path.GetFileName(reportList.FileLink);
+                model.FileName = name.Substring(15, name.Length - 15);
+                model.Extension = Path.GetExtension(reportList.FileLink);
+                model.FileLink = documentLink;
+            }
+            model.DocumentViewer = new DocumentViewer
             {
                 Width = 1200,
                 Height = 600,
                 Resizable = false,
-                Document = documentLink
+                Document = documentLink,
+
             };
 
-            return PartialView("_DocumentView", documentViewer);
+            return PartialView("_DocumentView", model);
         }
         //Document View
-        public IActionResult PopUpDocumentView(string link)
+        public async Task<IActionResult> PopUpDocumentView(string link)
         {
-            //DocumentViewModel model = new DocumentViewModel();
-            //model.FileLink = $@"{link}";
-            var documentLink = $@"{link}";
-            var documentViewer = new DocumentViewer
+            var data = (await _reportListServices.GetReportListAsync()).ToList();
+            if (!String.IsNullOrEmpty(link))
+            {
+                data = data.Where(s => !String.IsNullOrEmpty(s.IDPhienBan) && s.IDPhienBan.ToLower().Contains(link.ToLower())).ToList();
+            }
+            ReportList reportList = data.FirstOrDefault();
+            var documentLink = "";
+            DocumentViewModel model = new DocumentViewModel();
+            if (!String.IsNullOrEmpty(reportList.FileLink))
+            {
+                documentLink = $@"{reportList.FileLink}";
+                string name = Path.GetFileName(reportList.FileLink);
+                model.FileName = name.Substring(15, name.Length - 15);
+                model.Extension = Path.GetExtension(reportList.FileLink);
+                model.FileLink = documentLink;
+            }
+            model.DocumentViewer = new DocumentViewer
             {
                 Width = 1100,
                 Height = 600,
                 Resizable = false,
-                Document = documentLink
+                Document = documentLink,
+
             };
 
-            return PartialView("_DocumentViewPartial", documentViewer);
+            return PartialView("_DocumentViewPartial", model);
         }
     }
 }

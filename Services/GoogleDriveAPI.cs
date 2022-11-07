@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WebTools.Models.Entities;
 using WebTools.Services.Interface;
 
 namespace WebTools.Services
@@ -24,100 +25,169 @@ namespace WebTools.Services
 
         }
 
-		private string[] Scopes = { DriveService.Scope.Drive };
-		private string ApplicationName = "Awesome CMS Core";
+        private string[] Scopes = { DriveService.Scope.Drive };
+        private string ApplicationName = "WebTools";
 
-		public void DownloadFile(string blobId, string savePath)
-		{
-			var service = GetDriveServiceInstance();
-			var request = service.Files.Get(blobId);
-			var stream = new MemoryStream();
-			// Add a handler which will be notified on progress changes.
-			// It will notify on each chunk download and when the
-			// download is completed or failed.
-			request.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
-			{
-				switch (progress.Status)
-				{
-					case Google.Apis.Download.DownloadStatus.Downloading:
-						{
-							Console.WriteLine(progress.BytesDownloaded);
-							break;
-						}
-					case Google.Apis.Download.DownloadStatus.Completed:
-						{
-							Console.WriteLine("Download complete.");
-							SaveStream(stream, savePath);
-							break;
-						}
-					case Google.Apis.Download.DownloadStatus.Failed:
-						{
-							Console.WriteLine("Download failed.");
-							break;
-						}
-				}
-			};
-			request.Download(stream);
-		}
+        public void DownloadFile(string blobId, string savePath)
+        {
+            var service = GetDriveServiceInstance();
+            var request = service.Files.Get(blobId);
+            var stream = new MemoryStream();
+            // Add a handler which will be notified on progress changes.
+            // It will notify on each chunk download and when the
+            // download is completed or failed.
+            request.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
+            {
+                switch (progress.Status)
+                {
+                    case Google.Apis.Download.DownloadStatus.Downloading:
+                        {
+                            Console.WriteLine(progress.BytesDownloaded);
+                            break;
+                        }
+                    case Google.Apis.Download.DownloadStatus.Completed:
+                        {
+                            Console.WriteLine("Download complete.");
+                            SaveStream(stream, savePath);
+                            break;
+                        }
+                    case Google.Apis.Download.DownloadStatus.Failed:
+                        {
+                            Console.WriteLine("Download failed.");
+                            break;
+                        }
+                }
+            };
+            request.Download(stream);
+        }
 
-		public string UploadFile(IFormFile fileUpload)
-		{
-			string getDateS = DateTime.Now.ToString("ddMMyyyyHHmmss");
-			string fileName = $"{getDateS}_{fileUpload.FileName}";
-			string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Upload");
-			string filePath = Path.Combine(uploadsFolder, fileName);
+        public string UploadFile(string path)
+        {
+            var service = GetDriveServiceInstance();
+            var fileMetadata = new Google.Apis.Drive.v3.Data.File();
+            fileMetadata.Name = Path.GetFileName(path);
+            fileMetadata.MimeType = MimeTypes.GetMimeType(path);
+            FilesResource.CreateMediaUpload request;
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                request = service.Files.Create(fileMetadata, stream, MimeTypes.GetMimeType(path));
+                request.Fields = "id";
+                request.Upload();
+            }
 
-			var service = GetDriveServiceInstance();
-			var fileMetadata = new Google.Apis.Drive.v3.Data.File();
-			fileMetadata.Name = Path.GetFileName(filePath);
-			fileMetadata.MimeType = MimeTypes.GetMimeType(fileName);
-			FilesResource.CreateMediaUpload request;
-			using (var stream = new FileStream(filePath, FileMode.Open))
-			{
-				request = service.Files.Create(fileMetadata, stream, MimeTypes.GetMimeType(fileName));
-				request.Fields = "id";
-				request.Upload();
-			}
+            var file = request.ResponseBody;
 
-			var file = request.ResponseBody;
+            return file.Id;
+        }
 
-			return file.Id;
-		}
+        private DriveService GetDriveServiceInstance()
+        {
+            UserCredential credential;
 
-		private DriveService GetDriveServiceInstance()
-		{
-			UserCredential credential;
+            using (var stream =
+                new FileStream(Path.Combine(_webHostEnvironment.ContentRootPath, "credentials.json"), FileMode.Open, FileAccess.Read))
+            {
+                string FolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "GoogleDriveFiles");
+                //string FolderPath = Directory.GetCurrentDirectory(), @"wwwroot\\GoogleDriveFiles\\"
+                //string credPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                //string FilePath = Path.Combine(FolderPath, "DriveServiceCredentials.json");
 
-			using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-			{
-				//string credPath = Path.Combine(_webHostEnvironment.WebRootPath, "credentials");
-				string credPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(FolderPath, true)).Result;
+            }
 
-				credPath = Path.Combine(credPath, "./credentials/credentials.json");
+            var service = new DriveService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
 
-				credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-					GoogleClientSecrets.Load(stream).Secrets,
-					Scopes,
-					"user",
-					CancellationToken.None,
-					new FileDataStore(credPath, true)).Result;
-			}
+            return service;
+        }
 
-			var service = new DriveService(new BaseClientService.Initializer()
-			{
-				HttpClientInitializer = credential,
-				ApplicationName = ApplicationName,
-			});
+        private static void SaveStream(MemoryStream stream, string saveTo)
+        {
+            using (FileStream file = new FileStream(saveTo, FileMode.Create, FileAccess.Write))
+            {
+                stream.WriteTo(file);
+            }
+        }
 
-			return service;
-		}
 
-		private static void SaveStream(MemoryStream stream, string saveTo)
-		{
-			using (FileStream file = new FileStream(saveTo, FileMode.Create, FileAccess.Write))
-			{
-				stream.WriteTo(file);
-			}
-		}
-	}
+        
+        //get all files from Google Drive.
+        public async Task<List<GoogleDriveFile>> GetDriveFiles()
+        {
+            DriveService service = GetDriveServiceInstance();
+            // Define parameters of request.
+            FilesResource.ListRequest FileListRequest = service.Files.List();
+
+            // for getting folders only.
+            //FileListRequest.Q = "mimeType='application/vnd.google-apps.folder'";
+            FileListRequest.Fields = "nextPageToken, files(*)";
+            // List files.
+            IList<Google.Apis.Drive.v3.Data.File> files = (await FileListRequest.ExecuteAsync()).Files;
+            List<GoogleDriveFile> FileList = new List<GoogleDriveFile>();
+            // For getting only folders
+            // files = files.Where(x => x.MimeType == "application/vnd.google-apps.folder").ToList();
+            if (files != null && files.Count > 0)
+            {
+                foreach (var file in files)
+                {
+                    GoogleDriveFile File = new GoogleDriveFile
+                    {
+                        Id = file.Id,
+                        Name = file.Name,
+                        Size = file.Size,
+                        Version = file.Version,
+                        CreatedTime = file.CreatedTime,
+                        Parents = file.Parents,
+                        MimeType = file.MimeType
+                    };
+                    FileList.Add(File);
+                }
+            }
+            return FileList;
+        }
+
+        
+
+        //get all files from Google Drive.
+        public async Task<List<GoogleDriveFile>> SearchDriveFiles(string searchString)
+        {
+            DriveService service = GetDriveServiceInstance();
+            // Define parameters of request.
+            FilesResource.ListRequest FileListRequest = service.Files.List();
+
+            //FileListRequest.Q = $"(fullText contains '{searchString}') or (mimeType = 'application/vnd.google-apps.document')";
+            FileListRequest.Q = $"(fullText contains '{searchString}')";
+            // List files.
+            IList<Google.Apis.Drive.v3.Data.File> files = (await FileListRequest.ExecuteAsync()).Files;
+            List<GoogleDriveFile> FileList = new List<GoogleDriveFile>();
+
+            if (files != null && files.Count > 0)
+            {
+                foreach (var file in files)
+                {
+                    GoogleDriveFile File = new GoogleDriveFile
+                    {
+                        Id = file.Id,
+                        Name = file.Name,
+                        Size = file.Size,
+                        Version = file.Version,
+                        CreatedTime = file.CreatedTime,
+                        Parents = file.Parents,
+                        MimeType = file.MimeType
+                    };
+                    FileList.Add(File);
+                }
+            }
+            return FileList;
+        }
+
+    }
 }

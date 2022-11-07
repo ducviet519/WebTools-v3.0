@@ -1,0 +1,65 @@
+﻿@model WebTools.Models.GoogleFilesViewModel
+@{
+    ViewData["Title"] = "GoogleFiles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="dataTables_wrapper dt-bootstrap4">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" id="tableGoogleFile">
+                <thead class="thead">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Version</th>
+                        <th>CreatedTime</th>
+                        <th>Parents</th>
+                        <th>MimeType</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.GoogleDriveList != null && Model.GoogleDriveList.Count > 0)
+                        {
+                            foreach (var item in Model.GoogleDriveList)
+                            {
+                                <tr>
+                                    <td class="text-wrap">@item.Id</td>
+                                    <td class="text-wrap">@item.Name</td>
+                                    <td class="text-wrap">@item.Size</td>
+                                    <td class="text-wrap">@item.Version</td>
+                                    <td class="text-wrap">@item.CreatedTime</td>
+                                    <td class="text-wrap">@item.Parents</td>
+                                    <td class="text-wrap">@item.MimeType</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = $('#tableGoogleFile').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, 'All'],
+                ],
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+                "orderCellsTop": true,
+            });
+        });
+
+    </script>
+ }

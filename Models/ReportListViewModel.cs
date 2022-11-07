@@ -15,5 +15,7 @@ namespace WebTools.Models
 
         public IEnumerable<SelectListItem> Depts { get; set; }
 
+        public IEnumerable<SelectListItem> URDs { get; set; }
+
     }
 }

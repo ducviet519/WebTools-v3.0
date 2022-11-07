@@ -27,7 +27,7 @@
                         <div class="col-3 text-right"><label for="NgayBanHanh">Ngày ban hành:</label></div>
                         <div class="col-3">
                             <div class="input-group date" id="reportdate" data-target-input="nearest">
-                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" required />
+                                <input type="text" name="NgayBanHanh" id="NgayBanHanh" class="form-control datetimepicker-input" data-target="#reportdate" autocomplete="off" required />
                                 <div class="input-group-append" data-target="#reportdate" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -52,7 +52,7 @@
                     <div class="row mb-3">
                         <div class="col-3"><label for="KhoaPhongSD">Khoa/Phòng sử dụng:</label></div>
                         <div class="col-9">
-                            <select class="select2" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong"></select>
+                            <select class="selectDepts" multiple="multiple" data-placeholder="Chọn khoa phòng" style="width: 100%;" asp-items="@Model.Depts" name="KhoaPhong" id="KhoaPhong"></select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -83,7 +83,7 @@
         var tenBM = this.getElementById("TenBM");
         $.validator.setDefaults({
             submitHandler: function (form) {
-                form.submit();
+                form.submit();                
             }
         });
         $('#reportForm').validate({
@@ -163,19 +163,8 @@
     //});
 
     $(function () {
-        //Dropdown
-        $('.select2').select2()
-
-        //Date picker
-        $('#reportdate').datetimepicker({
-            format: 'DD/MM/YYYY'
-        })
-
-        //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-        $('[data-mask]').inputmask()
-
-        //File upload show name file
+        $('.selectDepts').select2()
+        $('#reportdate').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
         bsCustomFileInput.init()
     });
 </script>

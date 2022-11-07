@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTools.Authorization;
 using WebTools.Context;
+using WebTools.Models.Entities;
 using WebTools.Services;
 using WebTools.Services.Interface;
 
@@ -40,25 +42,13 @@ namespace WebTools
                     options.Events = new CookieAuthenticationEvents()
                     {
                         OnSigningIn = async context =>
-                        {
-                            //var principal = context.Principal;
-                            //if (principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "Admin")
-                            //{
-                            //    var claimsIdentity = principal.Identity as ClaimsIdentity;
-                            //    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                            //}
-                            //else
-                            //{
-                            //    var claimsIdentity = principal.Identity as ClaimsIdentity;
-                            //    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
-                            //} 
+                        {                           
                             var principal = context.Principal;
                             if (principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "")
                             {                                
                                 var claimsIdentity = principal.Identity as ClaimsIdentity;
                                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
                             }
-
                             await Task.CompletedTask;
                         },
                         OnSignedIn = async context =>
@@ -70,18 +60,12 @@ namespace WebTools
                             await Task.CompletedTask;
                         }
                     };
-                });
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("Admin", policy => {
-            //        policy.RequireAuthenticatedUser();                   
-            //        policy.RequireRole("Admin");
-            //        //policy.RequireClaim("Permission","");
-            //    });
-            //    options.AddPolicy("ITOnly", policy => policy.RequireClaim("Permission", "IT"));
-            //    options.AddPolicy("SuperIT",policy => policy.RequireClaim("Permission", "IT")
-            //                                                .RequireClaim("IT"));
-            //});
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "262393147887-ed0pdsq9a2g01t7jde3kjiq71f0m0ttm.apps.googleusercontent.com";
+                    options.ClientSecret = "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";
+                });           
             services.AddScoped<IReportListServices, ReportListServices>();
             services.AddScoped<IReportVersionServices, ReportVersionServices>();
             services.AddScoped<IReportSoftServices, ReportSoftServices>();
@@ -93,12 +77,12 @@ namespace WebTools
             services.AddScoped<IModuleControllerServices, ModuleControllerServices>();
             services.AddScoped<IModuleActionServices, ModuleActionServices>();
             services.AddScoped<IGoogleDriveAPI, GoogleDriveAPI>();
+            services.AddScoped<IBaoHiemTuNguyenServices, BaoHiemTuNguyenServices>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IUploadFileServices, UploadFileServices>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));
-            //Add GleamTech to the ASP.NET Core services container.
-            //----------------------
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));           
             services.AddGleamTech();
-            //----------------------
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,7 +112,9 @@ namespace WebTools
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+            var options = new RewriteOptions()
+            .AddRedirectToHttps();
+            app.UseRewriter(options);
 
             app.UseEndpoints(endpoints =>
             {

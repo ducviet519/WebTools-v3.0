@@ -36,9 +36,6 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
 }
-.thead:first-child{
-    background-color: cornflowerblue;
-}
 
 tr #odd {
 }
@@ -219,10 +216,13 @@ body {
 #tableReport_filter {
     display: none;
 }
-.thead:first-child {
-    background-color: #1b6ec2;
+.thead {
+    background-color: #3882b6;
     color: #ffffff;
 }
+    .thead:first-child {
+        background-color: #3882b6;
+    }
 .filters{
     background-color:snow;
     color:black;
