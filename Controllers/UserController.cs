@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AppBVTA.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -41,39 +42,70 @@ namespace WebTools.Controllers
             return View();
         }
 
-        #region .
+        #region UserHelper
+        private List<Claim> GenerateClaim(UserModel user)
+        {
+            //var UserLoginInfo = _userServices.FindByName(login.Username);
+            //var RoleInUser = _userServices.GetRoleInUser(UserLoginInfo.UserID);
+            //var PermissionsInUser = _userServices.GetAllUserPermissions(UserLoginInfo.UserName);
 
-        private Users CheckLoginDomain(string domain, string username, string password)
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.DisplayName ?? "Người dùng vô danh"),
+                new Claim(ClaimTypes.NameIdentifier, user.Username),
+                new Claim(ClaimTypes.GroupSid, user.Source ?? "local"),
+                new Claim(ClaimTypes.Email, user.EmailAddress ?? ""),
+                new Claim(ClaimTypes.GivenName, user.DisplayName ?? ""),
+                new Claim(ClaimTypes.Surname, user.Permission ?? ""),
+                new Claim(ClaimTypes.Role, user.Role ?? ""),
+            };
+
+            //foreach (var role in RoleInUser)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
+
+            //}
+            //foreach (var permission in PermissionsInUser)
+            //{
+            //    claims.Add(new Claim("Permission", $"{permission.Permission}"));
+            //}
+
+            return claims;
+        }
+        private UserModel GetUser(UserLogin login)
         {
             try
             {
-                var activeDirectoryHelper = new ActiveDirectoryHelper(domain);
-
-                if (activeDirectoryHelper.IsAuthenticated(domain, username, password))
+                string domain = "bvta.vn";
+                var userprincipal = $@"{domain}\{login.Username}";
+                using PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, userprincipal, login.Password);
+                UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, login.Username);
+                if (user == null)
                 {
-                    var userprincipal = string.Format(@"{0}\{1}", domain, username);
-
-                    using PrincipalContext context = new(ContextType.Domain, domain, userprincipal, password);
-
-                    var userInfo = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, userprincipal);
-
-                    return new Users()
+                    return null;
+                }
+                else
+                {
+                    UserModel userAccount = new UserModel()
                     {
-                        UserID = 0, //string.IsNullOrEmpty(userInfo.Description) ? 0 : int.Parse(userInfo.Description),
-                        DisplayName = userInfo.DisplayName,
-                        UserName = $@"{username.Trim().ToLower()}@{domain}",
-                        Password = password,
+                        DisplayName = user.DisplayName,
+                        Username = login.Username.Trim().ToLower(),
+                        Password = login.Password,
                         Source = domain,
-                        Email = userInfo.EmailAddress,
-                        Status = (userInfo.Enabled ?? false)
+                        EmailAddress = $@"{login.Username.Trim().ToLower()}@{domain}",
+                        Status = (user.Enabled ?? false)
                     };
+
+                    //Ghi thông tin người dùng vào CSDL
+                    //_userServices.AddUser(userAccount);
+                    return userAccount;
                 }
             }
             catch (Exception ex)
             {
-                var errorMessage = ex.Message;
+                var errorMsg = ex.Message;
+                return null;
             }
-            return null;
         }
 
         #endregion
@@ -87,89 +119,46 @@ namespace WebTools.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel login)
+        public async Task<IActionResult> Login(UserLogin login)
         {
-            if (!ModelState.IsValid) 
+            if (String.IsNullOrEmpty(login.Username) || String.IsNullOrEmpty(login.Password))
             {
                 TempData["Error"] = "Lỗi! Tài khoản hoặc mật khẩu không được bỏ trống";
                 return View(login);
             }
-            string domain = string.Empty;
             try
             {
-                #region Lấy thông tin người dùng từ Windows Account
-                var userDomain = login.UserName;
-                domain = "bvta.vn";
-                var userprincipal = $@"{domain}\{login.UserName}";
-                using PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, userprincipal, login.Password);
-                UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, login.UserName);
-                if (user == null)
+                var UserLoginInfo = GetUser(login);
+                if (UserLoginInfo != null)
                 {
-                    TempData["Error"] = "Không tìm thấy thông tin tài khoản.";
+                    string adPath = $"LDAP://{UserLoginInfo.Source}";
+                    var ad_authenticate = new ActiveDirectoryHelper(adPath);
+
+                    if (ad_authenticate.IsAuthenticated(UserLoginInfo.Source, UserLoginInfo.Username, UserLoginInfo.Password))
+                    {
+                        List<Claim> claims = GenerateClaim(UserLoginInfo);
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal,
+                            new AuthenticationProperties()
+                            {
+                                IsPersistent = UserLoginInfo.Status
+                            });
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                    }
+                    TempData["Error"] = "Lỗi! Tài khoản hoặc Mật khẩu không chính xác.";
+                    return View();
                 }
                 else
                 {
-                    Users userAccount = new Users()
-                    {
-                        UserID = 0, //string.IsNullOrEmpty(userInfo.Description) ? 0 : int.Parse(userInfo.Description),
-                        DisplayName = user.DisplayName,
-                        UserName = login.UserName.Trim().ToLower(),
-                        Password = login.Password,
-                        Source = domain,
-                        Email = $@"{login.UserName.Trim().ToLower()}@{domain}",                       
-                        Status = (user.Enabled ?? false)
-                    };
-                    //Ghi thông tin người dùng vào CSDL
-                    _userServices.AddUser(userAccount);
+                    TempData["Error"] = "Lỗi! Tài khoản hoặc Mật khẩu không chính xác.";
+                    return View();
                 }
-                #endregion
-
-                #region Kiểm tra thông tin User và thêm ClaimUser
-                string adPath = $"LDAP://{domain}";
-                var ad_authenticate = new ActiveDirectoryHelper(adPath);
-                //if (isAuthorized)
-                if (ad_authenticate.IsAuthenticated(domain, login.UserName, login.Password))
-                {
-                    var UserLoginInfo = _userServices.FindByName(login.UserName);
-                    var RoleInUser = _userServices.GetRoleInUser(UserLoginInfo.UserID);
-                    var PermissionsInUser = _userServices.GetAllUserPermissions(UserLoginInfo.UserName);
-
-                    var IP = HttpContext.Connection.RemoteIpAddress.ToString();
-                    var claims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.Name, UserLoginInfo.DisplayName),
-                        new Claim(ClaimTypes.NameIdentifier, Convert.ToString(UserLoginInfo.UserID)),
-                        new Claim(ClaimTypes.GroupSid, string.IsNullOrEmpty(domain) ? "local" : domain),
-                        new Claim(ClaimTypes.Email, $@"{login.UserName.Trim().ToLower()}@{domain}" ?? ""),
-                    };
-                    foreach (var role in RoleInUser)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
-
-                    }
-                    foreach (var permission in PermissionsInUser)
-                    {
-                        claims.Add(new Claim("Permission", $"{permission.Permission}"));
-                    }
-
-                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal,
-                        new AuthenticationProperties()
-                        {
-                            IsPersistent = login.RememberLogin
-                        });
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-                #endregion
-
-                TempData["Error"] = "Lỗi! Tài khoản hoặc Mật khẩu không chính xác";
-                return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                var errorMessage = ex.Message;
-                TempData["Error"] = $"Lỗi! Tài khoản hoặc Mật khẩu không chính xác";
+                var errorMsg = ex.Message;
+                TempData["Error"] = $"Lỗi! {errorMsg}.";
                 return View();
             }
         }
