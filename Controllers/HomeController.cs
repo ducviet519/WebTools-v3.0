@@ -18,13 +18,11 @@ namespace WebTools.Controllers
 
         
         private readonly ILogger<HomeController> _logger;
-        private readonly IGoogleDriveAPI _googleDriveAPI;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, IGoogleDriveAPI googleDriveAPI, IWebHostEnvironment webHostEnvironment)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
-            _googleDriveAPI = googleDriveAPI;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()

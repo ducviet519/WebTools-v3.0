@@ -43,10 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\GoogleDriveFiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
@@ -127,11 +123,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="credentials.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
 </Project>
