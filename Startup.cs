@@ -45,7 +45,7 @@ namespace WebTools
                         OnSigningIn = async context =>
                         {
                             var principal = context.Principal;
-                            if (principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "")
+                            if (principal.Claims.FirstOrDefault() == null || principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value == "")
                             {
                                 var claimsIdentity = principal.Identity as ClaimsIdentity;
                                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
