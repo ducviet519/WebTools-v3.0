@@ -69,6 +69,8 @@ namespace WebTools
             services.AddScoped<IModuleActionServices, ModuleActionServices>();
             services.AddScoped<IBaoHiemTuNguyenServices, BaoHiemTuNguyenServices>();
             services.AddScoped<IUploadFileServices, UploadFileServices>();
+            services.AddScoped<IBangKeChiPhiSevices, BangKeChiPhiServices>();
+            services.AddScoped<IDepts, DeptsServices>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));         
             services.AddGleamTech();
         }

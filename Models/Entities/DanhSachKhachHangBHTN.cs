@@ -14,5 +14,6 @@ namespace WebTools.Models.Entities
         public string ngaythutien { get; set; }
         public string sobienlai { get; set; }
         public string loainv { get; set; }
+        public string LoaiGD { get; set; }
     }
 }

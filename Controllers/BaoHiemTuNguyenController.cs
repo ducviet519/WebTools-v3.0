@@ -24,7 +24,10 @@ namespace WebTools.Controllers
         {
             return View();
         }
-
+        public IActionResult BangKeChiPhi()
+        {
+            return View();
+        }
         public async Task<JsonResult> SearchKhanhHangThanhToanBHTN(string mabn, string loai, string ngayBD, string ngayKT)
         {
             var data = (await _baoHiemTuNguyenServices.SearchKhanhHangThanhToanBHTN(mabn, loai, ngayBD, ngayKT)).ToList();

@@ -92,6 +92,7 @@
             $('#ngayKT').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
         });
         $(function () {
+            var loai = $("#loai").val() || "";
             var columnData = [
                 { "data": "stt" },
                 { "data": "mabn" },
@@ -101,9 +102,19 @@
                 { "data": "sobienlai" },
                 { "data": "loainv" },
                 {
-                    "data": { mabn: "mabn", stt: "stt" },
+                    "data": { id: "id", stt: "stt", loaiGD: "loaiGD" },
                     "render": function (data, row) {
-                        return "<a>Chi tiết</a>";
+                       
+                        //1: thanh toan 2:Hien dien
+                        if (data.loaiGD == "1") {
+                            
+                            return '<a href="/BangKeChiPhi/BangKe?id=' + data.id + '"> Chi tiết </a>';
+                        }
+                        else {
+                            return '<a href="/BangKeChiPhi/PhieuThanhToan?id=' + data.id + '"> Chi tiết </a>';
+                        }
+                        
+                        
                     }
                 },
             ]
