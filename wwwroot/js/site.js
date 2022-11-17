@@ -250,6 +250,74 @@ $.fn.callToast = function (status, title, msg) {
         toastr.error(msg, title)
     }
 }
+//a viet
+$.fn.callDataTableCheckbox = function (id, columnData, url, pageLength, disableColumn) {
+    var array = [];
+    $.each(disableColumn.split(','), function (idx, val) {
+        array.push(parseInt(val));
+    });
+    if (disableColumn == '') { disableColumn = 0; }
+    var table = $(id).DataTable();
+    if ($.fn.dataTable.isDataTable(id)) {
+        table.destroy();
+        $(id).find('tbody').empty();
+    }
+    var table = $(id).DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "pageLength": pageLength,
+        "searching": true,
+        "processing": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "autoFill": true,
+        "responsive": true,
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": columnData,
+        "order": [[1, 'asc']],
+        "columnDefs": [
+            { "className": 'select-checkbox', "orderable": false, "targets": 0 },
+            //{ 'targets': 0, 'checkboxes': { 'selectRow': true } },
+            { "orderable": false, "targets": array },
+        ],
+        "select": {
+            "style": 'multi',
+            "selector": 'td:first-child'
+        },
+        "language": {
+            "sProcessing": "Đang tải dữ liệu...",
+            "sLengthMenu": "Xem _MENU_ mục",
+            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+            "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+            "sInfoPostFix": "",
+            "sSearch": "Tìm:",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "Đầu",
+                "sPrevious": "Trước",
+                "sNext": "Tiếp",
+                "sLast": "Cuối"
+            },
+            "select": {
+                "rows": {
+                    _: "Đã chọn %d dòng",
+                    0: "Click vào dòng để chọn",
+                    1: "Đã chọn 1 dòng"
+                }
+            }
+        },
+    });
+    return table;
+}
+
+//
 
 $.fn.callDataTable = function (disableColumn, pageLength) {
     var array = [];

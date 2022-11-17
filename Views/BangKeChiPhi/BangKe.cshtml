@@ -1,13 +1,22 @@
 ﻿@model WebTools.Models.BangKeChiPhiVM
-@{
-    ViewData["Title"] = "Index";
-}
+
 <style>
-    .content {
-        border-style: solid;
-        border-width: 1px;
+    .thongtinbenhnhan {
         margin-left: 10px;
-        margin-right: 10px;
+    }
+
+    .title {
+        font-size: 30px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        text-transform: uppercase;
+        margin-bottom: 30px;
+    }
+    .content {
+        
+        /*border-width: 1px;
+        margin-left: 10px;
+        margin-right: 10px;*/
     }
 
     .divbody {
@@ -19,7 +28,7 @@
     h2, .divbody {
         font-family: "Times New Roman", Times, serif;
     }
-
+    
     #sl {
         width: 60px;
     }
@@ -70,221 +79,289 @@
         margin-left: 60px;
         margin-right: 60px;
     }
+
+    .noidung {
+        color: dodgerblue;
+        font-weight: bold;
+    }
+
+    .inputText {
+        width: 60px;
+    }
 </style>
-<div class="content">
-    Thông tin chi tiết
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="addRolesLabel" aria-hidden="true" id="PhieuThanhToanPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin chi tiết</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;&nbsp;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="text-center">
+                        <h2 id="Ten">BẢNG KÊ CHI PHÍ KHÁM CHỮA BỆNH</h2>
+                    </div>
+                    <div class="thongtinbenhnhan">
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="col-form-label col-2 pl-0" style="margin-right: 37px;">Họ và tên:</label>
+                                <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.hoten</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="col-form-label col-auto">Số biên lai:</label>
+                                        <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.sobienlai</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-4">Đơn vị bảo lãnh:</label>
+                                            <div class="col">
+                                                <select id="donviBl" class="form-control">
+                                                    <option value="1">Prudential</option>
+                                                    <option value="2">Prudential 2</option>
+                                                    <option value="-">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <label class="col-form-label col-5 pl-0">Mã khách hàng:</label>
+                                        <label class="col-form-label col-auto noidung">Họ và tên</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <label class="col-form-label col-6">Ngày sinh:</label>
+                                        <label class="col-form-label col-auto noidung">15/05/2022</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="col-form-label col-6">Giới tính:</label>
+                                        <label class="col-form-label col-auto noidung">Nam</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-4">Khoa/Phòng:</label>
+                                            <div class="col">
+                                                <select class="form-control selectURD2" style="width: 100%;" data-placeholder="Chọn" asp-items="@Model.Depts" name="SearchURD" id="SearchURD">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <label class="col-form-label col-5 pl-0">Tổng chi phí:</label>
+                                        <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.tongsotien</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <label class="col-form-label col-6">BHYT chi trả:</label>
+                                        <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.tongbhyt</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-4">BHTN thanh toán:</label>
+                                            <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.bntra</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-1 mr-5">Ghi chú:</label>
+                            <div class="col">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <label class="col-form-label col-5 pl-0">Vào viện lúc:</label>
+                                        <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.ngayvao</label>
+                                    </div>
+                                    <div class="col-5 pr-4">
+                                        <div class="form-group row">
+                                            <input type="checkbox" class="form-check" /><label class="col-form-label col-auto">Tỷ lệ thanh toán:</label>
+                                            <input type="text" class="form-control col" />
+                                            <label class="col-form-label col-auto">%</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-8 pl-4">
+                                       
+                                        <div class="form-group row">
+                                            <input type="checkbox" class="form-check" /><label class="col-form-label col-auto">Số tiền thanh toán:</label>
+                                            <div class="col mr-5"><input type="text" class="form-control" id="TienTT" /></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row justify-content-between">
+                                            <button type="button" class="btn btn-success btn-sm">Áp dụng</button>
+                                            <button type="button" class="btn btn-success btn-sm">Xử lý dữ liệu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-form-label col-auto" style="margin-right:27px">Các khoa phòng:</label>
+                            <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.tenkp</label>
+                        </div>
+                        <div class="row">
+                            <label class="col-form-label col-1 mr-5">Chẩn đoán:</label>
+                            <label class="col-form-label col-auto noidung">@Model.bangKeChiPhi.chandoan</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" width="100%" id="tableBangKe1">
+                            <thead>
+                                <tr>
+                                    <th class="text-center w-auto"><input type="checkbox" class="selectAll" id="selectAll" name="selectAll" value="all"></th>
+                                    <th class="text-nowrap w-auto">STT</th>
+                                    <th class="text-nowrap w-auto">Nội dung</th>
+                                    <th class="text-nowrap w-auto">Đơn vị</th>
+                                    <th class="text-nowrap w-auto">Đơn giá</th>
+                                    <th class="text-nowrap w-auto">Số lượng</th>
+                                    <th class="text-nowrap w-auto">Số lượng TT</th>
+                                    <th class="text-nowrap w-auto">Thành tiền</th>
+                                    <th class="text-nowrap w-auto">BHYT tri trả</th>
+                                    <th class="text-nowrap w-auto">BHTN thanh toán</th>
+                                    <th class="text-nowrap w-auto">KH tri trả</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="div1 text-center ">
+                        <button type="button" class="btn btn-success btn1">Lưu</button>
+                        <button type="button" class="btn btn-success btn1">Bảng kê BHTN</button>
+                        <button type="button" class="btn btn-success btn1">Bảng kê viện phí</button>
+                    </div>
+                    <div class="div1 text-center">
+                        <button type="button" class="btn btn-danger btn1" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-success btn1">Xuất Excel BKBH</button>
+                        <button type="button" class="btn btn-success btn1">Xuất Excel BKVP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="content divbody" style="border-top:none">
-    <div class="text-center">
-        <h2 id="Ten">BẢNG KÊ CHI PHÍ KHÁM CHỮA BỆNH</h2>
-    </div>
-    <div id="divTT">
-        <div class="div1">
-            <div class="col-6 float-left">
-                <label class="lb1">Họ tên: </label><label class="lbtt">@Model.bangKeChiPhi.hoten</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb2">Số biên lai:</label><label class="lbtt">@Model.bangKeChiPhi.sobienlai</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb1">Đơn vị bảo lãnh: </label>
-                <label>
-                    <select name="donviBL" class="form-select">
-                        <option value="1">Prudential</option>
-                        <option value="2">Prudential 2</option>
-                        <option value="-">Other</option>
-                    </select>
-                </label>
-            </div>
 
-        </div>
-        <div class="div1">
-            <div class="col-3 float-left">
-                <label class="lb1">Mã khách hàng:</label><label class="lbtt">@Model.bangKeChiPhi.mabn</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb2">Ngày sinh: </label><label class="lbtt">@Model.bangKeChiPhi.ngaysinh</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb2">Giới tính: </label><label class="lbtt">@Model.bangKeChiPhi.gioitinh</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb1">Khoa/Phòng: </label>
-                <label>
-                    <select class="form-control selectURD2" data-placeholder="Chọn" style="width: 160px; font-size: 13px;" asp-items="@Model.Depts" name="SearchURD" id="SearchURD"></select>
 
-                </label>
-            </div>
-        </div>
-        <div class="div1">
-            <div class="col-3 float-left">
-                <label class="lb1">Tổng chi phí: </label><label class="lbtt">@Model.bangKeChiPhi.tongsotien</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb2">BHYT chi trả: </label><label class="lbtt">@Model.bangKeChiPhi.tongbhyt</label>
-            </div>
-            <div class="col-3 float-left">
-                <label></label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb1" style="font-weight: bold">BHTN thanh toán: </label><label class="lbtt">@Model.bangKeChiPhi.tongbhtn</label>
-            </div>
 
-        </div>
-        <div class="div1">
-            <div class="col-12 float-left">
-                <label class="lb1 float-left">Ghi chú</label>
-                <input type="text" class="col-10 float-left" id="ipGhiChu" />
-            </div>
-
-        </div>
-        <div class="div1 ">
-            <div class="col-3 float-left">
-                <label class="lb1">Vào viện lúc: </label><label class="lbtt">@Model.bangKeChiPhi.ngayvao</label>
-            </div>
-            <div class="col-3 float-left">
-                <input type="checkbox" />
-                <label class="lb2" style="font-weight: bold">Tỷ lệ thanh toán</label>
-                <input type="number" value="30" id="ipTLTT" /><label> %</label>
-            </div>
-            <div class="col-3 float-left">
-                <input type="checkbox" />
-                <label class="lb2" style="font-weight: bold">Số tiền thanh toán</label>
-                <input type="number" value="7000000" id="ipSTTT" />
-            </div>
-            <div class="col-3 float-left">
-                <button type="button" class="btn btn-success" style="margin-right:40px">Áp dụng</button>
-                <button type="button" class="btn btn-success">Xử lý dữ liệu</button>
-            </div>
-        </div>
-        <div class="div1">
-            <div class="col-12 float-left">
-                <label class="lb1">Các Khoa/Phòng: </label>
-                <label class="lbtt">@Model.bangKeChiPhi.tenkp</label>
-            </div>
-
-        </div>
-        <div class="div1">
-            <div class="col-12 float-left">
-                <label class="lb1">Chẩn đoán: </label><label class="lbtt">@Model.bangKeChiPhi.chandoan</label>
-            </div>
-
-        </div>
-    </div>
-    <div>
-        <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" width="100%" id="tableBangKe1">
-            <thead style="background-color:hsl(0, 0%, 77%)">
-                <tr>
-                    <th class="text-center noOrder"><input type="checkbox" class="selectAll" id="selectAll" name="selectAll" value="all"></th>
-                    <th>STT</th>
-                    <th style="width:300px">Nội dung</th>
-                    <th>Đơn vị</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
-                    <th style="width:60px">Số lượng TT</th>
-                    <th>Thành tiền</th>
-
-                    <th>BHYT tri trả</th>
-                    <th>BHTN thanh toán</th>
-                    <th>KH tri trả</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="div1 text-center ">
-        <button type="button" class="btn btn-success btn1">Lưu</button>
-        <button type="button" class="btn btn-success btn1">Bảng kê BHTN</button>
-        <button type="button" class="btn btn-success btn1">Bảng kê viện phí</button>
-    </div>
-    <div class="div1 text-center">
-        <button type="button" class="btn btn-danger btn1">Đóng</button>
-        <button type="button" class="btn btn-success btn1">Xuất Excel BKBH</button>
-        <button type="button" class="btn btn-success btn1">Xuất Excel BKVP</button>
-    </div>
-</div>
-
-@section scripts{
-    <script type="text/javascript">
-
+<script type="text/javascript">
+    $(document).ready(function(){
         $(function () {
-
-            $('#tableBangKe1').DataTable({
-
-                "ajax": {
-                    url: '/BangKeChiPhi/GetBangKeChiPhi1?id=@ViewBag.id',
-                    type: 'Get',
-                    datatype: 'json',
-                },
-
-                columnDefs: [
-
-                    //{ visible: false, targets: [0] },
+            $("#TienTT").inputmask("999.999.999.999 VNĐ", {
+                numericInput: true, placeholder: " ", clearMaskOnLostFocus: true, showMaskOnHover: false,
+                showMaskOnFocus: false,
+            });
+            var table = $('#tableBangKe1').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "processing": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+                "columnDefs": [
+                    { orderable: false, targets: "_all" },
+                    { className: "text-wrap", targets: "_all" },
+                    { defaultContent: '', targets: "_all" },
                 ],
-                searching: false,
-                ordering: false,
-                scrollY: '400px',
-                scrollCollapse: true,
-                paging: false,
-                //"order": [[10, 'asc']],
+                "ajax": {
+                    "url": "/BangKeChiPhi/GetBangKeChiPhi1?id=@ViewBag.id",
+                    "type": "GET",
+                    "datatype": "json"
+                },
                 "columns": [
                     {
-                        data: 'id',
-                        render: function (data) {
-                            if (data == null) {
-                                return "";
-                            }
-                            else {
-                                return "<td><input type='checkbox' class='select elementSelect' id='select' name='select' value=''></td>";
-                            }
-
-                        }
-
+                        "data": { id: "id", stt: "stt" },
+                        "render": function (data, meta) {
+                            if (data.id === "" || data.id === null) { return null; }
+                            else { return '<input type="checkbox" class="elementSelect" id="checkbox-' + meta.row + '" name="checkbox-' + meta.row + '" />'; }
+                        },
+                        "class": "text-center"
                     },
-                    {
-                        data: 'stt',
-                    },
-                    {
+                    { data: 'stt', },
+                    { 
                         data: 'ten',
-
-
                     },
+                    { data: 'dvt' },
+                    { data: 'dongia', },
+                    { data: 'soluong', },
                     {
-                        data: 'dvt',
+                        "data": { id: "id", stt: "stt" },
+                        "render": function (data, meta) {
+                            if (data.id === "" || data.id === null) { return null }
+                            else { return '<input type="number" class="form-control inputText" id="sl-' + meta.row + '" name="sl-' + meta.row + '" />'; }
+                        },
                     },
-                    {
-                        data: 'dongia',
+                    { 
+                        data: {id:"id", thanhtien:"thanhtien"},
+                        render:function(data){
+                            if(data.id==""||data.id==null) {return null}
+                            else{
+                                return data.thanhtien;
+                            }
+                        },
                     },
+                    { data: 'bhyttra', },
+                    { data: 'bhtn', },
                     {
-                        data: 'soluong',
-                    },
-                    {
-                        data: 'id',
+                        data: { id: "id", bntra: "bntra" },
                         render: function (data) {
-                            if (data == null) {
-                                return "";
-                            }
+                            if (data.id == "" || data.id == null) { return null }
                             else {
-                                return "<td> <input type='number'id='sl'> </td>";
+                                return data.bntra;
                             }
-
-                        }
-                    },
-                    {
-                        data: 'thanhtien',
-
-
-                    },
-                    {
-                        data: 'bhyttra',
-                    },
-                    {
-                        data: 'bhtn',
-                    },
-                    {
-                        data: 'bntra',
+                        },
                     },
                 ],
-
+                "language": {
+                    "sProcessing": "Đang tải dữ liệu...",
+                    "sLengthMenu": "Xem _MENU_ mục",
+                    "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                    "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                    "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Tìm:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Đầu",
+                        "sPrevious": "Trước",
+                        "sNext": "Tiếp",
+                        "sLast": "Cuối"
+                    }
+                },
             });
             $('.selectAll').on("click", function (e) {
 
@@ -292,12 +369,6 @@
                     $('.elementSelect').prop("checked", true);
                 } else {
                     $('.elementSelect').prop("checked", false);
-                }
-            });
-            $('.elementSelect').on("click", function (e) {
-                debugger
-                if (!$(this).is(":checked")) {
-                    $('.selectAll').prop("checked", false);
                 }
             });
         });
@@ -309,6 +380,8 @@
             //$('#SearchURD').val(array);
             //$('#SearchURD').trigger('change');
         });
-    </script>
-}
+    });
+        
+</script>
+
 

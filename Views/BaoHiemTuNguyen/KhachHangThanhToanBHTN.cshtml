@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "KhachHangThanhToanBHTN";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -67,14 +66,14 @@
                 <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" width="100%" id="tableKhachHangBHTN">
                     <thead>
                         <tr>
-                            <th>STT</th>
-                            <th>Mã KH</th>
-                            <th>Họ và tên</th>
-                            <th>Ngày vào viện</th>
-                            <th>Ngày thanh toán</th>
-                            <th>Số biên lai</th>
-                            <th>Loại vào viện</th>
-                            <th></th>
+                            <th class="text-nowrap w-auto">STT</th>
+                            <th class="text-nowrap w-auto">Mã KH</th>
+                            <th class="text-nowrap w-auto">Họ và tên</th>
+                            <th class="text-nowrap w-auto">Ngày vào viện</th>
+                            <th class="text-nowrap w-auto">Ngày thanh toán</th>
+                            <th class="text-nowrap w-auto">Số biên lai</th>
+                            <th class="text-nowrap w-auto">Loại vào viện</th>
+                            <th class="text-nowrap w-auto"></th>
                         </tr>
                     </thead>
                 </table>
@@ -83,7 +82,7 @@
         </div>
     </div>
 </section>
-
+<div id="ReportPopup"></div>
 
 @section Scripts{
     <script type="text/javascript">
@@ -104,18 +103,17 @@
                 {
                     "data": { id: "id", stt: "stt", loaiGD: "loaiGD" },
                     "render": function (data, row) {
-                       
+
                         //1: thanh toan 2:Hien dien
                         if (data.loaiGD == "1") {
-                            
-                            return '<a href="/BangKeChiPhi/BangKe?id=' + data.id + '"> Chi tiết </a>';
+
+                            return '<a class="btn btn-link btn-sm" data-toggle="ajax-modal" data-target="#BangKe-' + data.id + '" data-url="/BangKeChiPhi/BangKe?id=' + data.id + '"> Chi tiết </a>';
                         }
                         else {
-                            return '<a href="/BangKeChiPhi/PhieuThanhToan?id=' + data.id + '"> Chi tiết </a>';
+                            return '<a class="btn btn-link btn-sm" data-toggle="ajax-modal" data-target="#phieuthanhtoan-' + data.id + '" data-url="/BangKeChiPhi/PhieuThanhToan?id=' + data.id + '"> Chi tiết </a>';
                         }
-                        
-                        
-                    }
+                    },
+                    "class": "text-nowrap"
                 },
             ]
 
@@ -146,9 +144,19 @@
                     }
                     else {
                         $('#btnSearch').callToast("info", "Thông báo", "Xin chọn trạng thái trước khi tìm kiếm");
-                    }                    
+                    }
                 }
             });
         })
+        $(document).ready(function () {
+            $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
+                var url = $(this).data('url');
+                $(this).callModal(url);
+            });
+            $('body').on('click', 'button[data-toggle="ajax-modal"]', function (event) {
+                var url = $(this).data('url');
+                $(this).callModal(url);
+            });
+        });
     </script>
 }

@@ -1,4 +1,4 @@
-﻿@model List<WebTools.Models.Entities.BangKeChiPhi>
+﻿@model WebTools.Models.BangKeChiPhiVM
 @{
     ViewData["Title"] = "Index";
 }
@@ -64,66 +64,66 @@
         margin-right:60px;
     }
 </style>
-<div class="content">
+
+<div class="content row">
     Thông tin chi tiết
+    <br />
+    <a data-toggle="modal" data-target="#modalDelete" data-url="/bangkechiphi/TestModal"> Xóa </a>
 </div>
-<div class="content divbody" style="border-top:none" >
+<div class="content divbody" style="border-top:none">
     <div class="text-center">
         <h2 id="Ten">BẢNG KÊ CHI PHÍ KHÁM CHỮA BỆNH</h2>
     </div>
     <div id="divTT">
         <div class="div1">
             <div class="col-6 float-left">
-                <label class="lb1">Họ tên: </label><label class="lbtt">Bồ Đề</label>
+                <label class="lb1">Họ tên: </label><label class="lbtt">@Model.bangKeChiPhi.hoten</label>
             </div>
             <div class="col-3 float-left">
-                <label class="lb2">Số biên lai:</label><label class="lbtt">123456</label>
+                <label class="lb2">Số biên lai:</label><label class="lbtt">@Model.bangKeChiPhi.sobienlai</label>
             </div>
             <div class="col-3 float-left">
-                <label class="lb1" >Đơn vị bảo lãnh: </label>
+                <label class="lb1">Đơn vị bảo lãnh: </label>
                 <label>
                     <select name="donviBL" class="form-select">
-                         <option value="1">Prudential</option>
-                         <option value="2">Prudential 2</option>
-                         <option value="-">Other</option>
-                    </select>
-                </label>
-            </div>
- 
-        </div>
-        <div class="div1">
-            <div class="col-3 float-left">
-                <label class="lb1">Mã khách hàng:</label><label class="lbtt">18006858</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb2">Ngày sinh: </label><label class="lbtt">15/05/2022</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb2">Giới tính: </label><label class="lbtt">Nam</label>
-            </div>
-            <div class="col-3 float-left">
-                <label class="lb1">Khoa/Phòng: </label>
-                <label >
-                    <select name="kp" class="form-select">
-                        <option value="1">Khoa/Phòng 1</option>
-                        <option value="2">Khoa/Phòng 2</option>
+                        <option value="1">Prudential</option>
+                        <option value="2">Prudential 2</option>
                         <option value="-">Other</option>
                     </select>
                 </label>
-            </div>  
+            </div>
+
         </div>
-        <div class ="div1">
+        <div class="div1">
             <div class="col-3 float-left">
-                <label class="lb1">Tổng chi phí: </label><label class="lbtt">15.560.000 VNĐ</label>
+                <label class="lb1">Mã khách hàng:</label><label class="lbtt">@Model.bangKeChiPhi.mabn</label>
             </div>
             <div class="col-3 float-left">
-                <label class="lb2">BHYT chi trả: </label><label class="lbtt">1.560.000 VNĐ</label>
+                <label class="lb2">Ngày sinh: </label><label class="lbtt">@Model.bangKeChiPhi.ngaysinh</label>
             </div>
             <div class="col-3 float-left">
-                <label ></label>
+                <label class="lb2">Giới tính: </label><label class="lbtt">@Model.bangKeChiPhi.gioitinh</label>
             </div>
             <div class="col-3 float-left">
-                <label class="lb1" style="font-weight: bold">BHTN thanh toán: </label><label class="lbtt">3.560.000 VNĐ</label>
+                <label class="lb1">Khoa/Phòng: </label>
+                <label>
+                    <select class="form-control selectURD2" data-placeholder="Chọn" style="width: 160px; font-size: 13px;" asp-items="@Model.Depts" name="SearchURD" id="SearchURD"></select>
+
+                </label>
+            </div>
+        </div>
+        <div class="div1">
+            <div class="col-3 float-left">
+                <label class="lb1">Tổng chi phí: </label><label class="lbtt">@Model.bangKeChiPhi.tongsotien</label>
+            </div>
+            <div class="col-3 float-left">
+                <label class="lb2">BHYT chi trả: </label><label class="lbtt">@Model.bangKeChiPhi.tongbhyt</label>
+            </div>
+            <div class="col-3 float-left">
+                <label></label>
+            </div>
+            <div class="col-3 float-left">
+                <label class="lb1" style="font-weight: bold">BHTN thanh toán: </label><label class="lbtt">@Model.bangKeChiPhi.tongbhtn</label>
             </div>
 
         </div>
@@ -132,11 +132,11 @@
                 <label class="lb1 float-left">Ghi chú</label>
                 <input type="text" class="col-10 float-left" id="ipGhiChu" />
             </div>
-            
+
         </div>
         <div class="div1 ">
             <div class="col-3 float-left">
-                <label class="lb1">Vào viện lúc: </label><label class="lbtt">09:55 15/05/2022</label>
+                <label class="lb1">Vào viện lúc: </label><label class="lbtt">@Model.bangKeChiPhi.ngayvao</label>
             </div>
             <div class="col-3 float-left">
                 <input type="checkbox" />
@@ -156,15 +156,15 @@
         <div class="div1">
             <div class="col-12 float-left">
                 <label class="lb1">Các Khoa/Phòng: </label>
-                <label class="lbtt">Khoa phụ sản, Phòng cấp cứu sản</label>
+                <label class="lbtt">@Model.bangKeChiPhi.tenkp</label>
             </div>
-            
+
         </div>
         <div class="div1">
             <div class="col-12 float-left">
-                <label class="lb1">Chẩn đoán: </label><label class="lbtt">Mổ lấy thai cấp cứu</label>
+                <label class="lb1">Chẩn đoán: </label><label class="lbtt">@Model.bangKeChiPhi.chandoan</label>
             </div>
-            
+
         </div>
     </div>
     <div>
@@ -179,7 +179,7 @@
                     <th>Số lượng</th>
                     <th style="width:60px">Số lượng TT</th>
                     <th>Thành tiền</th>
-                    
+
                     <th>BHYT tri trả</th>
                     <th>BHTN thanh toán</th>
                     <th>KH tri trả</th>
@@ -198,7 +198,7 @@
         <button type="button" class="btn btn-success btn1">Xuất Excel BKVP</button>
     </div>
 </div>
-
+<div id="ReportPopup"></div>
 @section scripts{
     <script type="text/javascript">
         
@@ -297,6 +297,13 @@
                     $('.selectAll').prop("checked", false);
                 } 
             });
+            
+            $('body').on('click', 'a[data-toggle="modal"]', function (event) {
+                var url = $(this).data('url');
+                $(this).callModal(url);
+            });
+            
+            
         });
     </script>
 }
