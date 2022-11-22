@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebTools</title>
+    <title>@ViewData["Title"] - WebTool</title>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="~/lib/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css">
     <link rel="stylesheet" href="~/lib/datatables-select/css/select.bootstrap4.min.css">
     <link rel="stylesheet" href="~/lib/datatables-scroller/css/scroller.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/lib/datatables-checkboxes/css/dataTables.checkboxes.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="~/lib/toastr/toastr.min.css">
     <!-- Bootstrap Toggle -->
@@ -52,6 +53,7 @@
                         </li>
 
 
+
                         @if (User.IsInRole("Admin"))
                         {
                             @*dropdown-hover*@
@@ -64,16 +66,14 @@
                                     <li><a asp-area="" asp-controller="Permission" asp-action="ModuleAction" class="dropdown-item">ModuleActions</a></li>
                                 </ul>
                             </li>
-
-
                         }
 
                     </ul>
-                    <ul class="navbar-nav ml-auto">
+                    @*<ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <partial name="_LoginStatusPartial" />
                         </li>
-                    </ul>
+                    </ul>*@
                 </nav>
             </header>
             <div class="content-wrapper">
@@ -106,7 +106,6 @@
         <!-- DataTables  & Plugins -->
         <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
         <script src="~/lib/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-        <script src="~/lib/datatables-fixedheader/js/dataTables.fixedHeader.min.js"></script>
         <script src="~/lib/datatables-responsive/js/dataTables.responsive.min.js"></script>
         <script src="~/lib/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
         <script src="~/lib/datatables-buttons/js/dataTables.buttons.min.js"></script>
@@ -117,13 +116,13 @@
         <script src="~/lib/datatables-buttons/js/buttons.html5.min.js"></script>
         <script src="~/lib/datatables-buttons/js/buttons.print.min.js"></script>
         <script src="~/lib/datatables-buttons/js/buttons.colVis.min.js"></script>
-        @*<script src="~/lib/datatables-select/js/dataTables.select.min.js"></script>
-        <script src="~/lib/datatables-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-        <script src="~/lib/datatables-scroller/js/dataTables.scroller.min.js"></script>*@
-
+        <script src="~/lib/datatables-select/js/dataTables.select.min.js"></script>
         <script src="~/lib/datatables-select/js/select.bootstrap4.min.js"></script>
+        <script src="~/lib/datatables-fixedheader/js/dataTables.fixedHeader.min.js"></script>
         <script src="~/lib/datatables-fixedheader/js/fixedHeader.bootstrap4.min.js"></script>
+        <script src="~/lib/datatables-scroller/js/dataTables.scroller.min.js"></script>
         <script src="~/lib/datatables-scroller/js/scroller.bootstrap4.min.js"></script>
+        <script src="~/lib/datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
         <!-- Toastr -->
         <script src="~/lib/toastr/toastr.min.js"></script>
         <!-- Bootstrap Toggle -->

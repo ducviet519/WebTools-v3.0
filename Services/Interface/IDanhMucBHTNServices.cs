@@ -4,8 +4,8 @@ using WebTools.Models.Entities;
 
 namespace WebTools.Services.Interface
 {
-    public interface IDepts
+    public interface IDanhMucBHTNServices
     {
-        public Task<List<Depts>> GetAll_DeptsAsync();
+        public Task<List<DanhMucBHTN>> GetDanhMucBHTN(string loai);
     }
 }

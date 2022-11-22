@@ -70,7 +70,7 @@ namespace WebTools
             services.AddScoped<IBaoHiemTuNguyenServices, BaoHiemTuNguyenServices>();
             services.AddScoped<IUploadFileServices, UploadFileServices>();
             services.AddScoped<IBangKeChiPhiSevices, BangKeChiPhiServices>();
-            services.AddScoped<IDepts, DeptsServices>();
+            services.AddScoped<IDanhMucBHTNServices, DanhMucBHTNServices>();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToolsDB")));         
             services.AddGleamTech();
         }

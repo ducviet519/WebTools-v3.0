@@ -15,69 +15,31 @@ namespace WebTools.Controllers
     {
         public List<BangKeChiPhi> bangKeChiPhis = new List<BangKeChiPhi>();
         private readonly IBangKeChiPhiSevices _bangKeChiPhiSevices;
-        private readonly IDepts _depts;
-        public BangKeChiPhiController(IBangKeChiPhiSevices bangKeChiPhiSevices, IDepts depts)
+        private readonly IDanhMucBHTNServices _danhMucBHTNServices;
+        public BangKeChiPhiController(IBangKeChiPhiSevices bangKeChiPhiSevices, IDanhMucBHTNServices danhMucBHTNServices)
         {
             _bangKeChiPhiSevices = bangKeChiPhiSevices;
-            _depts = depts;
-        }
-
-        public async Task<IActionResult> Index(string id= "221026140034723054")
-        {
-            BangKeChiPhiVM model = new BangKeChiPhiVM();
-            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(), "KhoaP", "KhoaP");
-            ViewBag.id = id;
-            model.bangKeChiPhis = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "1"));
-            model.bangKeChiPhi = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "1"))).LastOrDefault();
-            return View(model);
-        }
-        public async Task<IActionResult> BangKe(string id)
-        {
-            BangKeChiPhiVM model = new BangKeChiPhiVM();
-            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(), "KhoaP", "KhoaP");
-            ViewBag.id = id;
-            model.bangKeChiPhis = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "1"));
-            model.bangKeChiPhi = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "1"))).LastOrDefault();
-            return PartialView("BangKe",model);
-        }
-        //public async Task<IActionResult> PhieuThanhToan(string id)
-        //{
-        //    ViewBag.id = id;
-        //    bangKeChiPhis = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "2"));
-        //    if(bangKeChiPhis.Count > 0)
-        //    {
-        //        return View(bangKeChiPhis);
-        //    }
-        //    else
-        //    {
-        //        bangKeChiPhis = new List<BangKeChiPhi>();
-        //        return View(bangKeChiPhis);
-        //    }
-            
-        //}
-        [HttpGet]
-        public async Task<JsonResult> GetBangKeChiPhi1(string id)
-        {
-            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "1"))).ToList();
-            return Json( new { data = bangKeChiPhis}  );
+            _danhMucBHTNServices = danhMucBHTNServices;
         }
 
         [HttpGet]
-        public async Task<JsonResult> GetPhieuThanhToan(string id)
+        public async Task<IActionResult> PhieuThanhToan(string id, string loai)
         {
-            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, "2"))).ToList();
-            
+            BangKeChiPhiVM model = new BangKeChiPhiVM();
+            model.DonViBaoLanh = new SelectList(await _danhMucBHTNServices.GetDanhMucBHTN("1"), "ID", "Name");
+            model.KhoaPhong = new SelectList(await _danhMucBHTNServices.GetDanhMucBHTN("2"), "ID", "Name");
+            model.ListChiPhi = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai));
+            model.BangKeChiPhi = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).LastOrDefault();
+            model.id = id;
+            model.loai = loai;
+            return PartialView("_PhieuThanhToan", model);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetPhieuThanhToan(string id, string loai)
+        {
+            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).ToList();          
             return Json(new { data = bangKeChiPhis });
-        }
-
-        public async Task<IActionResult> PhieuThanhToan(string id)
-        {
-            id = "220816140019638226";
-            BangKeChiPhiVM model = new BangKeChiPhiVM();
-            model.Depts = new SelectList(await _depts.GetAll_DeptsAsync(), "KhoaP", "KhoaP");
-            ViewBag.id = id;
-            model.bangKeChiPhi = (await _bangKeChiPhiSevices.GetBangKeChiPhi(id, "2")).LastOrDefault();
-            return PartialView("PhieuThanhToan", model);
         }
         [HttpPost]
         public JsonResult AddPhieuThanhToan()

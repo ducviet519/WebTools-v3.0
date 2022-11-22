@@ -1,0 +1,397 @@
+﻿@model WebTools.Models.BangKeChiPhiVM
+<style>
+    .noidung {
+        color: dodgerblue;
+        font-weight: bold;
+    }
+
+    .thongtinbenhnhan {
+        margin-left: 10px;
+    }
+
+    .title {
+        font-size: 30px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        text-transform: uppercase;
+        margin-bottom: 30px;
+    }
+
+    .dataTables_info {
+        display: none;
+    }
+</style>
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="addRolesLabel" aria-hidden="true" id="PhieuThanhToanPopup">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin chi tiết</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;&nbsp;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="formPhieuThanhToan" method="post">
+                        @if (Model.loai == "2")
+                        {<div class="text-center title">Phiếu Thanh Toán</div> }
+                        else
+                        { <div class="text-center title">Bảng Kê chi phí khám chữa bệnh</div>}
+
+                        <div class="thongtinbenhnhan">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="col-form-label col-2 pl-0" style="margin-right: 37px;">Họ và tên:</label>
+
+                                    <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.hoten</label>
+                                    <input type="hidden" id="HoTen" name="HoTen" value="@Model.BangKeChiPhi.hoten" />
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="col-form-label col-auto">Số biên lai:</label>
+                                            <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.sobienlai</label>
+                                            <input type="hidden" id="SoBienLai" name="SoBienLai" value="@Model.BangKeChiPhi.sobienlai" />
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4">Đơn vị bảo lãnh:</label>
+                                                <div class="col">
+                                                    <select class="form-control selectDonViBaoLanh" style="width: 100%;" asp-items="@Model.DonViBaoLanh" name="DonViBaoLanh" id="DonViBaoLanh">
+                                                        <option value="" selected>Chọn đơn vị</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <label class="col-form-label col-5 pl-0">Mã khách hàng:</label>
+                                            <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.mabn</label>
+                                            <input type="hidden" id="MaKH" name="MaKH" value="@Model.BangKeChiPhi.mabn" />
+                                        </div>
+                                        <div class="col-5">
+                                            <label class="col-form-label col-6">Ngày sinh:</label>
+                                            <label class="col-form-label col-auto noidung" id="lbNgaySinh"></label>
+                                            <input type="hidden" id="NgaySinh" name="NgaySinh" value="@Model.BangKeChiPhi.ngaysinh" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="col-form-label col-6">Giới tính:</label>
+                                            <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.gioitinh</label>
+                                            <input type="hidden" id="GioiTinh" name="GioiTinh" value="@Model.BangKeChiPhi.gioitinh" />
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4">Khoa/Phòng:</label>
+                                                <div class="col">
+                                                    <select class="form-control selectKhoaPhong" style="width: 100%;" asp-items="@Model.KhoaPhong" name="KhoaPhong" id="KhoaPhong">
+                                                        <option value="" selected>Chọn khoa phòng</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <label class="col-form-label col-5 pl-0">Tổng chi phí:</label>
+                                            <label class="col-form-label col-auto noidung" id="lbTongTien"></label>
+                                            <input type="hidden" id="TongSoTien" name="TongSoTien" value="@Model.BangKeChiPhi.tongsotien" />
+                                        </div>
+                                        <div class="col-5">
+                                            <label class="col-form-label col-6">BHYT chi trả:</label>
+                                            <label class="col-form-label col-auto noidung" id="lbTongBHYT"></label>
+                                            <input type="hidden" id="TongBHYT" name="TongBHYT" value="@Model.BangKeChiPhi.tongbhyt" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-4">
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-4">BHTN thanh toán:</label>
+                                                <label class="col-form-label col-auto noidung" id="lbTongBHTN"></label>
+                                                <input type="hidden" id="BNTT" name="BNTT" value="@Model.BangKeChiPhi.tongbhtn" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-form-label col-1 mr-5">Ghi chú:</label>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="GhiChu" name="GhiChu" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <label class="col-form-label col-5 pl-0">Vào viện lúc:</label>
+                                            <label class="col-form-label col-auto noidung" id="lbNgayVao"></label>
+                                            <input type="hidden" id="NgayVao" name="NgayVao" value="@Model.BangKeChiPhi.ngayvao" />
+                                        </div>
+                                        <div class="col-5 pr-4">
+                                            <div class="form-group row">
+                                                <input type="radio" class="form-check" id="TiLeCheckbox" name="Checkbox" /><label for="TiLeCheckbox" class="col-form-label col-auto">Tỷ lệ thanh toán:</label>
+                                                <input type="text" class="form-control col" id="TiLeThanhToan" name="TiLeThanhToan" />
+                                                <label class="col-form-label col-auto">%</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-8 pl-4">
+                                            <div class="form-group row">
+                                                <input type="radio" class="form-check" id="SoTienCheckbox" name="Checkbox" /><label for="SoTienCheckbox" class="col-form-label col-auto">Số tiền thanh toán:</label>
+                                                <div class="col mr-5"><input type="text" class="form-control" id="SoTienThanhToan" name="SoLuongThanhToan" /></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <button type="button" class="btn btn-success btn-sm" id="btnApDung">Áp dụng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-form-label col-auto" style="margin-right:27px">Các khoa phòng:</label>
+                                <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.tenkp</label>
+                                <input type="hidden" id="CacKP" name="CacKP" value="@Model.BangKeChiPhi.tenkp" />
+                            </div>
+                            <div class="row">
+                                <label class="col-form-label col-1 mr-5">Chẩn đoán:</label>
+                                <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.chandoan</label>
+                                <input type="hidden" id="ChanDoan" name="ChanDoan" value="@Model.BangKeChiPhi.chandoan" />
+                            </div>
+                        </div>
+                        <table class="table table-striped table" style="width:100%" id="tableBangKe1">
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap" style="vertical-align: middle;"><input type="checkbox" class="selectAll" id="selectAll" name="selectAll" value="all"></th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">STT</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">Nội dung</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">Đơn vị</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">Đơn giá</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">Số lượng</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">Số lượng TT</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">Thành tiền</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">BHYT tri trả</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">BHTN thanh toán</th>
+                                    <th class="text-nowrap" style="vertical-align: middle;">KH tri trả</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row justify-content-center col-12">
+                        <input type="hidden" id="idBenhNhan" name="idBenhNhan" value="@Model.id" />
+                        <input type="hidden" id="Loai" name="Loai" value="@Model.loai" />
+                        <input type="hidden" id="count" name="count" />
+                        <div class="col-2"><button type="button" class="btn btn-primary col" data-save="modalFile">Lưu</button></div>
+                        <div class="col-2 ml-5 mr-5"> <button type="button" class="btn btn-success col">Bảng kê BHTN</button></div>
+                        <div class="col-2 ml-5 mr-5"><button type="button" class="btn btn-success col">Xuất Excel BKBH</button></div>
+                        <div class="col-2"><button type="button" class="btn btn-danger col" data-dismiss="modal">Đóng</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        document.getElementById("lbTongTien").innerText = FormatCurrencyVND(document.getElementById("TongSoTien").value, "currency", "code", 2);
+        document.getElementById("lbTongBHYT").innerText = FormatCurrencyVND(document.getElementById("TongBHYT").value, "currency", "code", 2);
+        document.getElementById("lbTongBHTN").innerText = FormatCurrencyVND(document.getElementById("BNTT").value, "currency", "code", 2);
+        document.getElementById("lbNgaySinh").innerText = FormatDatetime(document.getElementById("NgaySinh").value, "1");
+        document.getElementById("lbNgayVao").innerText = FormatDatetime(document.getElementById("NgayVao").value, "2");
+
+        var columnData = [
+            {
+                "data": { id: "id", stt: "stt" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt === "" || data.stt === null) { return '<input type="checkbox" class="rowcheck" id="checkbox" name="checkbox-' + meta.row + '" hidden/>'; }
+                    else { return '<input type="checkbox" class="rowcheck" id="checkbox" name="checkbox-' + meta.row + '" />'; }
+                },
+            },
+            {
+                "data": "stt",
+                "class": "text-center"
+            },
+            {
+                "data": { ten: "ten", thanhtien: "thanhtien", bntra: "bntra", stt: "stt" },
+                "render": function (data, type, full, meta) {
+
+                    if (data.stt === null || data.stt === "") {
+                        if (data.thanhtien === null && data.bntra === null || data.thanhtien === "" && data.bntra === "") {
+                            var ten = '<div class="font-weight-bold font-italic">' + data.ten + '</div>';
+                        }
+                        else {
+                            var ten = '<div class="font-weight-bold">' + data.ten + '</div>';
+                        }
+                    }
+                    else { var ten = data.ten; }
+                    return ten;
+                }
+            },
+            { "data": "dvt" },
+            {
+                "data": { stt: "stt", dongia: "dongia" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" id="DonGia-' + meta.row + '" name="DonGia-' + meta.row + '" value="0" />'; }
+                    else { return '<input type="hidden" id="DonGia-' + meta.row + '" name="DonGia-' + meta.row + '" value="' + data.dongia + '" />' + FormatCurrencyVND(data.dongia, "decimal", "code", 2); }
+                },
+            },
+            {
+                "data": { stt: "stt", soluong: "soluong" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" id="SoLuong-' + meta.row + '" name="SoLuong-' + meta.row + '" value="0" />'; }
+                    else { return '<input type="hidden" id="SoLuong-' + meta.row + '" name="SoLuong-' + meta.row + '" value="' + data.soluong + '" />' + FormatCurrencyVND(data.soluong, "decimal", "code"); }
+                },
+                "class": "text-center"
+            },
+            {
+                "data": { stt: "stt" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" class="form-control maskSoLuong" id="SoLuongTT-' + meta.row + '" name="SoLuongTT-' + meta.row + '" value="0" />'; }
+                    else { return '<input type="text" class="form-control maskSoLuong" id="SoLuongTT-' + meta.row + '" name="SoLuongTT-' + meta.row + '" />'; }
+                },
+            },
+            {
+                "data": { stt: "stt", thanhtien: "thanhtien" },
+                "render": function (data, type, full, meta) {
+                    if (data.thanhtien === null || data.thanhtien === "") { return null; }
+                    else {
+                        if (data.stt === null || data.stt === "") { var thanhtien = '<div class="font-weight-bold">' + FormatCurrencyVND(data.thanhtien, "decimal", "code", 2) + '</div>'; }
+                        else { var thanhtien = FormatCurrencyVND(data.thanhtien, "decimal", "code", 2); }
+                        return thanhtien;
+                    }
+                },
+            },
+            {
+                "data": { stt: "stt", bhyttra: "bhyttra" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" class="form-control inputText" id="BHYTTra-' + meta.row + '" name="BHYTTra-' + meta.row + '" value="0" />'; }
+                    else { return '<input type="hidden" class="form-control inputText" id="BHYTTra-' + meta.row + '" name="BHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />' + FormatCurrencyVND(data.bhyttra, "decimal", "code", 2); }
+                },
+            },
+            {
+                "data": { stt: "stt", bhtn: "bhtn" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" class="form-control maskBNTT" id="BNTTThanhToan-' + meta.row + '" name="BNTTThanhToan-' + meta.row + '"  value="0" />'; }
+                    else { return '<input type="text" class="form-control maskBNTT" style="width: 104px;" id="BNTTThanhToan-' + meta.row + '" name="BNTTThanhToan-' + meta.row + '"  value="" />'; }
+                },
+            },
+            {
+                "data": { stt: "stt", bntra: "bntra" },
+                "render": function (data, type, full, meta) {
+                    if (data.bntra === null || data.bntra === "") { return null; }
+                    else {
+                        if (data.stt === null || data.stt === "") { var bntra = '<div class="font-weight-bold">' + FormatCurrencyVND(data.bntra, "decimal", "code", 2) + '</div>'; }
+                        else { var bntra = FormatCurrencyVND(data.bntra, "decimal", "code", 2); }
+                        return bntra;
+                    }
+                },
+            },
+        ]
+
+        var idBenhNhan = document.getElementById("idBenhNhan").value;
+        var loai = document.getElementById("Loai").value;
+        var table = $('#tableBangKe1').DataTable({
+            "processing": true,
+            "autoWidth": true,
+            "responsive": true,
+            "lengthChange": false,
+            "searching": false,
+            "info": true,
+            "ordering": false,
+            "paging": false,
+            "fixedHeader": true,
+            "pageLength": 300,
+            "scrollY": 480,
+            "scrollX": true,
+            "scrollCollapse": true,
+            "deferRender": true,
+            "ajax": {
+                "url": "/BangKeChiPhi/GetPhieuThanhToan?id=" + idBenhNhan + "&loai=" + loai,
+                "type": "GET",
+                "datatype": "json"
+            },
+            "columns": columnData,
+            //"order": [[0, 'asc']],
+            "columnDefs": [
+                //{ orderable: false, targets: [0,1,2] },
+                { className: "text-wrap", targets: "_all" },
+                { defaultContent: '', targets: "_all" },
+            ],
+            "language": {
+                "sProcessing": "Đang tải dữ liệu...",
+                "sLengthMenu": "Xem _MENU_ mục",
+                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+                }
+            },
+        });
+
+        $('thead input[name="selectAll"]', table.table().container()).on('click', function (e) {
+            if ($(this).is(":checked")) {
+                $('#tableBangKe1 tbody input[type="checkbox"]:not(:checked)').trigger('click');
+            } else {
+                $('#tableBangKe1 tbody input[type="checkbox"]:checked').trigger('click');
+            }
+            //e.stopPropagation();
+        });
+
+        $('#PhieuThanhToanPopup').on('shown.bs.modal', function (e) {
+            $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+
+        });
+    });
+    $(function () {
+        //var string = $('#txtURD').val();
+        //var array = string.split(",").map(Number);
+        //Dropdown
+
+        $('.selectDonViBaoLanh').select2({
+            dropdownParent: $('#PhieuThanhToanPopup')
+        });
+
+        $('.selectKhoaPhong').select2({
+            dropdownParent: $('#PhieuThanhToanPopup')
+        });
+        $('.maskBNTT').inputmask("999.999.999,99", { numericInput: true, placeholder: " " });
+        $('.maskSoLuong').inputmask({ numericInput: true, placeholder: " " });
+        //$('#SearchURD').val(array);
+        //$('#SearchURD').trigger('change');
+        //$('.inputText').inputmask("999.999.999", { numericInput: true, placeholder: " " });
+
+    });
+
+</script>
+
+

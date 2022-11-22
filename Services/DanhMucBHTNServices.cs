@@ -11,12 +11,12 @@ using System.Linq;
 
 namespace WebTools.Services
 {
-    public class DeptsServices:IDepts
+    public class DanhMucBHTNServices:IDanhMucBHTNServices
     {
         #region Connection Database
 
         private readonly IConfiguration _configuration;
-        public DeptsServices(IConfiguration configuration)
+        public DanhMucBHTNServices(IConfiguration configuration)
         {
             _configuration = configuration;
             ConnectionString = _configuration.GetConnectionString("ToolsDB");
@@ -31,25 +31,26 @@ namespace WebTools.Services
         }
 
         #endregion
-        public async Task<List<Depts>> GetAll_DeptsAsync()
+        public async Task<List<DanhMucBHTN>> GetDanhMucBHTN(string loai)
         {
-            List<Depts> reporDepts = new List<Depts>();
-            var sql = "SELECT * FROM Depts";
+            List<DanhMucBHTN> data = new List<DanhMucBHTN>();
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    reporDepts = (await dbConnection.QueryAsync<Depts>(sql)).ToList();
+                    data = (await dbConnection.QueryAsync<DanhMucBHTN>("sp_BHTN_DM", new { Loai = loai }, commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();
                 }
-                return reporDepts;
+                return data;
             }
             catch (Exception ex)
             {
                 string errorMsg = ex.Message;
-                return reporDepts;
+                return null;
             }
         }
+
+
     }
 }

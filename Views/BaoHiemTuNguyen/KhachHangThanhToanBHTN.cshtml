@@ -6,12 +6,18 @@
     .dataTables_filter {
         display: none;
     }
+
     .dataTable > thead {
         background-color: #3882b6;
         color: #fff;
     }
-    .filters{
+
+    .filters {
         background-color: snow;
+    }
+
+    .middle {
+        vertical-align: middle;
     }
 </style>
 <section class="content-header">
@@ -56,8 +62,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col pl-5">
+                    <div class="col pl-2">
                         <button class="btn btn-success" id="btnSearch">Tìm kiếm</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-success" id="btnChon">Chọn BN</button>
                     </div>
                 </div>
             </div>
@@ -66,6 +75,7 @@
                 <table class="table table-bordered table-striped dataTable dtr-inline" role="grid" width="100%" id="tableKhachHangBHTN">
                     <thead>
                         <tr>
+                            <th class="text-center w-auto"></th>
                             <th class="text-nowrap w-auto">STT</th>
                             <th class="text-nowrap w-auto">Mã KH</th>
                             <th class="text-nowrap w-auto">Họ và tên</th>
@@ -90,30 +100,47 @@
             $('#ngayBD').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
             $('#ngayKT').datetimepicker({ format: 'DD/MM/YYYY', locale: 'vi' });
         });
+
         $(function () {
             var loai = $("#loai").val() || "";
             var columnData = [
+                {
+                    "data": "mabn",
+                },
                 { "data": "stt" },
-                { "data": "mabn" },
+                {
+                    "data": "mabn",
+                    "class": "text-center"
+                },
                 { "data": "hoten" },
-                { "data": "ngayvao" },
-                { "data": "ngaythutien" },
-                { "data": "sobienlai" },
-                { "data": "loainv" },
+                {
+                    "data": { ngayvao: "ngayvao",},
+                    "render": function (data, row) {
+                        return FormatDatetime(data.ngayvao,"2");
+                    },
+                    "class": "text-center"
+                },
+                {
+                    "data": { ngaythutien: "ngaythutien", },
+                    "render": function (data, row) {
+                        return FormatDatetime(data.ngaythutien,"2");
+                    },
+                    "class": "text-center"
+                },
+                {
+                    "data": "sobienlai",
+                    "class": "text-center"
+                },
+                {
+                    "data": "loainv",
+                    "class": "text-center"
+                },
                 {
                     "data": { id: "id", stt: "stt", loaiGD: "loaiGD" },
                     "render": function (data, row) {
-
-                        //1: thanh toan 2:Hien dien
-                        if (data.loaiGD == "1") {
-
-                            return '<a class="btn btn-link btn-sm" data-toggle="ajax-modal" data-target="#BangKe-' + data.id + '" data-url="/BangKeChiPhi/BangKe?id=' + data.id + '"> Chi tiết </a>';
-                        }
-                        else {
-                            return '<a class="btn btn-link btn-sm" data-toggle="ajax-modal" data-target="#phieuthanhtoan-' + data.id + '" data-url="/BangKeChiPhi/PhieuThanhToan?id=' + data.id + '"> Chi tiết </a>';
-                        }
+                        return '<a class="btn btn-link btn-sm" data-toggle="ajax-modal" data-target="#phieuthanhtoan-' + data.id + '" data-url="/BangKeChiPhi/PhieuThanhToan?id=' + data.id + '&loai=' + data.loaiGD + '"> Chi tiết </a>';
                     },
-                    "class": "text-nowrap"
+                    "class": "text-nowrap text-center"
                 },
             ]
 
@@ -135,20 +162,35 @@
                         }
                         else {
                             searchTerm += "&ngayBD=" + ngayBD + "&ngayKT=" + ngayKT;
-                            searchDataTableWithInput("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "7");
+                            searchDataTableWithInput("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "1,8");
                         }
                     }
                     else if (loai === "2") {
                         searchTerm += "&loai=" + loai;
-                        searchDataTableWithInput("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "7");
+                        searchDataTableWithInput("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "1,8");                       
                     }
                     else {
                         $('#btnSearch').callToast("info", "Thông báo", "Xin chọn trạng thái trước khi tìm kiếm");
                     }
                 }
             });
+
+            $('#btnChon').on('click', function (e) {
+                var table = $("#tableKhachHangBHTN").DataTable();
+                var rows_selected = table.column(0).checkboxes.selected();
+                var array = [];
+                // Iterate over all selected checkboxes
+                $.each(rows_selected, function (index, rowId) {
+                    // Create a hidden element 
+                    array.push(table.cell(index, 2).data());
+                });
+                alert(array);
+                // Prevent actual form submission
+                e.preventDefault();
+            });
         })
         $(document).ready(function () {
+            
             $('body').on('click', 'a[data-toggle="ajax-modal"]', function (event) {
                 var url = $(this).data('url');
                 $(this).callModal(url);
