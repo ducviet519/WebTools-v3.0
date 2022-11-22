@@ -1,0 +1,151 @@
+﻿@model WebTools.Models.ExportReport
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BangKeVienPhi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 14px;
+        }      
+
+        .logo {
+            width: 100px;
+            height: 60px;
+            vertical-align: middle;
+            float: right;
+        }
+
+        .text-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .col-125 {
+            width: 125px;
+            padding: 7px 15px;
+        }
+        tr {
+            page-break-inside: avoid !important;
+        }
+
+        .row {
+            page-break-inside: avoid !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-between">
+            <div class="col-8">
+                <div class="font-weight-bold">CÔNG TY CỔ PHẦN BỆNH VIỆN ĐA KHOA TÂM ANH</div>
+                <div class="">Địa chỉ: Số 108, Phố Hoàng Như Tiếp, P. Bồ Đề, Q. Long Biên, TP. Hà Nội</div>
+                <div class="">MST: 0102362369</div>
+            </div>
+            <div class="col-3 text-right">
+                <img class="logo" src="~/images/logo_300x300.png" />
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="text-title">BẢNG KÊ CHI PHÍ KHÁM CHỮA BỆNH</div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label class="col-form-label col-125">Họ và tên: </label>
+                <label class="col-form-label col-auto font-weight-bold p-0">@Model.ThongTinNguoiBenh.hoten</label>
+            </div>
+            <div class="col-4">
+                <label class="col-form-label col-auto">Ngày sinh: </label>
+                <label class="col-form-label col-auto font-weight-bold p-0">@Model.ThongTinNguoiBenh.ngaysinh</label>
+            </div>
+            <div class="col-2 text-right">
+                <label class="col-form-label col-auto">Giới tính: </label>
+                <label class="col-form-label col-auto font-weight-bold p-0">@Model.ThongTinNguoiBenh.gioitinh</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <label class="col-form-label col-125">Địa chỉ: </label>
+                <label class="col-form-label col-auto font-weight-bold p-0"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <label class="col-form-label col-125">Đơn vị bảo lãnh: </label>
+                <label class="col-form-label col-auto font-weight-bold p-0"></label>
+            </div>
+            <div class="col-3 text-right">
+                <label class="col-form-label col-auto">Ngày: </label>
+                <label class="col-form-label col-auto font-weight-bold p-0"></label>
+            </div>
+        </div>
+        <div class="mt-5 mb-5"> </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Nội dung</th>
+                    <th>ĐVT</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                    <th>BH tự nguyện chi trả</th>
+                    <th>BHYT chi trả</th>
+                    <th>KH chi trả</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.BangKeVienPhi != null && Model.BangKeVienPhi.Count > 0)
+                    {
+                        foreach (var item in Model.BangKeVienPhi)
+                        {
+                            if (String.IsNullOrEmpty(item.stt))
+                            {
+                                if (String.IsNullOrEmpty(item.thanhtien) || String.IsNullOrEmpty(item.bntra))
+                                {
+                                    <tr><td colspan="9" class="font-italic font-weight-bold">@item.ten</td></tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="font-weight-bold">@item.ten</td>
+                                        <td class="font-weight-bold">@item.thanhtien</td>
+                                        <td colspan="2"></td>
+                                        <td class="font-weight-bold">@item.bntra</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>@item.stt</td>
+                                    <td>@item.ten</td>
+                                    <td>@item.dvt</td>
+                                    <td>@item.soluong</td>
+                                    <td>@item.dongia</td>
+                                    <td>@item.thanhtien</td>
+                                    <td>@item.bhtn</td>
+                                    <td>@item.bhyttra</td>
+                                    <td>@item.bntra</td>
+                                </tr>
+                            }
+
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

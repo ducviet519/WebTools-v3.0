@@ -203,7 +203,7 @@
                         <input type="hidden" id="Loai" name="Loai" value="@Model.loai" />
                         <input type="hidden" id="count" name="count" />
                         <div class="col-2"><button type="button" class="btn btn-primary col" data-save="modalFile">Lưu</button></div>
-                        <div class="col-2 ml-5 mr-5"> <button type="button" class="btn btn-success col">Bảng kê BHTN</button></div>
+                        <div class="col-2 ml-5 mr-5"> <a class="btn btn-success col" href="/Reports/BangKeVienPhi?id=@Model.id&loai=@Model.loai" target="_blank">Bảng kê BHTN</a></div>
                         <div class="col-2 ml-5 mr-5"><button type="button" class="btn btn-success col">Xuất Excel BKBH</button></div>
                         <div class="col-2"><button type="button" class="btn btn-danger col" data-dismiss="modal">Đóng</button></div>
                     </div>

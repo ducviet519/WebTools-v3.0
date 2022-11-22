@@ -13,7 +13,6 @@ namespace WebTools.Controllers
 {
     public class BangKeChiPhiController : Controller
     {
-        public List<BangKeChiPhi> bangKeChiPhis = new List<BangKeChiPhi>();
         private readonly IBangKeChiPhiSevices _bangKeChiPhiSevices;
         private readonly IDanhMucBHTNServices _danhMucBHTNServices;
         public BangKeChiPhiController(IBangKeChiPhiSevices bangKeChiPhiSevices, IDanhMucBHTNServices danhMucBHTNServices)

@@ -1,5 +1,4 @@
-﻿using Catel.Linq;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -54,7 +53,6 @@ namespace WebTools.Services
                 return list;
             }
         }
-
 
     }
 }

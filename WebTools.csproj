@@ -12,11 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Catel.Core" Version="5.12.22" />
+    <Compile Remove="wwwroot\Upload\**" />
+    <Content Remove="wwwroot\Upload\**" />
+    <EmbeddedResource Remove="wwwroot\Upload\**" />
+    <None Remove="wwwroot\Upload\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.97.0" />
+    <PackageReference Include="ClosedXML.Report" Version="0.2.4" />
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="GleamTech.DocumentUltimate" Version="6.2.0" />
-    <PackageReference Include="Google.Apis.Drive.v3" Version="1.57.0.2831" />
-    <PackageReference Include="MailKit" Version="3.4.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
@@ -33,11 +38,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Web" Version="1.25.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="MimeKit" Version="3.4.2" />
-    <PackageReference Include="MimeTypes" Version="2.4.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
   </ItemGroup>
@@ -101,14 +102,6 @@
     <None Include="wwwroot\lib\moment\locales.js" />
     <None Include="wwwroot\lib\moment\locales.min.js" />
     <None Include="wwwroot\lib\moment\locales.min.js.map" />
-    <None Include="wwwroot\lib\moment\locale\en-au.js" />
-    <None Include="wwwroot\lib\moment\locale\en-ca.js" />
-    <None Include="wwwroot\lib\moment\locale\en-gb.js" />
-    <None Include="wwwroot\lib\moment\locale\en-ie.js" />
-    <None Include="wwwroot\lib\moment\locale\en-il.js" />
-    <None Include="wwwroot\lib\moment\locale\en-in.js" />
-    <None Include="wwwroot\lib\moment\locale\en-nz.js" />
-    <None Include="wwwroot\lib\moment\locale\en-SG.js" />
     <None Include="wwwroot\lib\moment\locale\vi.js" />
     <None Include="wwwroot\lib\moment\moment-with-locales.js" />
     <None Include="wwwroot\lib\moment\moment-with-locales.min.js" />
@@ -120,10 +113,7 @@
     <None Include="wwwroot\lib\pdfmake\pdfmake.min.js" />
     <None Include="wwwroot\lib\pdfmake\pdfmake.min.js.map" />
     <None Include="wwwroot\lib\pdfmake\vfs_fonts.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Upload\" />
+    <None Include="wwwroot\Rotativa.csproj" />
   </ItemGroup>
 
 </Project>
