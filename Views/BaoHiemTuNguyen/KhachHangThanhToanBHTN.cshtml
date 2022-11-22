@@ -105,7 +105,7 @@
             var loai = $("#loai").val() || "";
             var columnData = [
                 {
-                    "data": "mabn",
+                    "data": "id",
                 },
                 { "data": "stt" },
                 {
@@ -171,7 +171,7 @@
                     }
                     else {
                         $('#btnSearch').callToast("info", "Thông báo", "Xin chọn trạng thái trước khi tìm kiếm");
-                    }
+                    }                   
                 }
             });
 
@@ -184,7 +184,7 @@
                     // Create a hidden element 
                     array.push(table.cell(index, 2).data());
                 });
-                alert(array);
+                alert("Các mã bệnh nhân đã chọn: " + array);
                 // Prevent actual form submission
                 e.preventDefault();
             });
