@@ -5,24 +5,24 @@ namespace WebTools.Models.Entities
 {
     public class BangKeChiPhi
     {
-        public string stt { get; set; }
+        public int STT { get; set; }
         public string id { get; set; }
         public string ten { get; set; }
         public string dvt { get; set; }
-        public string dongia { get; set; }
-        public string soluong { get; set; }
-        public string thanhtien { get; set; }
-        public string bhyttra { get; set; }
-        public string bntra { get; set; }
-        public string bhtn { get; set; }
-        public string sobienlai { get; set; }
+        public decimal dongia { get; set; }
+        public decimal soluong { get; set; }
+        public decimal thanhtien { get; set; }
+        public decimal bhyttra { get; set; }
+        public decimal bntra { get; set; }
+        public decimal bhtn { get; set; }
+        public decimal sobienlai { get; set; }
         public string mabn { get; set; }
-        public string mavp { get; set; }
-        public string mavaovien { get; set; }
-        public string maql { get; set; }
+        public decimal mavp { get; set; }
+        public decimal mavaovien { get; set; }
+        public decimal maql { get; set; }
         public string makp { get; set; }
         public string nhomvp { get; set; }
-        public string manhomvp { get; set; }
+        public int manhomvp { get; set; }
         public string hoten { get; set; }
         public string chandoan { get; set; }
         public string sothe { get; set; }
@@ -30,11 +30,11 @@ namespace WebTools.Models.Entities
         public string ngaysinh { get; set; }
         public string ngayvao { get; set; }
         public string gioitinh { get; set; }
-        public string tongsotien { get; set; }
-        public string tongbhyt { get; set; }
-        public string tongbhtn { get; set; }
-        public string soluongtt { get; set; }
-    }
-
-						
+        public decimal tongsotien { get; set; }
+        public decimal tongbhyt { get; set; }
+        public decimal tongbhtn { get; set; }
+        public int SoLuongTT { get; set; }
+        public int madoituong { get; set; }
+        public int Checked { get; set; }
+    }						
 }

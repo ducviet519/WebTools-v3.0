@@ -110,9 +110,9 @@
                     {
                         foreach (var item in Model.BangKeVienPhi)
                         {
-                            if (String.IsNullOrEmpty(item.stt))
+                            if (item.STT == null)
                             {
-                                if (String.IsNullOrEmpty(item.thanhtien) || String.IsNullOrEmpty(item.bntra))
+                                if (item.thanhtien == null || item.bntra == null)
                                 {
                                     <tr><td colspan="9" class="font-italic font-weight-bold">@item.ten</td></tr>
                                 }
@@ -129,7 +129,7 @@
                             else
                             {
                                 <tr>
-                                    <td>@item.stt</td>
+                                    <td>@item.STT</td>
                                     <td>@item.ten</td>
                                     <td>@item.dvt</td>
                                     <td>@item.soluong</td>

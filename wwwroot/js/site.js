@@ -55,7 +55,7 @@ function searchDataTable(id, columnData, url, disableColumn) {
     return table;
 }
 
-function searchDataTableWithInput(id, columnData, url, pageLength) {
+$.fn.callDataTable_Input_Checkbox = function (id, columnData, url, pageLength) {
     var table = $(id).DataTable();
     if ($.fn.dataTable.isDataTable(id)) {
         table.destroy();
@@ -92,6 +92,8 @@ function searchDataTableWithInput(id, columnData, url, pageLength) {
         ],
         "select": {
             "style": "multi",
+            //"selector": 'td:first-child'
+            "selector": 'td:not(:last-child)'           
         },
         "initComplete": function () {
             var api = this.api();
@@ -212,26 +214,6 @@ function FormatDatetime(datetime, type) {
         return responseDate;
     }
 }
-
-$(function () {
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
-});
 
 $.fn.clearData = function ($form) {
     $form.find('input:text, input:password, input:file, select, textarea').val('');
@@ -420,43 +402,34 @@ $.fn.callDataTableScroll = function (id, columnData, url) {
     return table;
 }
 
-$.fn.callDataTableNew = function (id, columnData, url, columnInput, columnSelect, lastColumn) {
+$.fn.callDataTableScroll_Json = function (id, columnData, data) {
     var table = $(id).DataTable();
     if ($.fn.dataTable.isDataTable(id)) {
         table.destroy();
         $(id).find('tbody').empty();
     }
 
-    $(id + ' thead tr')
-        .clone(true)
-        .addClass('filters')
-        .prependTo(id + ' thead');
-
-    $(id + ' thead th:eq(0)').empty()
-    $(id + ' thead th:eq(1)').empty()
-    $(id + ' thead th:eq(' + lastColumn + ')').empty()
-
     var table = $(id).DataTable({
         "processing": true,
-        "lengthChange": false,  
         "autoWidth": true,
         "responsive": true,
-        "orderCellsTop": true,
+        "lengthChange": false,
+        "searching": false,
+        "info": true,
+        "ordering": false,
+        "paging": false,
         "fixedHeader": true,
-        "ajax": {
-            "url": url,
-            "type": "GET",
-            "datatype": "json"
-        },
+        "pageLength": 300,
+        "scrollY": 480,
+        "scrollX": true,
+        "scrollCollapse": true,
+        "deferRender": true,
+        "data": data,
         "columns": columnData,
-        "order": [[1, 'asc']],
         "columnDefs": [
-            { 'targets': 0, 'checkboxes': { 'selectRow': true } },
-            { "defaultContent": '', "targets": "_all" },
+            { className: "text-wrap", targets: "_all" },
+            { defaultContent: '', targets: "_all" },
         ],
-        "select": {
-            "style": 'multi',
-        },
         "language": {
             "sProcessing": "Đang tải dữ liệu...",
             "sLengthMenu": "Xem _MENU_ mục",
@@ -472,65 +445,12 @@ $.fn.callDataTableNew = function (id, columnData, url, columnInput, columnSelect
                 "sPrevious": "Trước",
                 "sNext": "Tiếp",
                 "sLast": "Cuối"
-            },
-            "select": {
-                "rows": {
-                    _: "Đã chọn %d dòng",
-                    0: "Click vào dòng để chọn",
-                    1: "Đã chọn 1 dòng"
-                }
             }
         },
     });
-
-    //Add Dropbox Search
-    if (columnSelect != null || columnSelect != "") {
-        var arraySelect = [];
-        $.each(columnSelect.split(','), function (idx, val) {
-            arraySelect.push(parseInt(val));
-        });
-        table.columns(arraySelect).every(function () {
-            var column = this;
-            var select = $('<select class="form-control"><option value="">Tất cả</option></select>')
-                .appendTo($('thead tr.filters th').eq(column.index()).empty())
-                .on('change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex(
-                        $(this).val()
-                    );
-
-                    column
-                        .search(val ? '^' + val + '$' : '', true, false)
-                        .draw();
-                });
-
-            column.data().unique().sort().each(function (d, j) {
-                select.append('<option value="' + d + '">' + d + '</option>');
-            });
-        });
-    }
-
-    if (columnSelect != null || columnSelect != "") {
-        var arrayinput = [];
-        $.each(columnInput.split(','), function (idx, val) {
-            arrayinput.push(parseInt(val));
-        });
-        table.columns(arrayinput).every(function () {
-            var that = this;
-            var title = $(id + ' thead th').eq($(this).index()).text();
-            var input = $('<input type="text" class="form-control" placeholder="' + title +'" />')
-                .appendTo($('thead tr.filters th').eq(that.index()).empty())
-
-                .on('keyup change', function () {
-                    if (that.search() !== this.value) {
-                        that
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-        });
-    }
     return table;
 }
+
 
 
 

@@ -37,35 +37,86 @@ namespace WebTools.Controllers
         [HttpGet]
         public async Task<JsonResult> GetPhieuThanhToan(string id, string loai)
         {
-            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).ToList();          
+            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).ToList();
             return Json(new { data = bangKeChiPhis });
         }
+      
         [HttpPost]
-        public JsonResult AddPhieuThanhToan()
+        [RequestFormLimits(ValueCountLimit = 10000)]
+        public async Task<JsonResult> XuLyDuLieu()
         {
             Int32.TryParse(Request.Form["count"], out int count);
-            string message = "";
-            string title = "";
-            string result = "";
+            string loaiApDung = Request.Form["LoaiApDung"];
+            Int32.TryParse(Request.Form["TiLeThanhToan"], out int tiLeThanhToan);
+            Decimal.TryParse(Request.Form["SoTienThanhToan"], out decimal soTienThanhToan);
+
+            List<BangKeChiPhi> data = new List<BangKeChiPhi>();
+            string message = String.Empty;
+            string title = String.Empty;
+            string result = String.Empty;
             try
             {
-                for (var i = 0; i <= count; i++)
+                List<BangKeChiPhi> bangke = new List<BangKeChiPhi>();
+                for (var i = 2; i <= count; i++)
                 {
-                    if (!String.IsNullOrEmpty(Request.Form["SoLuongTT-" + i]) && !String.IsNullOrEmpty(Request.Form["BNTTThanhToan-" + i]))
+                    Decimal.TryParse(Request.Form["tbDonGia-" + i], out decimal dongia);
+                    Decimal.TryParse(Request.Form["tbThanhTien-" + i], out decimal thanhtien);
+                    Decimal.TryParse(Request.Form["tbBHYTTra-" + i], out decimal bhyttra);
+                    Decimal.TryParse(Request.Form["tbBNTra-" + i], out decimal bntra);
+                    Decimal.TryParse(Request.Form["tbBNTTThanhToan-" + i], out decimal bhtn);
+                    Decimal.TryParse(Request.Form["TongSoTien"], out decimal tongsotien);
+                    Decimal.TryParse(Request.Form["TongBHYT"], out decimal tongbhyt);
+                    Decimal.TryParse(Request.Form["BNTT"], out decimal tongbhtn);
+                    Decimal.TryParse(Request.Form["tbSoLuong-" + i], out decimal soluong);
+                    Int32.TryParse(Request.Form["tbSoLuongTT-" + i], out int soluongTT);
+                    Int32.TryParse(Request.Form["SoBienLai"], out int sobienlai);
+                    Int32.TryParse(Request.Form["tbMaNhomVP-" + i], out int manhomvp);
+                    Int32.TryParse(Request.Form["tbSTT-" + i], out int stt);
+                    Int32.TryParse(Request.Form["tbCheckBox-" + i], out int Checked);
+                    Int32.TryParse(Request.Form["tbMaVP-" + i], out int mavp);
+                    Int32.TryParse(Request.Form["tbMaVaoVien-" + i], out int mavaovien);
+                    Int32.TryParse(Request.Form["tbMaQL-" + i], out int maql);
+                    Int32.TryParse(Request.Form["tbMaDoiTuong-" + i], out int madoituong);
+                    var item = new BangKeChiPhi()
                     {
-                        var data = new BangKeChiPhi()
-                        {
-                            hoten = Request.Form["HoTen"],
-                            mabn = Request.Form["MaKH"],
-                            soluongtt = Request.Form["SoLuongTT-" + i],
-                            bntra = Request.Form["BNTTThanhToan-" + i],
-                        };
-                        var test = data; //Sử dụng để truyền dữ liệu về services
-                    }
+                        Checked = Checked,
+                        id = Request.Form["tbID-" + i],
+                        ten = Request.Form["tbNoiDung-" + i],
+                        dvt = Request.Form["tbDVT-" + i],
+                        dongia = dongia,
+                        soluong = soluong,
+                        thanhtien = thanhtien,
+                        bhyttra = bhyttra,
+                        bntra = bntra,                       
+                        bhtn = bhtn,
+                        sobienlai = sobienlai,
+                        mabn = Request.Form["MaKH"],
+                        mavp = mavp,
+                        mavaovien = mavaovien,
+                        maql = maql,
+                        makp = Request.Form["tbMaKP-" + i],
+                        nhomvp = Request.Form["tbNhomVP-" + i],
+                        manhomvp = manhomvp,
+                        hoten = Request.Form["HoTen"],
+                        chandoan = Request.Form["ChanDoan"],
+                        ngaysinh = Request.Form["NgaySinh"],
+                        sothe = Request.Form["SoThe"],
+                        ngayvao = Request.Form["NgayVao"],
+                        gioitinh = Request.Form["GioiTinh"],
+                        tenkp = Request.Form["CacKP"],
+                        tongsotien = tongsotien,
+                        tongbhyt = tongbhyt,
+                        tongbhtn = tongbhtn,
+                        SoLuongTT = soluongTT,
+                        madoituong = madoituong,
+                        STT = stt,
+                    };
+                    bangke.Add(item);
                 }
-                if (result == "OK")
+                data = (await _bangKeChiPhiSevices.XuLyDuLieu(bangke, tiLeThanhToan, soTienThanhToan, loaiApDung)).ToList();
+                if (data.Count > 0 && data != null)
                 {
-                    message = $"Thành công! Đã thêm thành công";
+                    message = $"Đã hoàn thành tính toán lại số liệu";
                     title = "Thành công!";
                     result = "success";
                 }
@@ -82,7 +133,7 @@ namespace WebTools.Controllers
                 title = "Lỗi!";
                 result = "error";
             }
-            return Json(new { Result = result, Title = title, Message = message });
+            return Json(new { Result = result, Title = title, Message = message, data });
         }
     }
 }

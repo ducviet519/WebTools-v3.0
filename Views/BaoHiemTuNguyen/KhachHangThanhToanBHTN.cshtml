@@ -162,12 +162,12 @@
                         }
                         else {
                             searchTerm += "&ngayBD=" + ngayBD + "&ngayKT=" + ngayKT;
-                            searchDataTableWithInput("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "1,8");
+                            $(this).callDataTable_Input_Checkbox("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "1,8");
                         }
                     }
                     else if (loai === "2") {
                         searchTerm += "&loai=" + loai;
-                        searchDataTableWithInput("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "1,8");                       
+                        $(this).callDataTable_Input_Checkbox("#tableKhachHangBHTN", columnData, "/BaoHiemTuNguyen/SearchKhanhHangThanhToanBHTN?" + searchTerm, 10, "1,8");
                     }
                     else {
                         $('#btnSearch').callToast("info", "Thông báo", "Xin chọn trạng thái trước khi tìm kiếm");

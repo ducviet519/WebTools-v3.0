@@ -37,14 +37,13 @@
                         {<div class="text-center title">Phiếu Thanh Toán</div> }
                         else
                         { <div class="text-center title">Bảng Kê chi phí khám chữa bệnh</div>}
-
                         <div class="thongtinbenhnhan">
                             <div class="row">
                                 <div class="col-6">
                                     <label class="col-form-label col-2 pl-0" style="margin-right: 37px;">Họ và tên:</label>
-
                                     <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.hoten</label>
                                     <input type="hidden" id="HoTen" name="HoTen" value="@Model.BangKeChiPhi.hoten" />
+                                    <input type="hidden" id="SoThe" name="SoThe" value="@Model.BangKeChiPhi.sothe" />
                                 </div>
                                 <div class="col-6">
                                     <div class="row">
@@ -146,8 +145,8 @@
                                         </div>
                                         <div class="col-5 pr-4">
                                             <div class="form-group row">
-                                                <input type="radio" class="form-check" id="TiLeCheckbox" name="Checkbox" /><label for="TiLeCheckbox" class="col-form-label col-auto">Tỷ lệ thanh toán:</label>
-                                                <input type="text" class="form-control col" id="TiLeThanhToan" name="TiLeThanhToan" />
+                                                <input type="radio" class="form-check" id="TiLeCheckbox" name="LoaiApDung" value="1" /><label for="TiLeCheckbox" class="col-form-label col-auto">Tỷ lệ thanh toán:</label>
+                                                <input type="text" class="form-control col" id="TiLeThanhToan" name="TiLeThanhToan" data-mask="soluong" />
                                                 <label class="col-form-label col-auto">%</label>
                                             </div>
                                         </div>
@@ -157,8 +156,8 @@
                                     <div class="row">
                                         <div class="col-8 pl-4">
                                             <div class="form-group row">
-                                                <input type="radio" class="form-check" id="SoTienCheckbox" name="Checkbox" /><label for="SoTienCheckbox" class="col-form-label col-auto">Số tiền thanh toán:</label>
-                                                <div class="col mr-5"><input type="text" class="form-control" id="SoTienThanhToan" name="SoLuongThanhToan" /></div>
+                                                <input type="radio" class="form-check" id="SoTienCheckbox" name="LoaiApDung" value="2" /><label for="SoTienCheckbox" class="col-form-label col-auto">Số tiền thanh toán:</label>
+                                                <div class="col mr-5"><input type="text" class="form-control" id="SoTienThanhToan" name="SoTienThanhToan" data-mask="money" /></div>
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -177,6 +176,9 @@
                                 <label class="col-form-label col-auto noidung">@Model.BangKeChiPhi.chandoan</label>
                                 <input type="hidden" id="ChanDoan" name="ChanDoan" value="@Model.BangKeChiPhi.chandoan" />
                             </div>
+                            <input type="hidden" id="idBenhNhan" name="idBenhNhan" value="@Model.id" />
+                            <input type="hidden" id="Loai" name="Loai" value="@Model.loai" />
+                            <input type="hidden" id="count" name="count" />
                         </div>
                         <table class="table table-striped table" style="width:100%" id="tableBangKe1">
                             <thead>
@@ -199,9 +201,6 @@
                 </div>
                 <div class="modal-footer">
                     <div class="row justify-content-center col-12">
-                        <input type="hidden" id="idBenhNhan" name="idBenhNhan" value="@Model.id" />
-                        <input type="hidden" id="Loai" name="Loai" value="@Model.loai" />
-                        <input type="hidden" id="count" name="count" />
                         <div class="col-2"><button type="button" class="btn btn-primary col" data-save="modalFile">Lưu</button></div>
                         <div class="col-2 ml-5 mr-5"> <a class="btn btn-success col" href="/Reports/BangKeVienPhi?id=@Model.id&loai=@Model.loai" target="_blank">Bảng kê BHTN</a></div>
                         <div class="col-2 ml-5 mr-5"><button type="button" class="btn btn-success col">Xuất Excel BKBH</button></div>
@@ -214,6 +213,15 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.selectDonViBaoLanh').select2({
+            dropdownParent: $('#PhieuThanhToanPopup')
+        });
+
+        $('.selectKhoaPhong').select2({
+            dropdownParent: $('#PhieuThanhToanPopup')
+        });
+        $('[data-mask="soluong"]').inputmask({ numericInput: true, placeholder: " " });
+        $('[data-mask="money"]').inputmask({ numericInput: true, placeholder: " " });
 
         document.getElementById("lbTongTien").innerText = FormatCurrencyVND(document.getElementById("TongSoTien").value, "currency", "code", 2);
         document.getElementById("lbTongBHYT").innerText = FormatCurrencyVND(document.getElementById("TongBHYT").value, "currency", "code", 2);
@@ -225,87 +233,112 @@
             {
                 "data": { id: "id", stt: "stt" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt === "" || data.stt === null) { return '<input type="checkbox" class="rowcheck" id="checkbox" name="checkbox-' + meta.row + '" hidden/>'; }
-                    else { return '<input type="checkbox" class="rowcheck" id="checkbox" name="checkbox-' + meta.row + '" />'; }
+                    if (data.stt <= 0) { return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" hidden/>'; }
+                    else { return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" value="1" />'; }
                 },
             },
             {
-                "data": "stt",
+                "data": { stt: "stt", id: "id", sobienlai: "sobienlai", mavp: "mavp", mavaovien: "mavaovien", maql: "maql", makp: "makp", nhomvp: "nhomvp", manhomvp: "manhomvp", madoituong: "madoituong" },
+                "render": function (data, type, full, meta) {
+                    var id = '<input type="hidden" id="tbID-' + meta.row + '" name="tbID-' + meta.row + '" value="' + data.id + '" />';
+                    //var sobienlai = '<input type="hidden" id="tbSoBienLai-' + meta.row + '" name="tbSoBienLai-' + meta.row + '" value="' + data.sobienlai + '" />'
+                    var mavp = '<input type="hidden" id="tbMaVP-' + meta.row + '" name="tbMaVP-' + meta.row + '" value="' + data.mavp + '" />';
+                    var mavaovien = '<input type="hidden" id="tbMaVaoVien-' + meta.row + '" name="tbMaVaoVien-' + meta.row + '" value="' + data.mavaovien + '" />';
+                    var maql = '<input type="hidden" id="tbMaQL-' + meta.row + '" name="tbMaQL-' + meta.row + '" value="' + data.maql + '" />';
+                    var makp = '<input type="hidden" id="tbMaKP-' + meta.row + '" name="tbMaKP-' + meta.row + '" value="' + data.makp + '" />';
+                    var nhomvp = '<input type="hidden" id="tbNhomVP-' + meta.row + '" name="tbNhomVP-' + meta.row + '" value="' + data.nhomvp + '" />';
+                    var manhomvp = '<input type="hidden" id="tbMaNhomVP-' + meta.row + '" name="tbMaNhomVP-' + meta.row + '" value="' + data.manhomvp + '" />';
+                    var madoituong = '<input type="hidden" id="tbMaDoiTuong-' + meta.row + '" name="tbMaDoiTuong-' + meta.row + '" value="' + data.madoituong + '" />';
+                    var input = id + mavp + mavaovien + maql + makp + nhomvp + manhomvp + madoituong;
+                    if (data.stt <= 0) { input += '<input type="hidden" id="tbSTT-' + meta.row + '" name="tbSTT-' + meta.row + '" value="' + data.stt + '" />'; }
+                    else { input += '<input type="hidden" id="tbSTT-' + meta.row + '" name="tbSTT-' + meta.row + '" value="' + data.stt + '" />' + data.stt; }
+                    return input;
+                },
                 "class": "text-center"
             },
             {
                 "data": { ten: "ten", thanhtien: "thanhtien", bntra: "bntra", stt: "stt" },
                 "render": function (data, type, full, meta) {
-
-                    if (data.stt === null || data.stt === "") {
+                    var ten = '<input type="hidden" id="tbNoiDung-' + meta.row + '" name="tbNoiDung-' + meta.row + '" value="' + data.ten + '" />';
+                    if (data.stt <= 0) {
                         if (data.thanhtien === null && data.bntra === null || data.thanhtien === "" && data.bntra === "") {
-                            var ten = '<div class="font-weight-bold font-italic">' + data.ten + '</div>';
+                            ten += '<div class="font-weight-bold font-italic">' + data.ten + '</div>';
                         }
                         else {
-                            var ten = '<div class="font-weight-bold">' + data.ten + '</div>';
+                            ten += '<div class="font-weight-bold">' + data.ten + '</div>';
                         }
                     }
-                    else { var ten = data.ten; }
+                    else { ten += data.ten; }
                     return ten;
                 }
             },
-            { "data": "dvt" },
+            {
+                "data": { stt: "stt", dvt: "dvt" },
+                "render": function (data, type, full, meta) {
+                    if (data.stt <= 0) { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />'; }
+                    else { return '<input type="hidden" id="tbDVT-' + meta.row + '" name="tbDVT-' + meta.row + '" value="' + data.dongia + '" />' + data.dvt; }
+                },
+            },
             {
                 "data": { stt: "stt", dongia: "dongia" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" id="DonGia-' + meta.row + '" name="DonGia-' + meta.row + '" value="0" />'; }
-                    else { return '<input type="hidden" id="DonGia-' + meta.row + '" name="DonGia-' + meta.row + '" value="' + data.dongia + '" />' + FormatCurrencyVND(data.dongia, "decimal", "code", 2); }
+                    if (data.stt <= 0) { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />'; }
+                    else { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />' + FormatCurrencyVND(data.dongia, "decimal", "code", 2); }
                 },
             },
             {
                 "data": { stt: "stt", soluong: "soluong" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" id="SoLuong-' + meta.row + '" name="SoLuong-' + meta.row + '" value="0" />'; }
-                    else { return '<input type="hidden" id="SoLuong-' + meta.row + '" name="SoLuong-' + meta.row + '" value="' + data.soluong + '" />' + FormatCurrencyVND(data.soluong, "decimal", "code"); }
+                    if (data.stt <= 0) { return '<input type="hidden" id="tbSoLuong-' + meta.row + '" name="tbSoLuong-' + meta.row + '" value="' + data.soluong + '" />'; }
+                    else { return '<input type="hidden" id="tbSoLuong-' + meta.row + '" name="tbSoLuong-' + meta.row + '" value="' + data.soluong + '" />' + FormatCurrencyVND(data.soluong, "decimal", "code"); }
                 },
                 "class": "text-center"
             },
             {
-                "data": { stt: "stt" },
+                "data": { stt: "stt", soluongtt: "soluongtt" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" class="form-control maskSoLuong" id="SoLuongTT-' + meta.row + '" name="SoLuongTT-' + meta.row + '" value="0" />'; }
-                    else { return '<input type="text" class="form-control maskSoLuong" id="SoLuongTT-' + meta.row + '" name="SoLuongTT-' + meta.row + '" />'; }
+                    if (data.soluongtt <= 0) { data.soluongtt = ""; }
+                    if (data.stt <= 0) { return '<input type="hidden" class="form-control" id="tbSoLuongTT-' + meta.row + '" name="tbSoLuongTT-' + meta.row + '" data-mask="soluong" />'; }
+                    else { return '<input type="text" class="form-control" id="tbSoLuongTT-' + meta.row + '" name="tbSoLuongTT-' + meta.row + '" value="' + data.soluongtt + '" data-mask="soluong" />'; }
                 },
             },
             {
                 "data": { stt: "stt", thanhtien: "thanhtien" },
                 "render": function (data, type, full, meta) {
-                    if (data.thanhtien === null || data.thanhtien === "") { return null; }
+                    var thanhtien = '<input type="hidden" id="tbThanhTien-' + meta.row + '" name="tbThanhTien-' + meta.row + '" value="' + data.thanhtien + '" />';
+                    if (data.thanhtien <= 0) { thanhtien += "" }
                     else {
-                        if (data.stt === null || data.stt === "") { var thanhtien = '<div class="font-weight-bold">' + FormatCurrencyVND(data.thanhtien, "decimal", "code", 2) + '</div>'; }
-                        else { var thanhtien = FormatCurrencyVND(data.thanhtien, "decimal", "code", 2); }
-                        return thanhtien;
+                        if (data.stt <= 0) { thanhtien += '<div class="font-weight-bold">' + FormatCurrencyVND(data.thanhtien, "decimal", "code", 2) + '</div>'; }
+                        else { thanhtien += FormatCurrencyVND(data.thanhtien, "decimal", "code", 2); }
                     }
+                    return thanhtien;
                 },
             },
             {
                 "data": { stt: "stt", bhyttra: "bhyttra" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" class="form-control inputText" id="BHYTTra-' + meta.row + '" name="BHYTTra-' + meta.row + '" value="0" />'; }
-                    else { return '<input type="hidden" class="form-control inputText" id="BHYTTra-' + meta.row + '" name="BHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />' + FormatCurrencyVND(data.bhyttra, "decimal", "code", 2); }
+                    if (data.stt <= 0) { return '<input type="hidden" class="form-control inputText" id="tbBHYTTra-' + meta.row + '" name="tbBHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />'; }
+                    else { return '<input type="hidden" class="form-control inputText" id="tbBHYTTra-' + meta.row + '" name="tbBHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />' + FormatCurrencyVND(data.bhyttra, "decimal", "code", 2); }
                 },
             },
             {
                 "data": { stt: "stt", bhtn: "bhtn" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt === "" || data.stt === null) { return '<input type="hidden" class="form-control maskBNTT" id="BNTTThanhToan-' + meta.row + '" name="BNTTThanhToan-' + meta.row + '"  value="0" />'; }
-                    else { return '<input type="text" class="form-control maskBNTT" style="width: 104px;" id="BNTTThanhToan-' + meta.row + '" name="BNTTThanhToan-' + meta.row + '"  value="" />'; }
+                    if (data.bhtn <= 0) { data.bhtn = ""; }
+                    if (data.stt <= 0) { return '<input type="hidden" class="form-control" id="tbBNTTThanhToan-' + meta.row + '" name="tbBNTTThanhToan-' + meta.row + '" data-mask="money" data-target="money-' + meta.row + '" />'; }
+                    else { return '<input type="text" class="form-control" style="width: 104px;" id="tbBNTTThanhToan-' + meta.row + '" name="tbBNTTThanhToan-' + meta.row + '" value="' + data.bhtn + '" data-mask="money" data-target="money-' + meta.row + '" />'; }
                 },
             },
             {
                 "data": { stt: "stt", bntra: "bntra" },
                 "render": function (data, type, full, meta) {
-                    if (data.bntra === null || data.bntra === "") { return null; }
+                    var bntra = '<input type="hidden" id="tbBNTra-' + meta.row + '" name="tbBNTra-' + meta.row + '" value="' + data.bntra + '" />';
+                    if (data.bntra <= 0) { bntra += ""; }
                     else {
-                        if (data.stt === null || data.stt === "") { var bntra = '<div class="font-weight-bold">' + FormatCurrencyVND(data.bntra, "decimal", "code", 2) + '</div>'; }
-                        else { var bntra = FormatCurrencyVND(data.bntra, "decimal", "code", 2); }
-                        return bntra;
+                        if (data.stt <= 0) { bntra += '<div class="font-weight-bold">' + FormatCurrencyVND(data.bntra, "decimal", "code", 2) + '</div>'; }
+                        else { bntra += FormatCurrencyVND(data.bntra, "decimal", "code", 2); }
                     }
+                    return bntra;
                 },
             },
         ]
@@ -333,9 +366,7 @@
                 "datatype": "json"
             },
             "columns": columnData,
-            //"order": [[0, 'asc']],
             "columnDefs": [
-                //{ orderable: false, targets: [0,1,2] },
                 { className: "text-wrap", targets: "_all" },
                 { defaultContent: '', targets: "_all" },
             ],
@@ -357,7 +388,6 @@
                 }
             },
         });
-
         $('thead input[name="selectAll"]', table.table().container()).on('click', function (e) {
             if ($(this).is(":checked")) {
                 $('#tableBangKe1 tbody input[type="checkbox"]:not(:checked)').trigger('click');
@@ -369,14 +399,63 @@
 
         $('#PhieuThanhToanPopup').on('shown.bs.modal', function (e) {
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+            $('[data-mask="money"]').inputmask('decimal', {
+                'alias': 'decimal',
+                'placeholder': '',
+                'rightAlign': true,
+                'groupSeparator': ',',
+                'autoGroup': true,
+                'digits': 2,
+                'removeMaskOnSubmit': true
+            });
+            $('[data-mask="soluong"]').inputmask({ alias: 'numeric'});
+        });
 
+        function checkApDung() {
+            var loaiApDung = $("input[name='LoaiApDung']:checked").val() || "";
+            var tile = ((document.getElementById("TiLeThanhToan") || {}).value) || "";
+            var sotien = ((document.getElementById("SoTienThanhToan") || {}).value) || "";
+            if (loaiApDung !== "") {
+                if (loaiApDung === "1" && tile !== "") { return true; }
+                else if (loaiApDung === "1" && tile === "") {
+                    $(this).callToast("info", "Thông báo!", "Xin nhập <strong> Tỷ lệ thanh toán </strong> trước khi áp dụng.");
+                    return false;
+                }
+                if (loaiApDung === "2" && sotien !== "") { return true; }
+                else if (loaiApDung === "2" && sotien === "") {
+                    $(this).callToast("info", "Thông báo!", "Xin nhập <strong> Số tiền thanh toán </strong> trước khi áp dụng.");
+                    return false;
+                }
+            }
+            else { $(this).callToast("info", "Thông báo!", "Chọn <strong> loại Áp dụng </strong> trước khi áp dụng."); return false; }
+        }
+
+        $('body .modal').on('click', '#btnApDung', function () {
+            document.getElementById("count").value = table.rows().count();
+            if (checkApDung()) {
+                var data = $("#formPhieuThanhToan").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/BangKeChiPhi/XuLyDuLieu',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
+                    data: data,
+                    //beforeSend: function () {
+                    //    toastr.info('Đang xử lý dữ liệu!');
+                    //},
+                    success: function (data) {
+                        $(this).callToast(data.result, data.title, data.message);
+                        $(this).callDataTableScroll_Json('#tableBangKe1', columnData, data.data);
+                    },
+                    error: function (data) {
+                        $(this).callToast(data.result, data.title, data.message);
+                    },
+                    //complete: function (data) {                       
+                    //},
+                })
+            }
         });
     });
-    $(function () {
-        //var string = $('#txtURD').val();
-        //var array = string.split(",").map(Number);
-        //Dropdown
-
+    $(document).ready(function () {
         $('.selectDonViBaoLanh').select2({
             dropdownParent: $('#PhieuThanhToanPopup')
         });
@@ -384,14 +463,7 @@
         $('.selectKhoaPhong').select2({
             dropdownParent: $('#PhieuThanhToanPopup')
         });
-        $('.maskBNTT').inputmask("999.999.999,99", { numericInput: true, placeholder: " " });
-        $('.maskSoLuong').inputmask({ numericInput: true, placeholder: " " });
-        //$('#SearchURD').val(array);
-        //$('#SearchURD').trigger('change');
-        //$('.inputText').inputmask("999.999.999", { numericInput: true, placeholder: " " });
-
     });
-
 </script>
 
 
