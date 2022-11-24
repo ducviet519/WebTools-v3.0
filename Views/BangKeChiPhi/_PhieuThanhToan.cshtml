@@ -146,7 +146,7 @@
                                         <div class="col-5 pr-4">
                                             <div class="form-group row">
                                                 <input type="radio" class="form-check" id="TiLeCheckbox" name="LoaiApDung" value="1" /><label for="TiLeCheckbox" class="col-form-label col-auto">Tỷ lệ thanh toán:</label>
-                                                <input type="text" class="form-control col" id="TiLeThanhToan" name="TiLeThanhToan" data-mask="soluong" />
+                                                <input type="text" class="form-control col" id="TiLeThanhToan" name="TiLeThanhToan" data-mask="soluong" autocomplete="off" />
                                                 <label class="col-form-label col-auto">%</label>
                                             </div>
                                         </div>
@@ -156,8 +156,8 @@
                                     <div class="row">
                                         <div class="col-8 pl-4">
                                             <div class="form-group row">
-                                                <input type="radio" class="form-check" id="SoTienCheckbox" name="LoaiApDung" value="2" /><label for="SoTienCheckbox" class="col-form-label col-auto">Số tiền thanh toán:</label>
-                                                <div class="col mr-5"><input type="text" class="form-control" id="SoTienThanhToan" name="SoTienThanhToan" data-mask="money" /></div>
+                                                <input type="radio" class="form-check" id="SoTienCheckbox" name="LoaiApDung" value="2" checked /><label for="SoTienCheckbox" class="col-form-label col-auto">Số tiền thanh toán:</label>
+                                                <div class="col mr-5"><input type="text" class="form-control" id="SoTienThanhToan" name="SoTienThanhToan" data-mask="money" autocomplete="off" /></div>
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -203,7 +203,7 @@
                     <div class="row justify-content-center col-12">
                         <div class="col-2"><button type="button" class="btn btn-primary col" data-save="modalFile">Lưu</button></div>
                         <div class="col-2 ml-5 mr-5"> <a class="btn btn-success col" href="/Reports/BangKeVienPhi?id=@Model.id&loai=@Model.loai" target="_blank">Bảng kê BHTN</a></div>
-                        <div class="col-2 ml-5 mr-5"><button type="button" class="btn btn-success col">Xuất Excel BKBH</button></div>
+                        <div class="col-2 ml-5 mr-5"><a class="btn btn-success col" href="/ExportExcel/BangKeChiPhiExcel?id=@Model.id&loai=@Model.loai">Xuất Excel BKBH</a></div>
                         <div class="col-2"><button type="button" class="btn btn-danger col" data-dismiss="modal">Đóng</button></div>
                     </div>
                 </div>
@@ -231,10 +231,17 @@
 
         var columnData = [
             {
-                "data": { id: "id", stt: "stt" },
+                "data": { id: "id", stt: "stt", checked: "checked" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt <= 0) { return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" hidden/>'; }
-                    else { return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" value="1" />'; }
+                    if (data.id == null || data.id == "") { return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" hidden/>'; }
+                    else {
+                        if (data.checked === "1") {
+                            return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" value="1" checked />';
+                        }
+                        else {
+                            return '<input type="checkbox" class="rowcheck" id="tbCheckBox-' + meta.row + '" name="tbCheckBox-' + meta.row + '" value="1" />';
+                        }                  
+                    }
                 },
             },
             {
@@ -249,19 +256,19 @@
                     var nhomvp = '<input type="hidden" id="tbNhomVP-' + meta.row + '" name="tbNhomVP-' + meta.row + '" value="' + data.nhomvp + '" />';
                     var manhomvp = '<input type="hidden" id="tbMaNhomVP-' + meta.row + '" name="tbMaNhomVP-' + meta.row + '" value="' + data.manhomvp + '" />';
                     var madoituong = '<input type="hidden" id="tbMaDoiTuong-' + meta.row + '" name="tbMaDoiTuong-' + meta.row + '" value="' + data.madoituong + '" />';
-                    var input = id + mavp + mavaovien + maql + makp + nhomvp + manhomvp + madoituong;
-                    if (data.stt <= 0) { input += '<input type="hidden" id="tbSTT-' + meta.row + '" name="tbSTT-' + meta.row + '" value="' + data.stt + '" />'; }
+                    var input = id + mavp + makp + nhomvp + manhomvp + madoituong + mavaovien + maql;
+                    if (data.id == null || data.id == "") { input += '<input type="hidden" id="tbSTT-' + meta.row + '" name="tbSTT-' + meta.row + '" value="' + data.stt + '" />'; }
                     else { input += '<input type="hidden" id="tbSTT-' + meta.row + '" name="tbSTT-' + meta.row + '" value="' + data.stt + '" />' + data.stt; }
                     return input;
                 },
                 "class": "text-center"
             },
             {
-                "data": { ten: "ten", thanhtien: "thanhtien", bntra: "bntra", stt: "stt" },
+                "data": { ten: "ten", thanhtien: "thanhtien", bntra: "bntra", stt: "stt", id: "id", nhomvp: "nhomvp" },
                 "render": function (data, type, full, meta) {
                     var ten = '<input type="hidden" id="tbNoiDung-' + meta.row + '" name="tbNoiDung-' + meta.row + '" value="' + data.ten + '" />';
-                    if (data.stt <= 0) {
-                        if (data.thanhtien === null && data.bntra === null || data.thanhtien === "" && data.bntra === "") {
+                    if (data.id == null || data.id == "") {
+                        if (data.nhomvp == null || data.nhomvp == "") {
                             ten += '<div class="font-weight-bold font-italic">' + data.ten + '</div>';
                         }
                         else {
@@ -273,60 +280,66 @@
                 }
             },
             {
-                "data": { stt: "stt", dvt: "dvt" },
+                "data": { stt: "stt", dvt: "dvt", id: "id" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt <= 0) { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />'; }
-                    else { return '<input type="hidden" id="tbDVT-' + meta.row + '" name="tbDVT-' + meta.row + '" value="' + data.dongia + '" />' + data.dvt; }
+                    if (data.id == null || data.id == "") { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />'; }
+                    else { return '<input type="hidden" id="tbDVT-' + meta.row + '" name="tbDVT-' + meta.row + '" value="' + data.dvt + '" />' + data.dvt; }
                 },
             },
             {
-                "data": { stt: "stt", dongia: "dongia" },
+                "data": { stt: "stt", dongia: "dongia", id: "id" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt <= 0) { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />'; }
+                    if (data.id == null || data.id == "") { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />'; }
                     else { return '<input type="hidden" id="tbDonGia-' + meta.row + '" name="tbDonGia-' + meta.row + '" value="' + data.dongia + '" />' + FormatCurrencyVND(data.dongia, "decimal", "code", 2); }
                 },
             },
             {
-                "data": { stt: "stt", soluong: "soluong" },
+                "data": { stt: "stt", soluong: "soluong", id: "id" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt <= 0) { return '<input type="hidden" id="tbSoLuong-' + meta.row + '" name="tbSoLuong-' + meta.row + '" value="' + data.soluong + '" />'; }
+                    if (data.id == null || data.id == "") { return '<input type="hidden" id="tbSoLuong-' + meta.row + '" name="tbSoLuong-' + meta.row + '" value="' + data.soluong + '" />'; }
                     else { return '<input type="hidden" id="tbSoLuong-' + meta.row + '" name="tbSoLuong-' + meta.row + '" value="' + data.soluong + '" />' + FormatCurrencyVND(data.soluong, "decimal", "code"); }
                 },
                 "class": "text-center"
             },
             {
-                "data": { stt: "stt", soluongtt: "soluongtt" },
+                "data": { stt: "stt", soluongtt: "soluongtt", id: "id" },
                 "render": function (data, type, full, meta) {
-                    if (data.soluongtt <= 0) { data.soluongtt = ""; }
-                    if (data.stt <= 0) { return '<input type="hidden" class="form-control" id="tbSoLuongTT-' + meta.row + '" name="tbSoLuongTT-' + meta.row + '" data-mask="soluong" />'; }
-                    else { return '<input type="text" class="form-control" id="tbSoLuongTT-' + meta.row + '" name="tbSoLuongTT-' + meta.row + '" value="' + data.soluongtt + '" data-mask="soluong" />'; }
+                    if (data.soluongtt <= 0 || data.soluongtt == null) { data.soluongtt = ""; }
+                    if (data.id == null || data.id == "") { return '<input type="hidden" class="form-control" id="tbSoLuongTT-' + meta.row + '" name="tbSoLuongTT-' + meta.row + '" data-mask="soluong" />'; }
+                    else { return '<input type="text" class="form-control" id="tbSoLuongTT-' + meta.row + '" name="tbSoLuongTT-' + meta.row + '" value="' + data.soluongtt + '" data-mask="soluong" autocomplete="off" />'; }
                 },
             },
             {
-                "data": { stt: "stt", thanhtien: "thanhtien" },
+                "data": { stt: "stt", thanhtien: "thanhtien", id: "id" },
                 "render": function (data, type, full, meta) {
                     var thanhtien = '<input type="hidden" id="tbThanhTien-' + meta.row + '" name="tbThanhTien-' + meta.row + '" value="' + data.thanhtien + '" />';
-                    if (data.thanhtien <= 0) { thanhtien += "" }
+                    if (data.thanhtien <= 0 || data.thanhtien == null) { thanhtien += "" }
                     else {
-                        if (data.stt <= 0) { thanhtien += '<div class="font-weight-bold">' + FormatCurrencyVND(data.thanhtien, "decimal", "code", 2) + '</div>'; }
+                        if (data.id == null || data.id == "") { thanhtien += '<div class="font-weight-bold">' + FormatCurrencyVND(data.thanhtien, "decimal", "code", 2) + '</div>'; }
                         else { thanhtien += FormatCurrencyVND(data.thanhtien, "decimal", "code", 2); }
                     }
                     return thanhtien;
                 },
             },
             {
-                "data": { stt: "stt", bhyttra: "bhyttra" },
+                "data": { stt: "stt", bhyttra: "bhyttra", id: "id" },
                 "render": function (data, type, full, meta) {
-                    if (data.stt <= 0) { return '<input type="hidden" class="form-control inputText" id="tbBHYTTra-' + meta.row + '" name="tbBHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />'; }
+                    if (data.id == null || data.id == "") { return '<input type="hidden" class="form-control inputText" id="tbBHYTTra-' + meta.row + '" name="tbBHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />'; }
                     else { return '<input type="hidden" class="form-control inputText" id="tbBHYTTra-' + meta.row + '" name="tbBHYTTra-' + meta.row + '" value="' + data.bhyttra + '" />' + FormatCurrencyVND(data.bhyttra, "decimal", "code", 2); }
                 },
             },
             {
-                "data": { stt: "stt", bhtn: "bhtn" },
+                "data": { stt: "stt", bhtn: "bhtn", id: "id" },
                 "render": function (data, type, full, meta) {
-                    if (data.bhtn <= 0) { data.bhtn = ""; }
-                    if (data.stt <= 0) { return '<input type="hidden" class="form-control" id="tbBNTTThanhToan-' + meta.row + '" name="tbBNTTThanhToan-' + meta.row + '" data-mask="money" data-target="money-' + meta.row + '" />'; }
-                    else { return '<input type="text" class="form-control" style="width: 104px;" id="tbBNTTThanhToan-' + meta.row + '" name="tbBNTTThanhToan-' + meta.row + '" value="' + data.bhtn + '" data-mask="money" data-target="money-' + meta.row + '" />'; }
+                    if (data.id == null || data.id == "") { return '<input type="hidden" class="form-control" id="tbBNTNThanhToan-' + meta.row + '" name="tbBNTNThanhToan-' + meta.row + '" data-mask="money" data-target="money-' + meta.row + '" />'; }
+                    else {
+                        if (data.bhtn > 0) {
+                            return '<input type="text" class="form-control" style="width: 104px;" id="tbBNTNThanhToan-' + meta.row + '" name="tbBNTNThanhToan-' + meta.row + '" value="' + data.bhtn + '" data-mask="money" data-target="money-' + meta.row + '" autocomplete="off" />';
+                        }
+                        else {
+                            return '<input type="text" class="form-control" style="width: 104px;" id="tbBNTNThanhToan-' + meta.row + '" name="tbBNTNThanhToan-' + meta.row + '" data-mask="money" data-target="money-' + meta.row + '" autocomplete="off" />';
+                        }                       
+                    }
                 },
             },
             {
@@ -399,15 +412,7 @@
 
         $('#PhieuThanhToanPopup').on('shown.bs.modal', function (e) {
             $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-            $('[data-mask="money"]').inputmask('decimal', {
-                'alias': 'decimal',
-                'placeholder': '',
-                'rightAlign': true,
-                'groupSeparator': ',',
-                'autoGroup': true,
-                'digits': 2,
-                'removeMaskOnSubmit': true
-            });
+            $(this).formatInput_MaskCurrency('[data-mask="money"]',0);
             $('[data-mask="soluong"]').inputmask({ alias: 'numeric'});
         });
 
@@ -445,6 +450,8 @@
                     success: function (data) {
                         $(this).callToast(data.result, data.title, data.message);
                         $(this).callDataTableScroll_Json('#tableBangKe1', columnData, data.data);
+                        $(this).formatInput_MaskCurrency('[data-mask="money"]', 0);
+                        $('[data-mask="soluong"]').inputmask({ alias: 'numeric' });
                     },
                     error: function (data) {
                         $(this).callToast(data.result, data.title, data.message);

@@ -215,6 +215,23 @@ function FormatDatetime(datetime, type) {
     }
 }
 
+$.fn.formatInput_MaskCurrency = function (id, digits) {
+    $(id).inputmask('decimal', {
+        'alias': 'numeric',
+        'placeholder': '',
+        'rightAlign': true,
+        'autoGroup': true,
+        'groupSeparator': '.',
+        'digits': digits,
+        'digitsOptional': true,
+        'radixPoint': ',',
+        'autoUnmask': true,
+        //'suffix': ' đ',
+        'outputFormat': 'decimal',
+        'removeMaskOnSubmit': true
+    });
+}
+
 $.fn.clearData = function ($form) {
     $form.find('input:text, input:password, input:file, select, textarea').val('');
     $form.find('input:radio, input:checkbox')

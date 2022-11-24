@@ -31,7 +31,7 @@ namespace WebTools.Services
         }
         #endregion
 
-        public async Task<List<BangKeChiPhi>> GetBangKeChiPhi(string id, string loai)
+        public async Task<List<BangKeChiPhi>> GetBangKeChiPhi(string id, string loai, string chucnang)
         {
             List<BangKeChiPhi> list = new List<BangKeChiPhi>();
             try
@@ -43,6 +43,7 @@ namespace WebTools.Services
                     {
                         id = id,
                         Loai = loai,
+                        LoaiChucNang = chucnang,
                     }, commandType: CommandType.StoredProcedure)).ToList();
                     dbConnection.Close();
                 }

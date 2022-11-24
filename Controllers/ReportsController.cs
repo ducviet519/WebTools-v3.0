@@ -23,8 +23,8 @@ namespace WebTools.Controllers
             //id = "220928193006249049";
             //loai = "2";
             ExportReport data = new ExportReport();
-            data.BangKeVienPhi = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai));
-            data.ThongTinNguoiBenh = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).Where(i => i.hoten != null).FirstOrDefault();
+            data.BangKeVienPhi = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai, "1"));
+            data.ThongTinNguoiBenh = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai, "1"))).Where(i => i.hoten != null).FirstOrDefault();
             data.BarCode = StaticHelper.GenBarCode(data.ThongTinNguoiBenh.mabn);
             data.TenPhieuIn = "BangKeVienPhi";
 

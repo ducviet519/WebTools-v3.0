@@ -6,7 +6,7 @@ namespace WebTools.Services.Interface
 {
     public interface IBangKeChiPhiSevices
     {
-        Task<List<BangKeChiPhi>> GetBangKeChiPhi(string id, string loai );
+        Task<List<BangKeChiPhi>> GetBangKeChiPhi(string id, string loai, string chucnang);
 
         Task<List<BangKeChiPhi>> XuLyDuLieu(List<BangKeChiPhi> bangke, decimal tile, decimal sotien, string loaiApDung);
     }

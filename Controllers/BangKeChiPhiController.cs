@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using WebTools.Models;
@@ -27,8 +28,8 @@ namespace WebTools.Controllers
             BangKeChiPhiVM model = new BangKeChiPhiVM();
             model.DonViBaoLanh = new SelectList(await _danhMucBHTNServices.GetDanhMucBHTN("1"), "ID", "Name");
             model.KhoaPhong = new SelectList(await _danhMucBHTNServices.GetDanhMucBHTN("2"), "ID", "Name");
-            model.ListChiPhi = await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai));
-            model.BangKeChiPhi = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).LastOrDefault();
+            model.ListChiPhi = await _bangKeChiPhiSevices.GetBangKeChiPhi(id, loai, "1");
+            model.BangKeChiPhi = (await _bangKeChiPhiSevices.GetBangKeChiPhi(id, loai, "1")).LastOrDefault();
             model.id = id;
             model.loai = loai;
             return PartialView("_PhieuThanhToan", model);
@@ -37,19 +38,18 @@ namespace WebTools.Controllers
         [HttpGet]
         public async Task<JsonResult> GetPhieuThanhToan(string id, string loai)
         {
-            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai))).ToList();
+            var bangKeChiPhis = (await (_bangKeChiPhiSevices.GetBangKeChiPhi(id, loai, "1"))).ToList();
             return Json(new { data = bangKeChiPhis });
         }
-      
+
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 10000)]
         public async Task<JsonResult> XuLyDuLieu()
         {
             Int32.TryParse(Request.Form["count"], out int count);
             string loaiApDung = Request.Form["LoaiApDung"];
-            Int32.TryParse(Request.Form["TiLeThanhToan"], out int tiLeThanhToan);
+            Decimal.TryParse(Request.Form["TiLeThanhToan"], out decimal tiLeThanhToan);
             Decimal.TryParse(Request.Form["SoTienThanhToan"], out decimal soTienThanhToan);
-
             List<BangKeChiPhi> data = new List<BangKeChiPhi>();
             string message = String.Empty;
             string title = String.Empty;
@@ -57,14 +57,15 @@ namespace WebTools.Controllers
             try
             {
                 List<BangKeChiPhi> bangke = new List<BangKeChiPhi>();
-                for (var i = 2; i <= count; i++)
+                for (var i = 0; i < count; i++)
                 {
+                    if(Request.Form["tbID-" + i] != "null") {
                     Decimal.TryParse(Request.Form["tbDonGia-" + i], out decimal dongia);
-                    Decimal.TryParse(Request.Form["tbThanhTien-" + i], out decimal thanhtien);
+                    Int32.TryParse(Request.Form["tbThanhTien-" + i], out int thanhtien);
                     Decimal.TryParse(Request.Form["tbBHYTTra-" + i], out decimal bhyttra);
-                    Decimal.TryParse(Request.Form["tbBNTra-" + i], out decimal bntra);
-                    Decimal.TryParse(Request.Form["tbBNTTThanhToan-" + i], out decimal bhtn);
-                    Decimal.TryParse(Request.Form["TongSoTien"], out decimal tongsotien);
+                    Int32.TryParse(Request.Form["tbBNTra-" + i], out int bntra);
+                    Decimal.TryParse(Request.Form["tbBNTNThanhToan-" + i], out decimal bhtn);
+                    Int32.TryParse(Request.Form["TongSoTien"], out int tongsotien);
                     Decimal.TryParse(Request.Form["TongBHYT"], out decimal tongbhyt);
                     Decimal.TryParse(Request.Form["BNTT"], out decimal tongbhtn);
                     Decimal.TryParse(Request.Form["tbSoLuong-" + i], out decimal soluong);
@@ -74,45 +75,48 @@ namespace WebTools.Controllers
                     Int32.TryParse(Request.Form["tbSTT-" + i], out int stt);
                     Int32.TryParse(Request.Form["tbCheckBox-" + i], out int Checked);
                     Int32.TryParse(Request.Form["tbMaVP-" + i], out int mavp);
-                    Int32.TryParse(Request.Form["tbMaVaoVien-" + i], out int mavaovien);
-                    Int32.TryParse(Request.Form["tbMaQL-" + i], out int maql);
+                    Decimal.TryParse(Request.Form["tbMaVaoVien-" + i], out decimal mavaovien);
+                    Decimal.TryParse(Request.Form["tbMaQL-" + i], out decimal maql);
                     Int32.TryParse(Request.Form["tbMaDoiTuong-" + i], out int madoituong);
+                                     
                     var item = new BangKeChiPhi()
                     {
                         Checked = Checked,
                         id = Request.Form["tbID-" + i],
                         ten = Request.Form["tbNoiDung-" + i],
                         dvt = Request.Form["tbDVT-" + i],
-                        dongia = dongia,
-                        soluong = soluong,
+                        dongia = System.Math.Round(dongia, 2),
+                        soluong = System.Math.Round(soluong, 2),
                         thanhtien = thanhtien,
-                        bhyttra = bhyttra,
-                        bntra = bntra,                       
+                        bhyttra = System.Math.Round(bhyttra, 2),
+                        bntra = bntra,
                         bhtn = bhtn,
                         sobienlai = sobienlai,
                         mabn = Request.Form["MaKH"],
                         mavp = mavp,
-                        mavaovien = mavaovien,
-                        maql = maql,
+                        mavaovien = System.Math.Round(mavaovien, 0),
+                        maql = System.Math.Round(maql, 0),
                         makp = Request.Form["tbMaKP-" + i],
                         nhomvp = Request.Form["tbNhomVP-" + i],
                         manhomvp = manhomvp,
                         hoten = Request.Form["HoTen"],
                         chandoan = Request.Form["ChanDoan"],
-                        ngaysinh = Request.Form["NgaySinh"],
+                        ngaysinh = Convert.ToDateTime(Request.Form["NgaySinh"]).ToString("yyyy-MM-dd"),
                         sothe = Request.Form["SoThe"],
-                        ngayvao = Request.Form["NgayVao"],
+                        ngayvao = Convert.ToDateTime(Request.Form["NgayVao"]).ToString("yyyy-MM-dd HH:mm:ss.fff"),
                         gioitinh = Request.Form["GioiTinh"],
                         tenkp = Request.Form["CacKP"],
                         tongsotien = tongsotien,
-                        tongbhyt = tongbhyt,
-                        tongbhtn = tongbhtn,
+                        tongbhyt = System.Math.Round(tongbhyt, 2),
+                        tongbhtn = System.Math.Round(tongbhtn, 2),
                         SoLuongTT = soluongTT,
                         madoituong = madoituong,
                         STT = stt,
                     };
                     bangke.Add(item);
+                    }
                 }
+                var test = bangke;
                 data = (await _bangKeChiPhiSevices.XuLyDuLieu(bangke, tiLeThanhToan, soTienThanhToan, loaiApDung)).ToList();
                 if (data.Count > 0 && data != null)
                 {
