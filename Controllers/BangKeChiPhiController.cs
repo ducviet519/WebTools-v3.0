@@ -36,7 +36,6 @@ namespace WebTools.Controllers
             model.loai = loai;
             return PartialView("_PhieuThanhToan", model);
         }
-
         [HttpGet]
         public async Task<JsonResult> GetPhieuThanhToan(string id, string loai)
         {
