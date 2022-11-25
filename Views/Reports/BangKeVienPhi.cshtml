@@ -110,9 +110,9 @@
                     {
                         foreach (var item in Model.BangKeVienPhi)
                         {
-                            if (item.STT == null)
+                            if (String.IsNullOrEmpty(item.id))
                             {
-                                if (item.thanhtien == null || item.bntra == null)
+                                if (item.thanhtien <= 0 || item.bntra <= 0)
                                 {
                                     <tr><td colspan="9" class="font-italic font-weight-bold">@item.ten</td></tr>
                                 }
@@ -120,9 +120,9 @@
                                 {
                                     <tr>
                                         <td colspan="5" class="font-weight-bold">@item.ten</td>
-                                        <td class="font-weight-bold">@item.thanhtien</td>
+                                        <td class="font-weight-bold">@item.thanhtien.ToString("N")</td>
                                         <td colspan="2"></td>
-                                        <td class="font-weight-bold">@item.bntra</td>
+                                        <td class="font-weight-bold">@item.bntra.ToString("N")</td>
                                     </tr>
                                 }
                             }
@@ -132,12 +132,12 @@
                                     <td>@item.STT</td>
                                     <td>@item.ten</td>
                                     <td>@item.dvt</td>
-                                    <td>@item.soluong</td>
-                                    <td>@item.dongia</td>
-                                    <td>@item.thanhtien</td>
-                                    <td>@item.bhtn</td>
-                                    <td>@item.bhyttra</td>
-                                    <td>@item.bntra</td>
+                                    <td>@item.soluong.ToString("F0")</td>
+                                    <td>@item.dongia.ToString("N")</td>
+                                    <td>@item.thanhtien.ToString("N")</td>
+                                    <td>@item.bhtn.ToString("N")</td>
+                                    <td>@item.bhyttra.ToString("N")</td>
+                                    <td>@item.bntra.ToString("N")</td>
                                 </tr>
                             }
 
@@ -147,5 +147,48 @@
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function FormatCurrencyVND(sotien, style, type, digits) {
+            /*style
+            "decimal" 100.000.000,15.
+            "currency" 100.000.000,15 VND.
+            "percent" 10.000.000.015,00%.
+        
+            type
+            "symbol: 100.000.000 ₫"
+            "code: 100.000.000 VND"
+            "name: 100.000.000 Đồng Việt Nam"*/
+            if (digits === null || digits === "") {
+                var CurrencyVND = new Intl.NumberFormat("vi-VN", {
+                    style: style,
+                    currency: "VND",
+                    currencyDisplay: type,
+                }).format(sotien);
+            }
+            else {
+                var CurrencyVND = new Intl.NumberFormat("vi-VN", {
+                    style: style,
+                    currency: "VND",
+                    currencyDisplay: type,
+                    minimumFractionDigits: digits
+                }).format(sotien);
+            }
+
+            return CurrencyVND;
+        }
+
+        function FormatDatetime(datetime, type) {
+
+            if (datetime == null || datetime == "") { return datetime = ""; }
+            else {
+                if (type == "1") { var responseDate = moment(datetime).format('DD/MM/YYYY'); }
+                else if (type == "2") { var responseDate = moment(datetime).format('DD/MM/YYYY HH:mm'); }
+                return responseDate;
+            }
+        }
+    </script>
 </body>
 </html>

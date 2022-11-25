@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
+    [Authorize]
     public class BaoHiemTuNguyenController : Controller
     {
         private readonly IBaoHiemTuNguyenServices _baoHiemTuNguyenServices;

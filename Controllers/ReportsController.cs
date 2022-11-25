@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
@@ -11,6 +12,7 @@ using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
+    [Authorize]
     public class ReportsController : Controller
     {
         private readonly IBangKeChiPhiSevices _bangKeChiPhiSevices;
@@ -28,14 +30,14 @@ namespace WebTools.Controllers
             data.BarCode = StaticHelper.GenBarCode(data.ThongTinNguoiBenh.mabn);
             data.TenPhieuIn = "BangKeVienPhi";
 
-            //return View(data);
-            return new ViewAsPdf("BangKeVienPhi", data)
-            {
-                //FileName = $"{data.TenPhieuIn}.pdf", //User for click download
-                PageSize = Size.A4,
-                PageOrientation = Orientation.Portrait,
-                IsJavaScriptDisabled = true,
-            };
+            return View(data);
+            //return new ViewAsPdf("BangKeVienPhi", data)
+            //{
+            //    //FileName = $"{data.TenPhieuIn}.pdf", //User for click download
+            //    PageSize = Size.A4,
+            //    PageOrientation = Orientation.Portrait,
+            //    IsJavaScriptDisabled = true,
+            //};
         }
     }
 }

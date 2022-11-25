@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using WebTools.Services.Interface;
 
 namespace WebTools.Controllers
 {
+    [Authorize]
     public class BangKeChiPhiController : Controller
     {
         private readonly IBangKeChiPhiSevices _bangKeChiPhiSevices;
@@ -101,9 +103,9 @@ namespace WebTools.Controllers
                         manhomvp = manhomvp,
                         hoten = Request.Form["HoTen"],
                         chandoan = Request.Form["ChanDoan"],
-                        ngaysinh = Convert.ToDateTime(Request.Form["NgaySinh"]).ToString("yyyy-MM-dd"),
+                        ngaysinh = Convert.ToDateTime(Request.Form["NgaySinh"], CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"),
                         sothe = Request.Form["SoThe"],
-                        ngayvao = Convert.ToDateTime(Request.Form["NgayVao"]).ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                        ngayvao = Convert.ToDateTime(Request.Form["NgayVao"], CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss.fff"),
                         gioitinh = Request.Form["GioiTinh"],
                         tenkp = Request.Form["CacKP"],
                         tongsotien = tongsotien,
@@ -116,7 +118,6 @@ namespace WebTools.Controllers
                     bangke.Add(item);
                     }
                 }
-                var test = bangke;
                 data = (await _bangKeChiPhiSevices.XuLyDuLieu(bangke, tiLeThanhToan, soTienThanhToan, loaiApDung)).ToList();
                 if (data.Count > 0 && data != null)
                 {
