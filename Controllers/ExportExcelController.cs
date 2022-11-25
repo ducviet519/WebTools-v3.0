@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,7 +55,7 @@ namespace WebTools.Controllers
                         worksheet.Cell(currentRow, 1).Value = sott;
                         worksheet.Cell(currentRow, 2).Value = item.mabn.ToString();
                         worksheet.Cell(currentRow, 3).Value = item.hoten.ToString();
-                        worksheet.Cell(currentRow, 4).Value = Convert.ToDateTime(item.ngaysinh).ToString("dd/MM/yyyy");
+                        worksheet.Cell(currentRow, 4).Value = Convert.ToDateTime(item.ngaysinh, CultureInfo.InvariantCulture).ToString("dd/MM/yyyy");
                         worksheet.Cell(currentRow, 5).Value = item.gioitinh.ToString();
                         worksheet.Cell(currentRow, 6).Value = item.chandoan.ToString();
                         worksheet.Cell(currentRow, 7).Value = (item.nhomvp ?? "").ToString();
