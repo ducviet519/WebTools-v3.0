@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.97.0" />
-    <PackageReference Include="ClosedXML.Report" Version="0.2.4" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
@@ -38,7 +37,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Identity.Web" Version="1.25.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
   </ItemGroup>
@@ -113,7 +111,6 @@
     <None Include="wwwroot\lib\pdfmake\pdfmake.min.js" />
     <None Include="wwwroot\lib\pdfmake\pdfmake.min.js.map" />
     <None Include="wwwroot\lib\pdfmake\vfs_fonts.js" />
-    <None Include="wwwroot\Rotativa.csproj" />
   </ItemGroup>
 
 </Project>

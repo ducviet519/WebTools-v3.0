@@ -157,11 +157,11 @@
                                         <div class="col-8 pl-4">
                                             <div class="form-group row">
                                                 <input type="radio" class="form-check" id="SoTienCheckbox" name="LoaiApDung" value="2" checked /><label for="SoTienCheckbox" class="col-form-label col-auto">Số tiền thanh toán:</label>
-                                                <div class="col mr-5"><input type="text" class="form-control" id="SoTienThanhToan" name="SoTienThanhToan" data-mask="money" autocomplete="off" /></div>
+                                                <div class="col mr-3"><input type="text" class="form-control" id="SoTienThanhToan" name="SoTienThanhToan" data-mask="money" autocomplete="off" /></div>
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <button type="button" class="btn btn-success btn-sm" id="btnApDung">Áp dụng</button>
+                                            <button type="button" class="btn btn-success btn-sm" id="btnApDung"><i class="fas fa-plus-square"></i> Áp dụng</button>
                                         </div>
                                     </div>
                                 </div>
@@ -201,10 +201,10 @@
                 </div>
                 <div class="modal-footer">
                     <div class="row justify-content-center col-12">
-                        <div class="col-2"><button type="button" class="btn btn-primary col" data-save="modalFile">Lưu</button></div>
-                        <div class="col-2 ml-5 mr-5"> <a class="btn btn-success col" href="/Reports/BangKeVienPhi?id=@Model.id&loai=@Model.loai" target="_blank">Bảng kê BHTN</a></div>
-                        <div class="col-2 ml-5 mr-5"><a class="btn btn-success col" href="/ExportExcel/BangKeChiPhiExcel?id=@Model.id&loai=@Model.loai">Xuất Excel BKBH</a></div>
-                        <div class="col-2"><button type="button" class="btn btn-danger col" data-dismiss="modal">Đóng</button></div>
+                        <div class="col-2"><button type="button" class="btn btn-primary col" data-save="modalFile"><i class="fas fa-save"></i> Lưu</button></div>
+                        <div class="col-2 ml-5 mr-5"> <a class="btn btn-success col" href="/Reports/BangKeVienPhi?id=@Model.id&loai=@Model.loai" target="_blank"><i class="fas fa-file-invoice-dollar"></i> Bảng kê BHTN</a></div>
+                        <div class="col-2 ml-5 mr-5"><a class="btn btn-success col" href="/ExportExcel/BangKeChiPhiExcel?id=@Model.id&loai=@Model.loai"><i class="fas fa-file-excel"></i> Xuất Excel BKBH</a></div>
+                        <div class="col-2"><button type="button" class="btn btn-danger col" data-dismiss="modal"><i class="fas fa-window-close"></i> Đóng</button></div>
                     </div>
                 </div>
             </div>
@@ -223,9 +223,9 @@
         $('[data-mask="soluong"]').inputmask({ numericInput: true, placeholder: " " });
         $('[data-mask="money"]').inputmask({ numericInput: true, placeholder: " " });
 
-        document.getElementById("lbTongTien").innerText = FormatCurrencyVND(document.getElementById("TongSoTien").value, "currency", "code", 2);
-        document.getElementById("lbTongBHYT").innerText = FormatCurrencyVND(document.getElementById("TongBHYT").value, "currency", "code", 2);
-        document.getElementById("lbTongBHTN").innerText = FormatCurrencyVND(document.getElementById("BNTT").value, "currency", "code", 2);
+        document.getElementById("lbTongTien").innerText = FormatCurrencyVND(parseFloat(document.getElementById("TongSoTien").value), "currency", "code", 2);
+        document.getElementById("lbTongBHYT").innerText = FormatCurrencyVND(parseFloat(document.getElementById("TongBHYT").value), "currency", "code", 2);
+        document.getElementById("lbTongBHTN").innerText = FormatCurrencyVND(parseFloat(document.getElementById("BNTT").value), "currency", "code", 2);
         document.getElementById("lbNgaySinh").innerText = FormatDatetime(document.getElementById("NgaySinh").value, "1");
         document.getElementById("lbNgayVao").innerText = FormatDatetime(document.getElementById("NgayVao").value, "2");
 
