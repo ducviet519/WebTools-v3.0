@@ -177,12 +177,12 @@
 
             $('#btnChon').on('click', function (e) {
                 var table = $("#tableKhachHangBHTN").DataTable();
-                var rows_selected = table.column(0).checkboxes.selected();
+                var rows_selected = table.rows({ selected: true }).data();
                 var array = [];
                 // Iterate over all selected checkboxes
-                $.each(rows_selected, function (index, rowId) {
+                $.each(rows_selected, function (index, value) {
                     // Create a hidden element 
-                    array.push(table.cell(index, 2).data());
+                    array.push(value.mabn);
                 });
                 alert("Các mã bệnh nhân đã chọn: " + array);
                 // Prevent actual form submission
