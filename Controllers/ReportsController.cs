@@ -1,6 +1,4 @@
-﻿using jsreport.AspNetCore;
-using jsreport.Types;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Globalization;
@@ -16,11 +14,9 @@ namespace WebTools.Controllers
     public class ReportsController : Controller
     {
         private readonly IBangKeChiPhiSevices _bangKeChiPhiSevices;
-        public IJsReportMVCService _jsReportMVCService { get; }
-        public ReportsController(IBangKeChiPhiSevices bangKeChiPhiSevices, IJsReportMVCService jsReportMVCService)
+        public ReportsController(IBangKeChiPhiSevices bangKeChiPhiSevices)
         {
             _bangKeChiPhiSevices = bangKeChiPhiSevices;
-            _jsReportMVCService = jsReportMVCService;
         }
 
         public async Task<IActionResult> BangKeVienPhi(string id, string loai)
