@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using jsreport.AspNetCore;
+using jsreport.Types;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Globalization;
@@ -14,10 +16,13 @@ namespace WebTools.Controllers
     public class ReportsController : Controller
     {
         private readonly IBangKeChiPhiSevices _bangKeChiPhiSevices;
-        public ReportsController(IBangKeChiPhiSevices bangKeChiPhiSevices)
+        public IJsReportMVCService _jsReportMVCService { get; }
+        public ReportsController(IBangKeChiPhiSevices bangKeChiPhiSevices, IJsReportMVCService jsReportMVCService)
         {
             _bangKeChiPhiSevices = bangKeChiPhiSevices;
+            _jsReportMVCService = jsReportMVCService;
         }
+
         public async Task<IActionResult> BangKeVienPhi(string id, string loai)
         {
             ExportReport data = new ExportReport();
@@ -28,6 +33,7 @@ namespace WebTools.Controllers
             data.ThongTinNguoiBenh = thongtinnguoibenh;
             data.BarCode = StaticHelper.GenBarCode(data.ThongTinNguoiBenh.mabn);
             data.TenPhieuIn = "BangKeVienPhi";
+
             return View(data);
         }
     }
